@@ -1,7 +1,6 @@
 package ru.otus.domain;
 
 import java.util.List;
-import java.util.Map;
 
 public class Question {
 	private int id;
@@ -14,5 +13,21 @@ public class Question {
 		this.wording = wording;
 		this.correctAnswerId = correctAnswerId;
 		this.answerList = answerList;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getWording() {
+		return wording;
+	}
+
+	public int getCorrectAnswerId() {
+		return correctAnswerId;
+	}
+
+	public List<Answer> getAnswerList() {
+		return answerList;
 	}
 }

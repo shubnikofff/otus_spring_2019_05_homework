@@ -8,4 +8,12 @@ public class Answer {
 		this.id = id;
 		this.wording = wording;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getWording() {
+		return wording;
+	}
 }
