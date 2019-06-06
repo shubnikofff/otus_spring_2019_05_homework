@@ -1,6 +1,7 @@
 package ru.otus.application.service;
 
 import ru.otus.domain.Question;
+import ru.otus.domain.Test;
 import ru.otus.service.FrontendService;
 
 import java.util.Scanner;
@@ -22,5 +23,10 @@ public class FrontendServiceImplementation implements FrontendService {
 	public int getAnswer(Question question) {
 		System.out.println(question);
 		return new Scanner(System.in).nextInt();
+	}
+
+	@Override
+	public void printResult(Test test) {
+		System.out.println("Test is over");
 	}
 }

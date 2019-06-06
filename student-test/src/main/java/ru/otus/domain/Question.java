@@ -24,13 +24,14 @@ public class Question {
 
 	@Override
 	public String toString() {
-		final StringBuilder stringBuilder = new StringBuilder(id + ") " + wording);
+		final StringBuilder stringBuilder = new StringBuilder(id + ") " + wording + "\n");
 
 		answerMap.forEach((integer, answer) -> stringBuilder
 				.append("\t")
 				.append(answer.getId())
 				.append(". ")
-				.append(answer.getWording()));
+				.append(answer.getWording())
+				.append("\n"));
 
 		return stringBuilder.toString();
 	}

@@ -4,10 +4,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="questionDao" class="ru.otus.dao.QuestionDaoCsv">
+    <bean id="questionDao" class="ru.otus.application.dao.QuestionDaoCsv">
         <constructor-arg name="resourcePath" value="questions.csv"/>
     </bean>
 
-    <bean id="frontendService" class="ru.otus.application.service.FrontendServiceImplementation" />
+    <bean id="frontendService" class="ru.otus.application.service.FrontendServiceImplementation"/>
+
+    <bean id="application" class="ru.otus.application.Application">
+        <constructor-arg name="frontendService" ref="frontendService"/>
+        <constructor-arg name="questionDao" ref="questionDao"/>
+    </bean>
 
 </beans>

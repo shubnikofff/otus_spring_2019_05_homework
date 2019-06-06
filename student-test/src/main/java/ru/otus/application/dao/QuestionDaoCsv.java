@@ -1,5 +1,6 @@
-package ru.otus.dao;
+package ru.otus.application.dao;
 
+import ru.otus.dao.QuestionDao;
 import ru.otus.domain.Answer;
 import ru.otus.domain.Question;
 
