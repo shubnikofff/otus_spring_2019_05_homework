@@ -1,33 +1,37 @@
 package ru.otus.domain;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Question {
 	private int id;
 	private String wording;
 	private int correctAnswerId;
-	private List<Answer> answerList;
+	private Map<Integer, Answer> answerMap;
 
 	public Question(int id, String wording, int correctAnswerId, List<Answer> answerList) {
 		this.id = id;
 		this.wording = wording;
 		this.correctAnswerId = correctAnswerId;
-		this.answerList = answerList;
+		answerMap = new HashMap<>(answerList.size());
+		answerList.forEach(answer -> answerMap.put(answer.getId(), answer));
 	}
 
-	public int getId() {
-		return id;
+	public boolean answerExists(int answerId) {
+		return answerMap.containsKey(answerId);
 	}
 
-	public String getWording() {
-		return wording;
-	}
+	@Override
+	public String toString() {
+		final StringBuilder stringBuilder = new StringBuilder(id + ") " + wording);
 
-	public int getCorrectAnswerId() {
-		return correctAnswerId;
-	}
+		answerMap.forEach((integer, answer) -> stringBuilder
+				.append("\t")
+				.append(answer.getId())
+				.append(". ")
+				.append(answer.getWording()));
 
-	public List<Answer> getAnswerList() {
-		return answerList;
+		return stringBuilder.toString();
 	}
 }

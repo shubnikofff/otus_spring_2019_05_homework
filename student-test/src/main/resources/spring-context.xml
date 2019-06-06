@@ -7,4 +7,7 @@
     <bean id="questionDao" class="ru.otus.dao.QuestionDaoCsv">
         <constructor-arg name="resourcePath" value="questions.csv"/>
     </bean>
+
+    <bean id="frontendService" class="ru.otus.application.service.FrontendServiceImplementation" />
+
 </beans>
