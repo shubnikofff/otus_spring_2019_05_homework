@@ -1,8 +1,8 @@
 package ru.otus.domain;
 
 public class Answer {
-	private String id;
-	private String wording;
+	private final String id;
+	private final String wording;
 
 	public Answer(String id, String wording) {
 		this.id = id;

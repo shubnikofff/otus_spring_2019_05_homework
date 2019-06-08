@@ -7,8 +7,8 @@ import ru.otus.service.FrontendService;
 import java.io.IOException;
 
 public class Application {
-	private QuestionDao questionDao;
-	private FrontendService frontendService;
+	private final QuestionDao questionDao;
+	private final FrontendService frontendService;
 
 	public Application(QuestionDao questionDao, FrontendService frontendService) {
 		this.questionDao = questionDao;

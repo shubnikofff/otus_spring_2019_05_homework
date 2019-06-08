@@ -15,13 +15,13 @@ public class QuestionDaoCsv implements QuestionDao {
 	private final static String COMMA_SEPARATOR = ",";
 	private final static String ANSWER_ID_SEPARATOR = "#";
 
-	private String resourcePath;
+	private final String resourcePath;
 
 	public QuestionDaoCsv(String resourcePath) {
 		this.resourcePath = resourcePath;
 	}
 
-	private Function<String, Question> questionMapper = (raw) -> {
+	private final Function<String, Question> questionMapper = (raw) -> {
 		final String[] dividedRaw = raw.split(COMMA_SEPARATOR);
 		final String wording = dividedRaw[0];
 		final String correctAnswer = dividedRaw[1];
@@ -30,7 +30,7 @@ public class QuestionDaoCsv implements QuestionDao {
 		return new Question(wording, correctAnswer, answers);
 	};
 
-	private Function<String, Answer> answerMapper = (raw) -> {
+	private final Function<String, Answer> answerMapper = (raw) -> {
 		final String[] dividedRaw = raw.split(ANSWER_ID_SEPARATOR);
 		final String id = dividedRaw[0];
 		final String wording = dividedRaw[1];

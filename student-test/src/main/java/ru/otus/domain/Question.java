@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Question {
-	private String wording;
-	private String correctAnswer;
-	private Map<String, Answer> answerMap;
+	private final String wording;
+	private final String correctAnswer;
+	private final Map<String, Answer> answerMap;
 
 	public Question(String wording, String correctAnswer, List<Answer> answerList) {
 		this.wording = wording;
