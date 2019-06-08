@@ -16,7 +16,11 @@ public class Question {
 		answerList.forEach(answer -> answerMap.put(answer.getId(), answer));
 	}
 
-	public boolean isAnswerExists(String answerId) {
+	public boolean isAnswerValid(String answerId) {
+		if (answerMap.isEmpty()) {
+			return true;
+		}
+
 		return answerMap.containsKey(answerId);
 	}
 

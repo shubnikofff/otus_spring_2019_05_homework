@@ -17,7 +17,14 @@ public class Application {
 
 	public void run() throws IOException {
 		final Test test = new Test(frontendService.getFirstName(), frontendService.getLastName());
-		questionDao.getQuestions().forEach(question -> test.setAnswer(question, frontendService.getAnswer(question)));
+		questionDao.getQuestions().forEach(question -> {
+			String answer;
+			do {
+				answer = frontendService.getAnswer(question);
+			} while (!question.isAnswerValid(answer));
+
+			test.setAnswer(question, answer);
+		});
 		frontendService.printResult(test);
 	}
 }
