@@ -7,22 +7,24 @@ import ru.otus.service.FrontendService;
 import java.util.Scanner;
 
 public class FrontendServiceImplementation implements FrontendService {
+	private Scanner scanner = new Scanner(System.in);
+
 	@Override
 	public String getFirstName() {
 		System.out.print("Введите имя: ");
-		return new Scanner(System.in).nextLine();
+		return scanner.nextLine();
 	}
 
 	@Override
 	public String getLastName() {
 		System.out.print("Введите фамилию: ");
-		return new Scanner(System.in).nextLine();
+		return scanner.nextLine();
 	}
 
 	@Override
 	public String getAnswer(Question question) {
 		System.out.println(question);
-		return new Scanner(System.in).nextLine();
+		return scanner.nextLine();
 	}
 
 	@Override

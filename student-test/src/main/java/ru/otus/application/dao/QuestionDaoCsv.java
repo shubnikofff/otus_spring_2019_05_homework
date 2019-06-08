@@ -12,7 +12,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class QuestionDaoCsv implements QuestionDao {
-	private final static String COMMA_SEPARATOR = ",";
+	private final static String SEPARATOR = ",";
 	private final static String ANSWER_ID_SEPARATOR = "#";
 
 	private final String resourcePath;
@@ -22,7 +22,7 @@ public class QuestionDaoCsv implements QuestionDao {
 	}
 
 	private final Function<String, Question> questionMapper = (raw) -> {
-		final String[] dividedRaw = raw.split(COMMA_SEPARATOR);
+		final String[] dividedRaw = raw.split(SEPARATOR);
 		final String wording = dividedRaw[0];
 		final String correctAnswer = dividedRaw[1];
 		final List<Answer> answers = Arrays.stream(dividedRaw).skip(2).map(this.answerMapper).collect(Collectors.toList());
