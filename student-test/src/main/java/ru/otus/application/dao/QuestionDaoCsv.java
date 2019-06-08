@@ -21,14 +21,6 @@ public class QuestionDaoCsv implements QuestionDao {
 		this.resourcePath = resourcePath;
 	}
 
-	@Override
-	public List<Question> getQuestions() throws IOException {
-		final InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath);
-		try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(stream)))) {
-			return bufferedReader.lines().map(questionMapper).collect(Collectors.toList());
-		}
-	}
-
 	private Function<String, Question> questionMapper = (raw) -> {
 		final String[] dividedRaw = raw.split(COMMA_SEPARATOR);
 		final String wording = dividedRaw[0];
@@ -45,4 +37,12 @@ public class QuestionDaoCsv implements QuestionDao {
 
 		return new Answer(id, wording);
 	};
+
+	@Override
+	public List<Question> getQuestions() throws IOException {
+		final InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath);
+		try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(stream)))) {
+			return bufferedReader.lines().map(questionMapper).collect(Collectors.toList());
+		}
+	}
 }

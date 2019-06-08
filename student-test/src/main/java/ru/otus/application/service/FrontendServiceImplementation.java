@@ -27,6 +27,15 @@ public class FrontendServiceImplementation implements FrontendService {
 
 	@Override
 	public void printResult(Test test) {
-		System.out.println("Test is over");
+		String result = "Тест пройден студентом: " +
+				test.getLastName() +
+				" " +
+				test.getFirstName() +
+				"\n" +
+				"Процент верных ответов: " +
+				test.getSuccessPercentage() +
+				"%";
+
+		System.out.println(result);
 	}
 }
