@@ -6,18 +6,22 @@ import java.util.Map;
 
 public class Question {
 	private String wording;
-	private int correctAnswerId;
-	private Map<Integer, Answer> answerMap;
+	private String correctAnswer;
+	private Map<String, Answer> answerMap;
 
-	public Question(String wording, int correctAnswerId, List<Answer> answerList) {
+	public Question(String wording, String correctAnswer, List<Answer> answerList) {
 		this.wording = wording;
-		this.correctAnswerId = correctAnswerId;
+		this.correctAnswer = correctAnswer;
 		answerMap = new HashMap<>(answerList.size());
 		answerList.forEach(answer -> answerMap.put(answer.getId(), answer));
 	}
 
-	public boolean answerExists(int answerId) {
+	public boolean isAnswerExists(String answerId) {
 		return answerMap.containsKey(answerId);
+	}
+
+	public boolean isAnswerCorrect(String answer) {
+		return answer.toLowerCase().equals(correctAnswer.toLowerCase());
 	}
 
 	@Override

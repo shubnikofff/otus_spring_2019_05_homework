@@ -20,9 +20,9 @@ public class FrontendServiceImplementation implements FrontendService {
 	}
 
 	@Override
-	public int getAnswer(Question question) {
+	public String getAnswer(Question question) {
 		System.out.println(question);
-		return new Scanner(System.in).nextInt();
+		return new Scanner(System.in).nextLine();
 	}
 
 	@Override

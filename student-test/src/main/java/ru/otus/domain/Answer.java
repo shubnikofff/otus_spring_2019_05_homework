@@ -1,15 +1,15 @@
 package ru.otus.domain;
 
 public class Answer {
-	private int id;
+	private String id;
 	private String wording;
 
-	public Answer(int id, String wording) {
+	public Answer(String id, String wording) {
 		this.id = id;
 		this.wording = wording;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 

@@ -8,7 +8,7 @@ public interface FrontendService {
 
 	String getLastName();
 
-	int getAnswer(Question question);
+	String getAnswer(Question question);
 
 	void printResult(Test test);
 }
