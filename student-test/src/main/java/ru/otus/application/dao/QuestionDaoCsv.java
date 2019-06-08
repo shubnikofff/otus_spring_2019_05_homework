@@ -31,12 +31,11 @@ public class QuestionDaoCsv implements QuestionDao {
 
 	private Function<String, Question> questionMapper = (raw) -> {
 		final String[] dividedRaw = raw.split(COMMA_SEPARATOR);
-		final int id = Integer.parseInt(dividedRaw[0]);
-		final String wording = dividedRaw[1];
-		final int correctAnswerId = Integer.parseInt(dividedRaw[2]);
-		final List<Answer> answers = Arrays.stream(dividedRaw).skip(3).map(this.answerMapper).collect(Collectors.toList());
+		final String wording = dividedRaw[0];
+		final int correctAnswerId = Integer.parseInt(dividedRaw[1]);
+		final List<Answer> answers = Arrays.stream(dividedRaw).skip(2).map(this.answerMapper).collect(Collectors.toList());
 
-		return new Question(id, wording, correctAnswerId, answers);
+		return new Question(wording, correctAnswerId, answers);
 	};
 
 	private Function<String, Answer> answerMapper = (raw) -> {
