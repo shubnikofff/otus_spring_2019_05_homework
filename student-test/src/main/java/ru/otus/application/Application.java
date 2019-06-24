@@ -1,15 +1,19 @@
 package ru.otus.application;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.otus.dao.QuestionDao;
 import ru.otus.domain.Test;
 import ru.otus.service.FrontendService;
 
 import java.io.IOException;
 
+@Service
 public class Application {
 	private final QuestionDao questionDao;
 	private final FrontendService frontendService;
 
+	@Autowired
 	public Application(QuestionDao questionDao, FrontendService frontendService) {
 		this.questionDao = questionDao;
 		this.frontendService = frontendService;

@@ -1,5 +1,6 @@
 package ru.otus.application.dao;
 
+import org.springframework.stereotype.Service;
 import ru.otus.dao.QuestionDao;
 import ru.otus.domain.Answer;
 import ru.otus.domain.Question;
@@ -11,15 +12,16 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Service
 public class QuestionDaoCsv implements QuestionDao {
 	private final static String SEPARATOR = ",";
 	private final static String ANSWER_ID_SEPARATOR = "#";
 
-	private final String resourcePath;
+	private final String resourcePath = "questions.csv";
 
-	public QuestionDaoCsv(String resourcePath) {
-		this.resourcePath = resourcePath;
-	}
+//	public QuestionDaoCsv(String resourcePath) {
+//		this.resourcePath = resourcePath;
+//	}
 
 	private final Function<String, Question> questionMapper = (raw) -> {
 		final String[] dividedRaw = raw.split(SEPARATOR);

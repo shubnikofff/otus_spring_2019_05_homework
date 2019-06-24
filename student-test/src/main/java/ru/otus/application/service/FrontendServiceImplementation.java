@@ -1,11 +1,13 @@
 package ru.otus.application.service;
 
+import org.springframework.stereotype.Service;
 import ru.otus.domain.Question;
 import ru.otus.domain.Test;
 import ru.otus.service.FrontendService;
 
 import java.util.Scanner;
 
+@Service
 public class FrontendServiceImplementation implements FrontendService {
 	private Scanner scanner = new Scanner(System.in);
 
