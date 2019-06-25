@@ -15,18 +15,18 @@ import java.util.stream.Collectors;
 @Service
 public class QuestionDaoCsv implements QuestionDao {
 	private final String csvPath;
-	private final String defaultLocale;
+	private final String locale;
 	private final String separator;
 	private final String answerIdSeparator;
 
 	public QuestionDaoCsv(
 			@Value("${csv.path}") String csvPath,
-			@Value("${locale.default}") String defaultLocale,
+			@Value("${locale}") String locale,
 			@Value("${separator.main}") String separator,
 			@Value("${separator.answer_id}") String answerIdSeparator
 	) {
 		this.csvPath = csvPath;
-		this.defaultLocale = defaultLocale;
+		this.locale = locale;
 		this.separator = separator;
 		this.answerIdSeparator = answerIdSeparator;
 	}
@@ -57,6 +57,6 @@ public class QuestionDaoCsv implements QuestionDao {
 	}
 
 	private String getResourcePath() {
-		return csvPath + File.separator + defaultLocale + ".csv";
+		return csvPath + File.separator + locale + ".csv";
 	}
 }
