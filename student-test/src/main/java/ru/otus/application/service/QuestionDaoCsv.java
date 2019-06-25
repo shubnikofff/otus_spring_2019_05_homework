@@ -1,10 +1,10 @@
-package ru.otus.application.dao;
+package ru.otus.application.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.otus.dao.QuestionDao;
-import ru.otus.domain.Answer;
-import ru.otus.domain.Question;
+import ru.otus.domain.service.QuestionDao;
+import ru.otus.domain.model.Answer;
+import ru.otus.domain.model.Question;
 
 import java.io.*;
 import java.util.Arrays;

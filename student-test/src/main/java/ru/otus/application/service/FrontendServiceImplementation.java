@@ -1,9 +1,9 @@
 package ru.otus.application.service;
 
 import org.springframework.stereotype.Service;
-import ru.otus.domain.Question;
-import ru.otus.domain.Test;
-import ru.otus.service.FrontendService;
+import ru.otus.domain.model.Question;
+import ru.otus.domain.model.Test;
+import ru.otus.domain.service.FrontendService;
 
 import java.util.Scanner;
 

@@ -2,9 +2,9 @@ package ru.otus.application;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.otus.dao.QuestionDao;
-import ru.otus.domain.Test;
-import ru.otus.service.FrontendService;
+import ru.otus.domain.service.QuestionDao;
+import ru.otus.domain.model.Test;
+import ru.otus.domain.service.FrontendService;
 
 import java.io.IOException;
 

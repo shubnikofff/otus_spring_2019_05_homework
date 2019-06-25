@@ -1,4 +1,4 @@
-package ru.otus.domain;
+package ru.otus.domain.model;
 
 import java.util.HashMap;
 import java.util.Map;

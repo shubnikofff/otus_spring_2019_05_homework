@@ -1,4 +1,4 @@
-package ru.otus.domain;
+package ru.otus.domain.model;
 
 public class Answer {
 	private final String id;
