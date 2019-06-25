@@ -1,25 +1,37 @@
 package ru.otus.application.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otus.domain.model.Question;
 import ru.otus.domain.model.Test;
 import ru.otus.domain.service.FrontendService;
 
+import java.util.Locale;
 import java.util.Scanner;
 
 @Service
 public class FrontendServiceImplementation implements FrontendService {
-	private Scanner scanner = new Scanner(System.in);
+	private final Scanner scanner = new Scanner(System.in);
+	private final MessageSource messageSource;
+	private final Locale locale;
+
+	@Autowired
+	public FrontendServiceImplementation(MessageSource messageSource, @Value("${locale}") String locale) {
+		this.messageSource = messageSource;
+		this.locale = new Locale(locale);
+	}
 
 	@Override
 	public String getFirstName() {
-		System.out.print("Введите имя: ");
+		System.out.print(messageSource.getMessage("enter.name", null, locale) + ": ");
 		return scanner.nextLine();
 	}
 
 	@Override
 	public String getLastName() {
-		System.out.print("Введите фамилию: ");
+		System.out.print(messageSource.getMessage("enter.surname", null, locale) + ": ");
 		return scanner.nextLine();
 	}
 
@@ -31,12 +43,12 @@ public class FrontendServiceImplementation implements FrontendService {
 
 	@Override
 	public void printResult(Test test) {
-		String result = "Тест пройден студентом: " +
+		String result = messageSource.getMessage("test.passed.by.student", null, locale) + ": " +
 				test.getLastName() +
 				" " +
 				test.getFirstName() +
 				"\n" +
-				"Процент верных ответов: " +
+				messageSource.getMessage("percentage.of.correct.answers", null, locale) + ": " +
 				test.getSuccessPercentage() +
 				"%";
 
