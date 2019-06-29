@@ -8,17 +8,19 @@ import ru.otus.domain.model.Question;
 import ru.otus.domain.model.Test;
 import ru.otus.domain.service.FrontendService;
 
+import java.io.InputStream;
 import java.util.Locale;
 import java.util.Scanner;
 
 @Service
 public class FrontendServiceImplementation implements FrontendService {
-	private final Scanner scanner = new Scanner(System.in);
+	private final Scanner scanner;
 	private final MessageSource messageSource;
 	private final Locale locale;
 
 	@Autowired
-	public FrontendServiceImplementation(MessageSource messageSource, @Value("${locale}") String locale) {
+	public FrontendServiceImplementation(InputStream inputStream, MessageSource messageSource, @Value("${locale}") String locale) {
+		scanner = new Scanner(inputStream);
 		this.messageSource = messageSource;
 		this.locale = new Locale(locale);
 	}

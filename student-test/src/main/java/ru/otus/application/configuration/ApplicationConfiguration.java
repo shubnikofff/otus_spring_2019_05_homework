@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
+import java.io.InputStream;
+
 @Configuration
 public class ApplicationConfiguration {
 
@@ -14,5 +16,10 @@ public class ApplicationConfiguration {
 		messageSource.setBasename("/i18n/bundle");
 		messageSource.setDefaultEncoding("UTF-8");
 		return messageSource;
+	}
+
+	@Bean
+	public InputStream inputStream() {
+		return  System.in;
 	}
 }
