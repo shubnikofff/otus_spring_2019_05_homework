@@ -11,7 +11,7 @@ class AnswerTest {
 	private Answer answer;
 
 	@BeforeEach
-	void createAnswer() {
+	void setUp() {
 		answer = new Answer("1", "answer");
 	}
 

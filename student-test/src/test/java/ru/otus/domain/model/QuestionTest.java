@@ -14,7 +14,7 @@ class QuestionTest {
 	private Question question;
 
 	@BeforeEach
-	void createQuestion() {
+	void setUp() {
 		List<Answer> answerList = new ArrayList<>();
 		answerList.add(new Answer("1", "answer1"));
 		answerList.add(new Answer("2", "answer2"));

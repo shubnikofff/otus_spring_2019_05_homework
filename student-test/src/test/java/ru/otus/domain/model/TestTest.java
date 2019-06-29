@@ -13,7 +13,7 @@ class TestTest {
 	private ru.otus.domain.model.Test testModel;
 
 	@BeforeEach
-	void createTestModelObject() {
+	void setUp() {
 		testModel = new ru.otus.domain.model.Test("FirstName", "LastName");
 	}
 
