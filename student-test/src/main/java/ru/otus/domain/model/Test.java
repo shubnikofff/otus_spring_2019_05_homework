@@ -1,4 +1,4 @@
-package ru.otus.domain;
+package ru.otus.domain.model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,15 +21,8 @@ public class Test {
 		return lastName;
 	}
 
-	public float getSuccessPercentage() {
-		float numberOfCorrectAnswers = 0;
-		for (Map.Entry<Question, String> questionAnswerEntry : answers.entrySet()) {
-			if (questionAnswerEntry.getKey().isAnswerCorrect(questionAnswerEntry.getValue())) {
-				numberOfCorrectAnswers++;
-			}
-		}
-
-		return numberOfCorrectAnswers / answers.size() * 100;
+	public Map<Question, String> getAnswers() {
+		return answers;
 	}
 
 	public void setAnswer(Question question, String answer) {

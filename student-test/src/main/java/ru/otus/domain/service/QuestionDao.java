@@ -1,6 +1,6 @@
-package ru.otus.dao;
+package ru.otus.domain.service;
 
-import ru.otus.domain.Question;
+import ru.otus.domain.model.Question;
 
 import java.io.IOException;
 import java.util.List;
