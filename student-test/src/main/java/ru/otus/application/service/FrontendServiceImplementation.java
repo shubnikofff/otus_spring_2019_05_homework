@@ -3,6 +3,7 @@ package ru.otus.application.service;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otus.application.configuration.ApplicationProperties;
+import ru.otus.application.utility.ConsoleUtility;
 import ru.otus.domain.model.Question;
 import ru.otus.domain.model.Test;
 import ru.otus.domain.service.FrontendService;
@@ -10,24 +11,23 @@ import ru.otus.domain.service.QuestionService;
 import ru.otus.domain.service.TestService;
 
 import java.util.Locale;
-import java.util.Scanner;
 
 @Service
 public class FrontendServiceImplementation implements FrontendService {
-	private final Scanner scanner;
+	private final ConsoleUtility consoleUtility;
 	private final MessageSource messageSource;
 	private final Locale locale;
 	private final QuestionService questionService;
 	private final TestService testService;
 
 	public FrontendServiceImplementation(
-			Scanner scanner,
+			ConsoleUtility consoleUtility,
 			MessageSource messageSource,
 			ApplicationProperties applicationProperties,
 			QuestionService questionService,
 			TestService testService
 	) {
-		this.scanner = scanner;
+		this.consoleUtility = consoleUtility;
 		this.messageSource = messageSource;
 		this.locale = new Locale(applicationProperties.getLocale());
 		this.questionService = questionService;
@@ -37,19 +37,19 @@ public class FrontendServiceImplementation implements FrontendService {
 	@Override
 	public String getFirstName() {
 		System.out.print(messageSource.getMessage("enter.name", null, locale) + ": ");
-		return scanner.nextLine();
+		return consoleUtility.getUserInput();
 	}
 
 	@Override
 	public String getLastName() {
 		System.out.print(messageSource.getMessage("enter.surname", null, locale) + ": ");
-		return scanner.nextLine();
+		return consoleUtility.getUserInput();
 	}
 
 	@Override
 	public String getAnswer(Question question) {
 		System.out.println(questionService.stringifyQuestion(question));
-		return scanner.nextLine();
+		return consoleUtility.getUserInput();
 	}
 
 	@Override

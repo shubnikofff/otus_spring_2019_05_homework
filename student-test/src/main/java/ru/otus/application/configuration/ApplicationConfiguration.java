@@ -4,8 +4,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-
-import java.util.Scanner;
+import ru.otus.application.utility.ConsoleUtility;
 
 @Configuration
 public class ApplicationConfiguration {
@@ -19,7 +18,7 @@ public class ApplicationConfiguration {
 	}
 
 	@Bean
-	public Scanner scanner() {
-		return new Scanner(System.in);
+	public ConsoleUtility consoleUtility() {
+		return new ConsoleUtility(System.in);
 	}
 }
