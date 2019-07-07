@@ -27,8 +27,4 @@ public class Question {
 	public Map<String, Answer> getAnswers() {
 		return answerMap;
 	}
-
-	boolean isAnswerCorrect(String answer) {
-		return answer.toLowerCase().equals(correctAnswer.toLowerCase());
-	}
 }

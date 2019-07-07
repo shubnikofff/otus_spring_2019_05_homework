@@ -7,6 +7,7 @@ import ru.otus.domain.model.Question;
 import ru.otus.domain.model.Test;
 import ru.otus.domain.service.FrontendService;
 import ru.otus.domain.service.QuestionService;
+import ru.otus.domain.service.TestService;
 
 import java.io.InputStream;
 import java.util.Locale;
@@ -18,16 +19,19 @@ public class FrontendServiceImplementation implements FrontendService {
 	private final MessageSource messageSource;
 	private final Locale locale;
 	private final QuestionService questionService;
+	private final TestService testService;
 
 	public FrontendServiceImplementation(
 			InputStream inputStream,
 			MessageSource messageSource, @Value("${locale}") String locale,
-			QuestionService questionService
+			QuestionService questionService,
+			TestService testService
 	) {
 		scanner = new Scanner(inputStream);
 		this.messageSource = messageSource;
 		this.locale = new Locale(locale);
 		this.questionService = questionService;
+		this.testService = testService;
 	}
 
 	@Override
@@ -56,7 +60,7 @@ public class FrontendServiceImplementation implements FrontendService {
 				test.getFirstName() +
 				"\n" +
 				messageSource.getMessage("percentage.of.correct.answers", null, locale) + ": " +
-				test.getSuccessPercentage() +
+				testService.getSuccessPercentage(test) +
 				"%";
 
 		System.out.println(result);
