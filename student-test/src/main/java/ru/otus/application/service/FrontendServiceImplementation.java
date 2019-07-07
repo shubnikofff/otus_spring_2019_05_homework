@@ -9,7 +9,6 @@ import ru.otus.domain.service.FrontendService;
 import ru.otus.domain.service.QuestionService;
 import ru.otus.domain.service.TestService;
 
-import java.io.InputStream;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -22,13 +21,13 @@ public class FrontendServiceImplementation implements FrontendService {
 	private final TestService testService;
 
 	public FrontendServiceImplementation(
-			InputStream inputStream,
+			Scanner scanner,
 			MessageSource messageSource,
 			ApplicationProperties applicationProperties,
 			QuestionService questionService,
 			TestService testService
 	) {
-		scanner = new Scanner(inputStream);
+		this.scanner = scanner;
 		this.messageSource = messageSource;
 		this.locale = new Locale(applicationProperties.getLocale());
 		this.questionService = questionService;

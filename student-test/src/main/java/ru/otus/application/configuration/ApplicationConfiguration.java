@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
-import java.io.InputStream;
+import java.util.Scanner;
 
 @Configuration
 public class ApplicationConfiguration {
@@ -19,7 +19,7 @@ public class ApplicationConfiguration {
 	}
 
 	@Bean
-	public InputStream inputStream() {
-		return  System.in;
+	public Scanner scanner() {
+		return new Scanner(System.in);
 	}
 }
