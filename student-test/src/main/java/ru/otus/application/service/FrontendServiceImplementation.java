@@ -1,8 +1,8 @@
 package ru.otus.application.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import ru.otus.application.configuration.ApplicationProperties;
 import ru.otus.domain.model.Question;
 import ru.otus.domain.model.Test;
 import ru.otus.domain.service.FrontendService;
@@ -23,13 +23,14 @@ public class FrontendServiceImplementation implements FrontendService {
 
 	public FrontendServiceImplementation(
 			InputStream inputStream,
-			MessageSource messageSource, @Value("${locale}") String locale,
+			MessageSource messageSource,
+			ApplicationProperties applicationProperties,
 			QuestionService questionService,
 			TestService testService
 	) {
 		scanner = new Scanner(inputStream);
 		this.messageSource = messageSource;
-		this.locale = new Locale(locale);
+		this.locale = new Locale(applicationProperties.getLocale());
 		this.questionService = questionService;
 		this.testService = testService;
 	}
