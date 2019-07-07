@@ -1,12 +1,12 @@
 package ru.otus.application.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otus.domain.model.Question;
 import ru.otus.domain.model.Test;
 import ru.otus.domain.service.FrontendService;
+import ru.otus.domain.service.QuestionService;
 
 import java.io.InputStream;
 import java.util.Locale;
@@ -17,12 +17,17 @@ public class FrontendServiceImplementation implements FrontendService {
 	private final Scanner scanner;
 	private final MessageSource messageSource;
 	private final Locale locale;
+	private final QuestionService questionService;
 
-	@Autowired
-	public FrontendServiceImplementation(InputStream inputStream, MessageSource messageSource, @Value("${locale}") String locale) {
+	public FrontendServiceImplementation(
+			InputStream inputStream,
+			MessageSource messageSource, @Value("${locale}") String locale,
+			QuestionService questionService
+	) {
 		scanner = new Scanner(inputStream);
 		this.messageSource = messageSource;
 		this.locale = new Locale(locale);
+		this.questionService = questionService;
 	}
 
 	@Override
@@ -39,7 +44,7 @@ public class FrontendServiceImplementation implements FrontendService {
 
 	@Override
 	public String getAnswer(Question question) {
-		System.out.println(question);
+		System.out.println(questionService.stringifyQuestion(question));
 		return scanner.nextLine();
 	}
 

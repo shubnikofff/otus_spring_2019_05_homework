@@ -16,6 +16,18 @@ public class Question {
 		answerList.forEach(answer -> answerMap.put(answer.getId(), answer));
 	}
 
+	public String getWording() {
+		return wording;
+	}
+
+	public String getCorrectAnswer() {
+		return correctAnswer;
+	}
+
+	public Map<String, Answer> getAnswers() {
+		return answerMap;
+	}
+
 	public boolean isAnswerValid(String answerId) {
 		if (answerMap.isEmpty()) {
 			return true;
@@ -24,21 +36,7 @@ public class Question {
 		return answerMap.containsKey(answerId);
 	}
 
-	public boolean isAnswerCorrect(String answer) {
+	boolean isAnswerCorrect(String answer) {
 		return answer.toLowerCase().equals(correctAnswer.toLowerCase());
-	}
-
-	@Override
-	public String toString() {
-		final StringBuilder stringBuilder = new StringBuilder(wording + "\n");
-
-		answerMap.forEach((integer, answer) -> stringBuilder
-				.append("\t")
-				.append(answer.getId())
-				.append(". ")
-				.append(answer.getWording())
-				.append("\n"));
-
-		return stringBuilder.toString();
 	}
 }
