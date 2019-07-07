@@ -28,14 +28,6 @@ public class Question {
 		return answerMap;
 	}
 
-	public boolean isAnswerValid(String answerId) {
-		if (answerMap.isEmpty()) {
-			return true;
-		}
-
-		return answerMap.containsKey(answerId);
-	}
-
 	boolean isAnswerCorrect(String answer) {
 		return answer.toLowerCase().equals(correctAnswer.toLowerCase());
 	}
