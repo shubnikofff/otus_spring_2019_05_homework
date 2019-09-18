@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.otus.Main;
+import ru.otus.StudentTest;
 import ru.otus.application.utility.ConsoleUtility;
 import ru.otus.domain.model.Question;
 import ru.otus.domain.service.FrontendService;
@@ -19,7 +19,7 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ContextConfiguration(classes = Main.class)
+@ContextConfiguration(classes = StudentTest.class)
 public class FrontendServiceImplementationTest {
 	@MockBean
 	ConsoleUtility consoleUtility;

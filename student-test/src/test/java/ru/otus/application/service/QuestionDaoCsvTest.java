@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.otus.Main;
+import ru.otus.StudentTest;
 import ru.otus.domain.model.Answer;
 import ru.otus.domain.model.Question;
 
@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = Main.class)
+@ContextConfiguration(classes = StudentTest.class)
 public class QuestionDaoCsvTest {
 	@Autowired
 	private QuestionDaoCsv questionDaoCsv;
