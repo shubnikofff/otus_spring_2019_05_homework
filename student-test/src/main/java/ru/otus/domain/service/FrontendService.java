@@ -8,6 +8,8 @@ public interface FrontendService {
 
 	String getLastName();
 
+	void greeting();
+
 	String getAnswer(Question question);
 
 	void printResult(Test test);

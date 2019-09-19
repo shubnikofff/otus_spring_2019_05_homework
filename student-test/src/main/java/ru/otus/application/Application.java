@@ -30,10 +30,10 @@ public class Application {
 	}
 
 	@ShellMethod(value = "Login command", key = {"l", "login"})
-	String login() {
+	void login() {
 		firstName = frontendService.getFirstName();
 		lastName = frontendService.getLastName();
-		return "Welcome " + firstName + " " + lastName + ". Now you can start test.";
+		frontendService.greeting();
 	}
 
 	@ShellMethod(value = "Run test", key = {"r", "run"})

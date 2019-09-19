@@ -47,6 +47,11 @@ public class FrontendServiceImplementation implements FrontendService {
 	}
 
 	@Override
+	public void greeting() {
+		System.out.println(messageSource.getMessage("greeting", null, locale));
+	}
+
+	@Override
 	public String getAnswer(Question question) {
 		System.out.println(questionService.stringifyQuestion(question));
 		return consoleUtility.getUserInput();
