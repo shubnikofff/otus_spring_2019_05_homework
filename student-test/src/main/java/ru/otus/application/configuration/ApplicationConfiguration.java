@@ -4,7 +4,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import ru.otus.application.utility.ConsoleUtility;
+
+import java.io.InputStream;
 
 @Configuration
 public class ApplicationConfiguration {
@@ -18,7 +19,7 @@ public class ApplicationConfiguration {
 	}
 
 	@Bean
-	public ConsoleUtility consoleUtility() {
-		return new ConsoleUtility(System.in);
+	public InputStream inputStream() {
+		return System.in;
 	}
 }

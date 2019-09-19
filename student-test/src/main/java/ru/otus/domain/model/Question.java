@@ -27,4 +27,18 @@ public class Question {
 	public Map<String, Answer> getAnswers() {
 		return answerMap;
 	}
+
+	@Override
+	public String toString() {
+		final StringBuilder stringBuilder = new StringBuilder(wording + "\n");
+
+		answerMap.forEach((integer, answer) -> stringBuilder
+				.append("\t")
+				.append(answer.getId())
+				.append(". ")
+				.append(answer.getWording())
+				.append("\n"));
+
+		return stringBuilder.toString();
+	}
 }
