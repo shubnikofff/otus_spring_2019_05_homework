@@ -48,7 +48,7 @@ public class FrontendServiceImplementation implements FrontendService {
 		String answer;
 
 		do {
-			ioService.print(question.toString() + "\n");
+			ioService.print(question.toString());
 			answer = ioService.getInput();
 		} while (!Interview.isAnswerValid(answer, question));
 
