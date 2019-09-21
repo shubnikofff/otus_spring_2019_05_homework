@@ -1,21 +1,14 @@
 package ru.otus;
 
-import org.springframework.context.annotation.*;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import ru.otus.application.Application;
 
-@PropertySource("classpath:application.properties")
-@Configuration
-@ComponentScan
-class Main {
+@SpringBootApplication
+public class Main {
 	public static void main(String[] args) throws Exception {
-		final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
-		final Application application = context.getBean(Application.class);
-		application.run();
-	}
-
-	@Bean
-	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-		return new PropertySourcesPlaceholderConfigurer();
+		ConfigurableApplicationContext context = SpringApplication.run(Main.class, args);
+		context.getBean(Application.class).run();
 	}
 }

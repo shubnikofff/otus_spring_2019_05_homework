@@ -1,0 +1,9 @@
+application:
+  csv:
+    path: "csv"
+
+  locale: "en"
+
+  separator:
+    main: ","
+    answer_id: "#"
