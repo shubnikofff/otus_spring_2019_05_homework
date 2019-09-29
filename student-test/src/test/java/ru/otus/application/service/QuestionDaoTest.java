@@ -42,7 +42,7 @@ class QuestionDaoTest {
 	@Test
 	@DisplayName("should return questions with correct answers")
 	void getQuestionsWithCorrectAnswers() throws IOException {
-		Map<String, Answer> answers = questionDao.getQuestions().get(0).getAnswers();
+		Map<String, Answer> answers = questionDao.getQuestions().get(0).getAnswerOptions();
 		assertEquals("1", answers.get("1").getId());
 		assertEquals("Answer one", answers.get("1").getWording());
 		assertEquals("2", answers.get("2").getId());

@@ -7,12 +7,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import ru.otus.domain.model.Question;
+import ru.otus.domain.model.TestResults;
 import ru.otus.domain.service.FrontendService;
 import ru.otus.domain.service.IOService;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -50,22 +51,27 @@ class FrontendServiceImplementationTest {
 	}
 
 	@Test
-	@DisplayName("should return answer")
-	void testGetAnswer() {
+	@DisplayName("should return test results")
+	void testGetTestResults() {
 		given(ioService.getInput()).willReturn("answer");
-		Question question = new Question("Question", "1", new ArrayList<>(0));
-		assertEquals("answer", frontendService.getAnswer(question));
+		List<Question> questions = List.of(
+				new Question("Question1", "answer", new ArrayList<>(0)),
+				new Question("Question2", "answer", new ArrayList<>(0))
+		);
+
+		final TestResults testResults = frontendService.getTestResults(questions);
+		assertEquals(testResults.size(), 2);
+		verify(ioService, times(2)).getInput();
 	}
 
 	@Test
-	@DisplayName("should print result")
+	@DisplayName("should print test result")
 	void testPrintResult() {
-		final Map<Question, String> answerMap = Map.of(
-				new Question("Question#1", "Correct answer", Collections.emptyList()), "Correct answer",
-				new Question("Question#1", "Correct answer", Collections.emptyList()), "Incorrect answer"
-		);
+		final TestResults testResults = new TestResults();
+		testResults.addAnswer(new Question("Question#1", "Correct answer", Collections.emptyList()), "Correct answer");
+		testResults.addAnswer(new Question("Question#1", "Correct answer", Collections.emptyList()), "Incorrect answer");
 
-		frontendService.printResult("Test name", answerMap);
-		verify(ioService, times(1)).print("Test passed by student: Test name\nThe percentage of correct answers: 50.0%\n");
+		frontendService.printTestResults("Ivan", "Ivanov", testResults);
+		verify(ioService, times(1)).print("Test passed by student: Ivan Ivanov\nThe percentage of correct answers: 50.0%\n");
 	}
 }
