@@ -1,14 +1,18 @@
 package ru.otus.domain.service;
 
 import ru.otus.domain.model.Question;
-import ru.otus.domain.model.Test;
+import ru.otus.domain.model.TestResults;
+
+import java.util.List;
 
 public interface FrontendService {
 	String getFirstName();
 
 	String getLastName();
 
-	String getAnswer(Question question);
+	void greeting();
 
-	void printResult(Test test);
+	TestResults getTestResults(List<Question> questions);
+
+	void printTestResults(String firstName, String lastName, TestResults testResults);
 }

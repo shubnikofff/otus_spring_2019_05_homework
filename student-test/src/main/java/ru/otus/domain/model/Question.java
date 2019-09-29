@@ -7,13 +7,13 @@ import java.util.Map;
 public class Question {
 	private final String wording;
 	private final String correctAnswer;
-	private final Map<String, Answer> answerMap;
+	private final Map<String, Answer> answerOptions;
 
 	public Question(String wording, String correctAnswer, List<Answer> answerList) {
 		this.wording = wording;
 		this.correctAnswer = correctAnswer;
-		answerMap = new HashMap<>(answerList.size());
-		answerList.forEach(answer -> answerMap.put(answer.getId(), answer));
+		answerOptions = new HashMap<>(answerList.size());
+		answerList.forEach(answer -> answerOptions.put(answer.getId(), answer));
 	}
 
 	public String getWording() {
@@ -24,7 +24,21 @@ public class Question {
 		return correctAnswer;
 	}
 
-	public Map<String, Answer> getAnswers() {
-		return answerMap;
+	public Map<String, Answer> getAnswerOptions() {
+		return answerOptions;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder stringBuilder = new StringBuilder(wording + "\n");
+
+		answerOptions.forEach((integer, answer) -> stringBuilder
+				.append("\t")
+				.append(answer.getId())
+				.append(". ")
+				.append(answer.getWording())
+				.append("\n"));
+
+		return stringBuilder.toString();
 	}
 }

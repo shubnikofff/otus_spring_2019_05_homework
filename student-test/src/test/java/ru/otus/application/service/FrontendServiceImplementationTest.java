@@ -1,48 +1,77 @@
 package ru.otus.application.service;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import ru.otus.Main;
-import ru.otus.application.utility.ConsoleUtility;
+
 import ru.otus.domain.model.Question;
+import ru.otus.domain.model.TestResults;
 import ru.otus.domain.service.FrontendService;
+import ru.otus.domain.service.IOService;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
-@ContextConfiguration(classes = Main.class)
-public class FrontendServiceImplementationTest {
+@DisplayName("Frontend service")
+class FrontendServiceImplementationTest {
 	@MockBean
-	ConsoleUtility consoleUtility;
+	IOService ioService;
 
 	@Autowired
 	private FrontendService frontendService;
 
 	@Test
-	public void testGetFirstName() {
-		given(consoleUtility.getUserInput()).willReturn("FirstName");
+	@DisplayName("should return first name")
+	void testGetFirstName() {
+		given(ioService.getInput()).willReturn("FirstName");
 		assertEquals("FirstName", frontendService.getFirstName());
 	}
 
 	@Test
-	public void testGetLastName() {
-		given(consoleUtility.getUserInput()).willReturn("LastName");
+	@DisplayName("should return last name")
+	void testGetLastName() {
+		given(ioService.getInput()).willReturn("LastName");
 		assertEquals("LastName", frontendService.getLastName());
 	}
 
 	@Test
-	public void testGetAnswer() {
-		given(consoleUtility.getUserInput()).willReturn("answer");
-		Question question = new Question("Question", "1", new ArrayList<>(0));
-		assertEquals("answer", frontendService.getAnswer(question));
+	@DisplayName("should call IOService.print() method on greeting")
+	void testGreeting() {
+		frontendService.greeting();
+		verify(ioService, times(1)).print("You have successfully logged in. Now you can start test.\n");
+	}
+
+	@Test
+	@DisplayName("should return test results")
+	void testGetTestResults() {
+		given(ioService.getInput()).willReturn("answer");
+		List<Question> questions = List.of(
+				new Question("Question1", "answer", new ArrayList<>(0)),
+				new Question("Question2", "answer", new ArrayList<>(0))
+		);
+
+		final TestResults testResults = frontendService.getTestResults(questions);
+		assertEquals(testResults.size(), 2);
+		verify(ioService, times(2)).getInput();
+	}
+
+	@Test
+	@DisplayName("should print test result")
+	void testPrintResult() {
+		final TestResults testResults = new TestResults();
+		testResults.addAnswer(new Question("Question#1", "Correct answer", Collections.emptyList()), "Correct answer");
+		testResults.addAnswer(new Question("Question#1", "Correct answer", Collections.emptyList()), "Incorrect answer");
+
+		frontendService.printTestResults("Ivan", "Ivanov", testResults);
+		verify(ioService, times(1)).print("Test passed by student: Ivan Ivanov\nThe percentage of correct answers: 50.0%\n");
 	}
 }
