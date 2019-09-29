@@ -4,11 +4,12 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otus.application.configuration.ApplicationProperties;
 import ru.otus.domain.model.Question;
+import ru.otus.domain.model.TestResults;
 import ru.otus.domain.service.FrontendService;
 import ru.otus.domain.service.IOService;
 
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 @Service
 public class FrontendServiceImplementation implements FrontendService {
@@ -40,53 +41,36 @@ public class FrontendServiceImplementation implements FrontendService {
 
 	@Override
 	public void greeting() {
-		ioService.print(messageSource.getMessage("greeting", null, locale)  + "\n");
+		ioService.print(messageSource.getMessage("greeting", null, locale) + "\n");
 	}
 
 	@Override
-	public String getAnswer(Question question) {
+	public TestResults getTestResults(List<Question> questions) {
+		final TestResults testResults = new TestResults();
+
+		questions.forEach(question -> testResults.addAnswer(question, getAnswer(question)));
+
+		return testResults;
+	}
+
+	@Override
+	public void printTestResults(String firstName, String lastName, TestResults testResults) {
+		final String result = messageSource.getMessage("test.passed.by.student", null, locale) + ": " +
+				firstName + " " + lastName + "\n" +
+				messageSource.getMessage("percentage.of.correct.answers", null, locale) + ": " +
+				InterviewService.getSuccessPercentage(testResults) + "%\n";
+
+		ioService.print(result);
+	}
+
+	private String getAnswer(Question question) {
 		String answer;
 
 		do {
 			ioService.print(question.toString());
 			answer = ioService.getInput();
-		} while (!Interview.isAnswerValid(answer, question));
+		} while (!InterviewService.isAnswerValid(answer, question));
 
 		return answer;
-	}
-
-	@Override
-	public void printResult(String name, Map<Question, String> answerMap) {
-		final String result = messageSource.getMessage("test.passed.by.student", null, locale) + ": " +
-				name + "\n" +
-				messageSource.getMessage("percentage.of.correct.answers", null, locale) + ": " +
-				Interview.getSuccessPercentage(answerMap) + "%\n";
-
-		ioService.print(result);
-	}
-
-	private static class Interview {
-		static boolean isAnswerValid(String answer, Question question) {
-			if (question.getAnswers().isEmpty()) {
-				return true;
-			}
-
-			return question.getAnswers().containsKey(answer);
-		}
-
-		static float getSuccessPercentage(Map<Question, String> answers) {
-			float numberOfCorrectAnswers = 0;
-			for (Map.Entry<Question, String> questionAnswerEntry : answers.entrySet()) {
-				if (isAnswerCorrect(questionAnswerEntry.getKey(), questionAnswerEntry.getValue())) {
-					numberOfCorrectAnswers++;
-				}
-			}
-
-			return numberOfCorrectAnswers / answers.size() * 100;
-		}
-
-		private static boolean isAnswerCorrect(Question question, String answer) {
-			return answer.toLowerCase().equals(question.getCorrectAnswer().toLowerCase());
-		}
 	}
 }

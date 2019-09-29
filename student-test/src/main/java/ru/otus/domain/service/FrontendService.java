@@ -1,8 +1,9 @@
 package ru.otus.domain.service;
 
 import ru.otus.domain.model.Question;
+import ru.otus.domain.model.TestResults;
 
-import java.util.Map;
+import java.util.List;
 
 public interface FrontendService {
 	String getFirstName();
@@ -11,7 +12,7 @@ public interface FrontendService {
 
 	void greeting();
 
-	String getAnswer(Question question);
+	TestResults getTestResults(List<Question> questions);
 
-	void printResult(String name, Map<Question, String> answerMap);
+	void printTestResults(String firstName, String lastName, TestResults testResults);
 }

@@ -4,13 +4,11 @@ import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
-import ru.otus.domain.model.Question;
+import ru.otus.domain.model.TestResults;
 import ru.otus.domain.service.QuestionDao;
 import ru.otus.domain.service.FrontendService;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @ShellComponent
 public class Application {
@@ -18,7 +16,7 @@ public class Application {
 	private final FrontendService frontendService;
 	private String firstName;
 	private String lastName;
-	private final Map<Question, String> answerMap = new HashMap<>();
+	private TestResults testResults;
 
 	public Application(QuestionDao questionDao, FrontendService frontendService) {
 		this.questionDao = questionDao;
@@ -35,13 +33,13 @@ public class Application {
 	@ShellMethod(value = "Run test", key = {"r", "run"})
 	@ShellMethodAvailability(value = "isRunTestCommandAvailable")
 	void runTest() throws IOException {
-		questionDao.getQuestions().forEach(this::getAnswer);
+		testResults = frontendService.getTestResults(questionDao.getQuestions());
 	}
 
 	@ShellMethod(value = "Print result", key = {"p", "print"})
 	@ShellMethodAvailability(value = "isPrintResultCommandAvailable")
 	void printResult() {
-		frontendService.printResult(firstName + " " + lastName, answerMap);
+		frontendService.printTestResults(firstName, lastName, testResults);
 	}
 
 	private Availability isRunTestCommandAvailable() {
@@ -51,13 +49,8 @@ public class Application {
 	}
 
 	private Availability isPrintResultCommandAvailable() {
-		return firstName == null || lastName == null || answerMap.isEmpty()
+		return firstName == null || lastName == null || testResults == null
 				? Availability.unavailable("no result for print")
 				: Availability.available();
-	}
-
-	private void getAnswer(Question question) {
-		final String answer = frontendService.getAnswer(question);
-		answerMap.put(question, answer);
 	}
 }
