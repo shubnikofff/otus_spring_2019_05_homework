@@ -1,27 +1,24 @@
 package ru.otus.domain.model;
 
-import java.util.List;
-
 public class Genre {
-	private final int  id;
+	private final Long id;
 	private final String name;
-	private final List<Book> books;
 
-	public Genre(int id, String name, List<Book> books) {
+	public Genre(Long id, String name) {
 		this.id = id;
 		this.name = name;
-		this.books = books;
 	}
 
-	public int getId() {
+	public Genre(String name) {
+		id = null;
+		this.name = name;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
 	public String getName() {
 		return name;
-	}
-
-	public List<Book> getBooks() {
-		return books;
 	}
 }
