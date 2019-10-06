@@ -3,66 +3,74 @@ package ru.otus.application.service;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otus.application.configuration.ApplicationProperties;
-import ru.otus.application.utility.ConsoleUtility;
 import ru.otus.domain.model.Question;
-import ru.otus.domain.model.Test;
+import ru.otus.domain.model.TestResults;
 import ru.otus.domain.service.FrontendService;
-import ru.otus.domain.service.QuestionService;
-import ru.otus.domain.service.TestService;
+import ru.otus.domain.service.IOService;
 
+import java.util.List;
 import java.util.Locale;
 
 @Service
 public class FrontendServiceImplementation implements FrontendService {
-	private final ConsoleUtility consoleUtility;
+	private final IOService ioService;
 	private final MessageSource messageSource;
 	private final Locale locale;
-	private final QuestionService questionService;
-	private final TestService testService;
 
 	public FrontendServiceImplementation(
-			ConsoleUtility consoleUtility,
+			IOService ioService,
 			MessageSource messageSource,
-			ApplicationProperties applicationProperties,
-			QuestionService questionService,
-			TestService testService
+			ApplicationProperties applicationProperties
 	) {
-		this.consoleUtility = consoleUtility;
+		this.ioService = ioService;
 		this.messageSource = messageSource;
 		this.locale = new Locale(applicationProperties.getLocale());
-		this.questionService = questionService;
-		this.testService = testService;
 	}
 
 	@Override
 	public String getFirstName() {
-		System.out.print(messageSource.getMessage("enter.name", null, locale) + ": ");
-		return consoleUtility.getUserInput();
+		ioService.print(messageSource.getMessage("enter.name", null, locale) + ": ");
+		return ioService.getInput();
 	}
 
 	@Override
 	public String getLastName() {
-		System.out.print(messageSource.getMessage("enter.surname", null, locale) + ": ");
-		return consoleUtility.getUserInput();
+		ioService.print(messageSource.getMessage("enter.surname", null, locale) + ": ");
+		return ioService.getInput();
 	}
 
 	@Override
-	public String getAnswer(Question question) {
-		System.out.println(questionService.stringifyQuestion(question));
-		return consoleUtility.getUserInput();
+	public void greeting() {
+		ioService.print(messageSource.getMessage("greeting", null, locale) + "\n");
 	}
 
 	@Override
-	public void printResult(Test test) {
-		String result = messageSource.getMessage("test.passed.by.student", null, locale) + ": " +
-				test.getLastName() +
-				" " +
-				test.getFirstName() +
-				"\n" +
+	public TestResults getTestResults(List<Question> questions) {
+		final TestResults testResults = new TestResults();
+
+		questions.forEach(question -> testResults.addAnswer(question, getAnswer(question)));
+
+		return testResults;
+	}
+
+	@Override
+	public void printTestResults(String firstName, String lastName, TestResults testResults) {
+		final String result = messageSource.getMessage("test.passed.by.student", null, locale) + ": " +
+				firstName + " " + lastName + "\n" +
 				messageSource.getMessage("percentage.of.correct.answers", null, locale) + ": " +
-				testService.getSuccessPercentage(test) +
-				"%";
+				InterviewService.getSuccessPercentage(testResults) + "%\n";
 
-		System.out.println(result);
+		ioService.print(result);
+	}
+
+	private String getAnswer(Question question) {
+		String answer;
+
+		do {
+			ioService.print(question.toString());
+			answer = ioService.getInput();
+		} while (!InterviewService.isAnswerValid(answer, question));
+
+		return answer;
 	}
 }

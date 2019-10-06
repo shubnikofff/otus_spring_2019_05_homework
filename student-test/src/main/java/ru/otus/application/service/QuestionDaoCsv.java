@@ -30,9 +30,9 @@ public class QuestionDaoCsv implements QuestionDao {
 		final String[] dividedRaw = raw.split(separator);
 		final String wording = dividedRaw[0];
 		final String correctAnswer = dividedRaw[1];
-		final List<Answer> answers = Arrays.stream(dividedRaw).skip(2).map(this::mapAnswers).collect(Collectors.toList());
+		final List<Answer> answerOptions = Arrays.stream(dividedRaw).skip(2).map(this::mapAnswers).collect(Collectors.toList());
 
-		return new Question(wording, correctAnswer, answers);
+		return new Question(wording, correctAnswer, answerOptions);
 	}
 
 	private Answer mapAnswers(String raw) {

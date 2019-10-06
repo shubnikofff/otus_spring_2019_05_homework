@@ -4,7 +4,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import ru.otus.application.utility.ConsoleUtility;
 
 @Configuration
 public class ApplicationConfiguration {
@@ -15,10 +14,5 @@ public class ApplicationConfiguration {
 		messageSource.setBasename("/i18n/bundle");
 		messageSource.setDefaultEncoding("UTF-8");
 		return messageSource;
-	}
-
-	@Bean
-	public ConsoleUtility consoleUtility() {
-		return new ConsoleUtility(System.in);
 	}
 }
