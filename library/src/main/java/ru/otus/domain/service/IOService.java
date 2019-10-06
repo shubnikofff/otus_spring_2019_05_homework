@@ -1,13 +1,9 @@
 package ru.otus.domain.service;
 
-import java.util.Map;
+import java.util.List;
 
-public interface IOService<E> {
-	String getUserInput(String message);
+public interface IOService {
+	Long getOneOf(List<Long> list, String message);
 
 	void print(String string);
-
-	void printMap(Map<Long, E> map);
-
-	E getOneFromMap(Map<Long, E> map, String message);
 }
