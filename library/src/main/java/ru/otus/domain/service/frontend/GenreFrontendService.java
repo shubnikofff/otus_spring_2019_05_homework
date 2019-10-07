@@ -1,15 +1,16 @@
 package ru.otus.domain.service.frontend;
 
 import ru.otus.domain.exception.OperationException;
+import ru.otus.domain.model.Genre;
 
 public interface GenreFrontendService {
-	String getAll();
+	String printAll();
 
-	Long chooseOne();
+	Genre getCurrentGenre();
 
 	int create(String name) throws OperationException;
 
-	int update(Long id, String name) throws OperationException;
+	int update(Genre genre, String name) throws OperationException;
 
-	int delete(Long id) throws OperationException;
+	int delete(Genre genre) throws OperationException;
 }
