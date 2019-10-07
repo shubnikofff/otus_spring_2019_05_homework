@@ -1,9 +1,9 @@
 package ru.otus.domain.service;
 
-import java.util.List;
+import ru.otus.domain.model.Options;
 
 public interface IOService {
-	Long getOneOf(List<Long> list, String message);
+	<T> T getOneOf(Options<T> options, String message);
 
 	void print(String string);
 }

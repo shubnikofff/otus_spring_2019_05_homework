@@ -1,10 +1,10 @@
 package ru.otus.application.io;
 
 import org.springframework.stereotype.Service;
+import ru.otus.domain.model.Options;
 import ru.otus.domain.service.IOService;
 
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 @Service
@@ -12,20 +12,20 @@ public class SystemIOStreamService implements IOService {
 	private final Scanner scanner = new Scanner(System.in);
 
 	@Override
-	public Long getOneOf(List<Long> list, String message) {
-		Long input = null;
+	public <T> T getOneOf(Options<T> options, String message) {
+		Integer input = null;
 
 		do {
 			print(message);
 			try {
-				input = scanner.nextLong();
+				input = scanner.nextInt();
 			} catch (InputMismatchException e) {
 				print("Only numbers allowed");
 			}
 			scanner.nextLine();
-		} while (!list.contains(input));
+		} while (!options.contains(input));
 
-		return input;
+		return options.get(input);
 	}
 
 	@Override

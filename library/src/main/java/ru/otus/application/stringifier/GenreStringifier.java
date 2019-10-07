@@ -2,6 +2,7 @@ package ru.otus.application.stringifier;
 
 import org.springframework.stereotype.Service;
 import ru.otus.domain.model.Genre;
+import ru.otus.domain.model.Options;
 import ru.otus.domain.service.Stringifier;
 
 import java.util.List;
@@ -16,6 +17,13 @@ public class GenreStringifier implements Stringifier<Genre> {
 
 	@Override
 	public String stringify(List<Genre> genreList) {
-		return genreList.stream().map(genre -> genre.getId() + ". " + genre.getName()).collect(Collectors.joining("\n"));
+		return genreList.stream().map(genre -> " - " + genre.getName()).collect(Collectors.joining("\n"));
+	}
+
+	@Override
+	public String stringify(Options<Genre> options) {
+		return options.stream()
+				.map(integerGenreEntry -> integerGenreEntry.getKey() + " - " + integerGenreEntry.getValue().getName())
+				.collect(Collectors.joining("\n"));
 	}
 }
