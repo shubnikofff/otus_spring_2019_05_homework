@@ -1,27 +1,14 @@
 package ru.otus.domain.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import java.util.List;
 
+@Data
+@AllArgsConstructor
 public class Author {
 	private final int id;
 	private final String name;
 	private final List<Book> books;
-
-	public Author(int id, String name, List<Book> books) {
-		this.id = id;
-		this.name = name;
-		this.books = books;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public List<Book> getBooks() {
-		return books;
-	}
 }
