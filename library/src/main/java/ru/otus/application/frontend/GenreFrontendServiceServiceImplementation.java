@@ -41,7 +41,7 @@ public class GenreFrontendServiceServiceImplementation implements GenreFrontendS
 	@Override
 	public int create(String name) throws OperationException {
 		try {
-			return dao.save(new Genre(name));
+			return dao.save(new Genre(null, name));
 		} catch (DuplicateKeyException e) {
 			throw new OperationException("Operation failed: genre with that name already exists", e);
 		}
