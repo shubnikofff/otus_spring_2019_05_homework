@@ -1,10 +1,10 @@
-package ru.otus.domain.service.repository;
+package ru.otus.domain.service.dao;
 
 import ru.otus.domain.model.Book;
 
 import java.util.List;
 
-public interface BookRepository {
+public interface BookDao {
 
 	List<Book> getAll();
 
