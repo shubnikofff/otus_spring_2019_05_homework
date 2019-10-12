@@ -7,7 +7,8 @@ VALUES (1, 'John Ronald Reuel Tolkien'),
        (6, 'Erich Gamma'),
        (7, 'Richard Helm'),
        (8, 'Ralph Johnson'),
-       (9, 'John Vlissides');
+       (9, 'John Vlissides'),
+       (10, 'Korney Chukovsky');
 
 INSERT INTO GENRES (ID, NAME)
 VALUES (1, 'Fantasy'),

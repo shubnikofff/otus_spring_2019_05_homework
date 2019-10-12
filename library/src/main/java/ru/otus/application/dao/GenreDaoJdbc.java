@@ -1,5 +1,6 @@
 package ru.otus.application.dao;
 
+import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -14,12 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
+@AllArgsConstructor
 public class GenreDaoJdbc implements GenreDao {
 	private final NamedParameterJdbcOperations jdbcOperations;
-
-	public GenreDaoJdbc(NamedParameterJdbcOperations jdbcOperations) {
-		this.jdbcOperations = jdbcOperations;
-	}
 
 	@Override
 	public List<Genre> getAll() {
@@ -29,7 +27,7 @@ public class GenreDaoJdbc implements GenreDao {
 	@Override
 	public Genre getById(Long id) {
 		final Map<String, Object> params = Collections.singletonMap("id", id);
-		return jdbcOperations.queryForObject("select id, name from genres where id = :id", params, new GenreMapper());
+		return jdbcOperations.queryForObject("select id, name from genres where id = :id;", params, new GenreMapper());
 	}
 
 	@Override
@@ -39,8 +37,8 @@ public class GenreDaoJdbc implements GenreDao {
 		params.put("name", genre.getName());
 
 		final String sql = genre.getId() == null
-				? "insert into genres (name) values (:name)"
-				: "update genres set name = :name where id = :id";
+				? "insert into genres (name) values (:name);"
+				: "update genres set name = :name where id = :id;";
 
 		return jdbcOperations.update(sql, params);
 	}
@@ -48,7 +46,7 @@ public class GenreDaoJdbc implements GenreDao {
 	@Override
 	public int deleteById(Long id) {
 		final Map<String, Object> params = Collections.singletonMap("id", id);
-		return jdbcOperations.update("delete from genres where id = :id", params);
+		return jdbcOperations.update("delete from genres where id = :id;", params);
 	}
 
 	private static class GenreMapper implements RowMapper<Genre> {

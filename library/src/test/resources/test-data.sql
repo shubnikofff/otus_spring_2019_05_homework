@@ -5,7 +5,8 @@ VALUES (1, 'Author #1'),
        (4, 'Author #4'),
        (5, 'Author #5'),
        (6, 'Author #6'),
-       (7, 'Author #7');
+       (7, 'Author #7'),
+       (8, 'Author #8');
 
 INSERT INTO GENRES (ID, NAME)
 VALUES (1, 'Genre #1'),

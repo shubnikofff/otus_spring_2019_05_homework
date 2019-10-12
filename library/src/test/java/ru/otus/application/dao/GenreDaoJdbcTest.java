@@ -36,7 +36,7 @@ class GenreDaoJdbcTest {
 		assertThat(genre.getName()).isEqualTo("Genre #1");
 	}
 
-	@DisplayName("should save genre")
+	@DisplayName("should insert new genre")
 	@Test
 	void insert() {
 		Assertions.assertThrows(DuplicateKeyException.class, () -> daoJdbc.save(new Genre(null, "Genre #1")));
