@@ -1,10 +1,10 @@
-package ru.otus.application.dao;
+package ru.otus.application.repository;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 import ru.otus.domain.model.Genre;
-import ru.otus.domain.service.dao.GenreDao;
+import ru.otus.domain.service.repository.GenreRepository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class GenreDaoJdbc implements GenreDao {
+public class GenreRepositoryJdbc implements GenreRepository {
 	private final NamedParameterJdbcOperations jdbcOperations;
 
-	public GenreDaoJdbc(NamedParameterJdbcOperations jdbcOperations) {
+	public GenreRepositoryJdbc(NamedParameterJdbcOperations jdbcOperations) {
 		this.jdbcOperations = jdbcOperations;
 	}
 

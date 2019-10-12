@@ -1,10 +1,10 @@
-package ru.otus.domain.service.dao;
+package ru.otus.domain.service.repository;
 
 import ru.otus.domain.model.Genre;
 
 import java.util.List;
 
-public interface GenreDao {
+public interface GenreRepository {
 
 	List<Genre> getAll();
 
