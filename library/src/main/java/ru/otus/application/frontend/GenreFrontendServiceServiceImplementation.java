@@ -27,13 +27,13 @@ public class GenreFrontendServiceServiceImplementation implements GenreFrontendS
 
 	@Override
 	public String printAll() {
-		final List<Genre> allGenres = dao.getAll();
+		final List<Genre> allGenres = dao.findAll();
 		return stringifier.stringify(allGenres);
 	}
 
 	@Override
 	public Genre getCurrentGenre() {
-		final Options<Genre> options = new Options<>(dao.getAll());
+		final Options<Genre> options = new Options<>(dao.findAll());
 		final String message = "Choose genre from the list:\n" + stringifier.stringify(options);
 		return io.getOneOf(options, message);
 	}

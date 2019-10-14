@@ -20,14 +20,20 @@ public class GenreDaoJdbc implements GenreDao {
 	private final NamedParameterJdbcOperations jdbcOperations;
 
 	@Override
-	public List<Genre> getAll() {
+	public List<Genre> findAll() {
 		return jdbcOperations.query("select id, name from genres;", new GenreMapper());
 	}
 
 	@Override
-	public Genre getById(Long id) {
-		final Map<String, Object> params = Collections.singletonMap("id", id);
+	public Genre findByById(Long id) {
+		final Map<String, Long> params = Collections.singletonMap("id", id);
 		return jdbcOperations.queryForObject("select id, name from genres where id = :id;", params, new GenreMapper());
+	}
+
+	@Override
+	public Genre findByName(String name) {
+		final Map<String, String> params = Collections.singletonMap("name", name);
+		return jdbcOperations.queryForObject("select id, name from genres where name = :name;", params, new GenreMapper());
 	}
 
 	@Override

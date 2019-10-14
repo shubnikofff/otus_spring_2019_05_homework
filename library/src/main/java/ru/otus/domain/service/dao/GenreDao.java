@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface GenreDao {
 
-	List<Genre> getAll();
+	List<Genre> findAll();
 
-	Genre getById(Long id);
+	Genre findByById(Long id);
+
+	Genre findByName(String name);
 
 	int save(Genre genre);
 

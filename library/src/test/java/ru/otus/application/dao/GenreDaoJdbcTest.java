@@ -24,16 +24,23 @@ class GenreDaoJdbcTest {
 
 	@DisplayName("should return all genres")
 	@Test
-	void getAll() {
-		val allGenres = daoJdbc.getAll();
+	void findAll() {
+		val allGenres = daoJdbc.findAll();
 		assertThat(allGenres).isNotNull().hasSize(GENRE_INITIAL_QUANTITY);
 	}
 
-	@DisplayName("should get genre by id")
+	@DisplayName("should return genre by id")
 	@Test
-	void getById() {
-		val genre = daoJdbc.getById(1L);
+	void findById() {
+		val genre = daoJdbc.findByById(1L);
 		assertThat(genre.getName()).isEqualTo("Genre #1");
+	}
+
+	@DisplayName("should return genre by name")
+	@Test
+	void findByName() {
+		val genre = daoJdbc.findByName("Genre #1");
+		assertThat(genre.getId()).isEqualTo(1L);
 	}
 
 	@DisplayName("should insert new genre")
@@ -42,7 +49,7 @@ class GenreDaoJdbcTest {
 		Assertions.assertThrows(DuplicateKeyException.class, () -> daoJdbc.save(new Genre(null, "Genre #1")));
 
 		daoJdbc.save(new Genre(null, "New genre"));
-		val genre = daoJdbc.getById((long) (GENRE_INITIAL_QUANTITY + 2));
+		val genre = daoJdbc.findByById((long) (GENRE_INITIAL_QUANTITY + 2));
 		assertThat(genre).isNotNull();
 		assertThat(genre.getName()).isEqualTo("New genre");
 	}
@@ -53,7 +60,7 @@ class GenreDaoJdbcTest {
 		Assertions.assertThrows(DuplicateKeyException.class, () -> daoJdbc.save(new Genre(2L, "Genre #1")));
 
 		daoJdbc.save(new Genre(2L, "Updated genre"));
-		val genre = daoJdbc.getById(2L);
+		val genre = daoJdbc.findByById(2L);
 		assertThat(genre).isNotNull();
 		assertThat(genre.getName()).isEqualTo("Updated genre");
 	}
@@ -64,7 +71,7 @@ class GenreDaoJdbcTest {
 		Assertions.assertThrows(DataIntegrityViolationException.class, () -> daoJdbc.deleteById(1L));
 
 		daoJdbc.deleteById(3L);
-		assertThat(daoJdbc.getAll()).hasSize(GENRE_INITIAL_QUANTITY - 1);
+		assertThat(daoJdbc.findAll()).hasSize(GENRE_INITIAL_QUANTITY - 1);
 
 	}
 }
