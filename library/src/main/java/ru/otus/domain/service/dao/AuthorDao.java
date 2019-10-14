@@ -5,9 +5,11 @@ import ru.otus.domain.model.Author;
 import java.util.List;
 
 public interface AuthorDao {
-	List<Author> getAll();
+	List<Author> findAll();
 
-	Author getById(Long id);
+	Author findById(Long id);
+
+	Author findByName(String name);
 
 	List<Author> getUsed();
 

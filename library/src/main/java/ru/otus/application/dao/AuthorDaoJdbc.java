@@ -20,20 +20,26 @@ public class AuthorDaoJdbc implements AuthorDao {
 	private final NamedParameterJdbcOperations jdbcOperations;
 
 	@Override
-	public List<Author> getAll() {
+	public List<Author> findAll() {
 		return jdbcOperations.query("select id, name from authors;", new AuthorMapper());
 	}
 
 	@Override
-	public Author getById(Long id) {
-		final Map<String, Object> params = Collections.singletonMap("id", id);
+	public Author findById(Long id) {
+		final Map<String, Long> params = Collections.singletonMap("id", id);
 		return jdbcOperations.queryForObject("select id, name from authors where id = :id;", params, new AuthorMapper());
+	}
+
+	@Override
+	public Author findByName(String name) {
+		final Map<String, String> params = Collections.singletonMap("name", name);
+		return jdbcOperations.queryForObject("select id, name from authors where name = :name;", params, new AuthorMapper());
 	}
 
 	@Override
 	public List<Author> getUsed() {
 		return jdbcOperations.query(
-				"select a.id, a.name from authors a inner join books_authors ba on a.id = ba.author_id group by a.id order by a.id;",
+				"select a.id, a.name from authors a inner join books_authors ba on a.id = ba.author_id group by a.id, a.name order by a.id;",
 				new AuthorMapper()
 		);
 	}

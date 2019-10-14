@@ -24,15 +24,22 @@ class AuthorDaoJdbcTest {
 
 	@DisplayName("should return all authors")
 	@Test
-	void getAll() {
-		assertThat(daoJdbc.getAll()).isNotNull().hasSize(AUTHOR_INITIAL_QUANTITY);
+	void findAll() {
+		assertThat(daoJdbc.findAll()).isNotNull().hasSize(AUTHOR_INITIAL_QUANTITY);
 	}
 
-	@DisplayName("should get author by id")
+	@DisplayName("should return author by id")
 	@Test
-	void getById() {
-		val author = daoJdbc.getById(1L);
+	void findById() {
+		val author = daoJdbc.findById(1L);
 		assertThat(author.getName()).isEqualTo("Author #1");
+	}
+
+	@DisplayName("should return author by name")
+	@Test
+	void findByName() {
+		val author = daoJdbc.findByName("Author #1");
+		assertThat(author.getId()).isEqualTo(1L);
 	}
 
 	@DisplayName("should return authors who have books")
@@ -47,7 +54,7 @@ class AuthorDaoJdbcTest {
 		Assertions.assertThrows(DuplicateKeyException.class, () -> daoJdbc.save(new Author(null, "Author #1")));
 
 		daoJdbc.save(new Author(null, "New author"));
-		val author = daoJdbc.getById((long) (AUTHOR_INITIAL_QUANTITY + 2));
+		val author = daoJdbc.findById((long) (AUTHOR_INITIAL_QUANTITY + 2));
 		assertThat(author).isNotNull();
 		assertThat(author.getName()).isEqualTo("New author");
 	}
@@ -58,7 +65,7 @@ class AuthorDaoJdbcTest {
 		Assertions.assertThrows(DuplicateKeyException.class, () -> daoJdbc.save(new Author(2L, "Author #1")));
 
 		daoJdbc.save(new Author(2L, "Updated author"));
-		val author = daoJdbc.getById(2L);
+		val author = daoJdbc.findById(2L);
 		assertThat(author).isNotNull();
 		assertThat(author.getName()).isEqualTo("Updated author");
 	}
@@ -69,6 +76,6 @@ class AuthorDaoJdbcTest {
 		Assertions.assertThrows(DataIntegrityViolationException.class, () -> daoJdbc.deleteById(1L));
 
 		daoJdbc.deleteById(8L);
-		assertThat(daoJdbc.getAll()).hasSize(AUTHOR_INITIAL_QUANTITY - 1);
+		assertThat(daoJdbc.findAll()).hasSize(AUTHOR_INITIAL_QUANTITY - 1);
 	}
 }
