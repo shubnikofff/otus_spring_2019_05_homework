@@ -13,10 +13,7 @@ import ru.otus.domain.service.dao.BookDao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -30,7 +27,7 @@ public class BookDaoJdbc implements BookDao {
 		final List<BookAuthorRelation> bookAuthorRelations = getAllBookAuthorRelations();
 		final String sql = "select b.id, b.title, g.id as genre_id, g.name as genre_name from BOOKS b left outer join genres g on b.genre_id = g.id;";
 		final List<Book> books = jdbcOperations.query(sql, new BookMapper());
-		final List<Author> authors = authorDao.getUsed();
+		final List<Author> authors = authorDao.findAllUsed();
 
 		mergeAuthors(books, authors, bookAuthorRelations);
 		return books;
@@ -38,7 +35,11 @@ public class BookDaoJdbc implements BookDao {
 
 	@Override
 	public Book getById(Long id) {
-		return null;
+		final Map<String, Long> params = Collections.singletonMap("id", id);
+		final String sql = "select b.id, b.title, g.id as genre_id, g.name as genre_name from BOOKS b left outer join genres g on b.genre_id = g.id where b.id = :id;";
+		final Book book = jdbcOperations.queryForObject(sql, params, new BookMapper());
+		authorDao.findByBookId(id).forEach(author -> Objects.requireNonNull(book).getAuthors().add(author));
+		return book;
 	}
 
 	@Override
