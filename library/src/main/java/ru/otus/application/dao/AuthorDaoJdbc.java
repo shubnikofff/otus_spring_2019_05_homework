@@ -27,21 +27,28 @@ public class AuthorDaoJdbc implements AuthorDao {
 	@Override
 	public Author findById(Long id) {
 		final Map<String, Long> params = Collections.singletonMap("id", id);
-		return jdbcOperations.queryForObject("select id, name from authors where id = :id;", params, new AuthorMapper());
+		final String sql = "select id, name from authors where id = :id;";
+		return jdbcOperations.queryForObject(sql, params, new AuthorMapper());
 	}
 
 	@Override
 	public Author findByName(String name) {
 		final Map<String, String> params = Collections.singletonMap("name", name);
-		return jdbcOperations.queryForObject("select id, name from authors where name = :name;", params, new AuthorMapper());
+		final String sql = "select id, name from authors where name = :name;";
+		return jdbcOperations.queryForObject(sql, params, new AuthorMapper());
 	}
 
 	@Override
-	public List<Author> getUsed() {
-		return jdbcOperations.query(
-				"select a.id, a.name from authors a inner join books_authors ba on a.id = ba.author_id group by a.id, a.name order by a.id;",
-				new AuthorMapper()
-		);
+	public List<Author> findByBookId(Long id) {
+		final Map<String, Long> params = Collections.singletonMap("id", id);
+		final String sql = "select a.id, a.name from authors a inner join books_authors ba on a.ID = ba.author_id where ba.book_id = :id group by a.id, a.name order by a.id;";
+		return jdbcOperations.query(sql, params, new AuthorMapper());
+	}
+
+	@Override
+	public List<Author> findAllUsed() {
+		final String sql = "select a.id, a.name from authors a inner join books_authors ba on a.id = ba.author_id group by a.id, a.name order by a.id;";
+		return jdbcOperations.query(sql, new AuthorMapper());
 	}
 
 	@Override

@@ -42,10 +42,19 @@ class AuthorDaoJdbcTest {
 		assertThat(author.getId()).isEqualTo(1L);
 	}
 
+	@DisplayName("should return authors by book id")
+	@Test
+	void findByBookId() {
+		val authors = daoJdbc.findByBookId(6L);
+		assertThat(authors).hasSize(2);
+		assertThat(authors.get(0).getId()).isEqualTo(6L);
+		assertThat(authors.get(1).getId()).isEqualTo(7L);
+	}
+
 	@DisplayName("should return authors who have books")
 	@Test
-	void getUsed() {
-		assertThat(daoJdbc.getUsed()).isNotNull().doesNotContain(new Author(8L, "Author #8"));
+	void findAllUsed() {
+		assertThat(daoJdbc.findAllUsed()).isNotNull().doesNotContain(new Author(8L, "Author #8"));
 	}
 
 	@DisplayName("should insert new author")

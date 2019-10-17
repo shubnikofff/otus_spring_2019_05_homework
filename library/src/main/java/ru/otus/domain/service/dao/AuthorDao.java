@@ -11,7 +11,9 @@ public interface AuthorDao {
 
 	Author findByName(String name);
 
-	List<Author> getUsed();
+	List<Author> findByBookId(Long id);
+
+	List<Author> findAllUsed();
 
 	int save(Author author);
 
