@@ -2,17 +2,18 @@ package ru.otus.application.dao;
 
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.domain.model.Genre;
 import ru.otus.domain.service.dao.GenreDao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 @AllArgsConstructor
@@ -27,26 +28,33 @@ public class GenreDaoJdbc implements GenreDao {
 	@Override
 	public Genre findByById(Long id) {
 		final Map<String, Long> params = Collections.singletonMap("id", id);
-		return jdbcOperations.queryForObject("select id, name from genres where id = :id;", params, new GenreMapper());
+		final String sql = "select id, name from genres where id = :id;";
+		return jdbcOperations.queryForObject(sql, params, new GenreMapper());
 	}
 
 	@Override
 	public Genre findByName(String name) {
 		final Map<String, String> params = Collections.singletonMap("name", name);
-		return jdbcOperations.queryForObject("select id, name from genres where name = :name;", params, new GenreMapper());
+		final String sql = "select id, name from genres where name = :name;";
+		return jdbcOperations.queryForObject(sql, params, new GenreMapper());
 	}
 
 	@Override
-	public int save(Genre genre) {
+	public Long insert(Genre genre) {
+		final SqlParameterSource params = new MapSqlParameterSource(Collections.singletonMap("name", genre.getName()));
+		final KeyHolder keyHolder = new GeneratedKeyHolder();
+		final String sql = "insert into genres (name) values (:name);";
+		jdbcOperations.update(sql, params, keyHolder);
+		return Objects.requireNonNull(keyHolder.getKey()).longValue();
+	}
+
+	@Override
+	public int update(Genre genre) {
 		final Map<String, Object> params = new HashMap<>(2);
 		params.put("id", genre.getId());
 		params.put("name", genre.getName());
 
-		final String sql = genre.getId() == null
-				? "insert into genres (name) values (:name);"
-				: "update genres set name = :name where id = :id;";
-
-		return jdbcOperations.update(sql, params);
+		return jdbcOperations.update("update genres set name = :name where id = :id;", params);
 	}
 
 	@Override

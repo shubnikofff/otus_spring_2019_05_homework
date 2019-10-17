@@ -46,23 +46,20 @@ class GenreDaoJdbcTest {
 	@DisplayName("should insert new genre")
 	@Test
 	void insert() {
-		Assertions.assertThrows(DuplicateKeyException.class, () -> daoJdbc.save(new Genre(null, "Genre #1")));
+		val id = daoJdbc.insert(new Genre(null, "New genre"));
 
-		daoJdbc.save(new Genre(null, "New genre"));
-		val genre = daoJdbc.findByById((long) (GENRE_INITIAL_QUANTITY + 2));
-		assertThat(genre).isNotNull();
-		assertThat(genre.getName()).isEqualTo("New genre");
+		assertThat(id).isEqualTo(7L);
+		assertThat(daoJdbc.findAll()).hasSize(GENRE_INITIAL_QUANTITY + 1);
+		Assertions.assertThrows(DuplicateKeyException.class, () -> daoJdbc.insert(new Genre(null, "New genre")));
 	}
 
 	@DisplayName("should update genre")
 	@Test
 	void update() {
-		Assertions.assertThrows(DuplicateKeyException.class, () -> daoJdbc.save(new Genre(2L, "Genre #1")));
+		daoJdbc.update(new Genre(2L, "Updated genre"));
 
-		daoJdbc.save(new Genre(2L, "Updated genre"));
-		val genre = daoJdbc.findByById(2L);
-		assertThat(genre).isNotNull();
-		assertThat(genre.getName()).isEqualTo("Updated genre");
+		assertThat(daoJdbc.findByById(2L).getName()).isEqualTo("Updated genre");
+		Assertions.assertThrows(DuplicateKeyException.class, () -> daoJdbc.update(new Genre(1L, "Updated genre")));
 	}
 
 	@DisplayName("should delete genre by id")
@@ -72,6 +69,5 @@ class GenreDaoJdbcTest {
 
 		daoJdbc.deleteById(3L);
 		assertThat(daoJdbc.findAll()).hasSize(GENRE_INITIAL_QUANTITY - 1);
-
 	}
 }

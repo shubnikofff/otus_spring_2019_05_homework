@@ -12,7 +12,9 @@ public interface GenreDao {
 
 	Genre findByName(String name);
 
-	int save(Genre genre);
+	Long insert(Genre genre);
+
+	int update(Genre genre);
 
 	int deleteById(Long id);
 }
