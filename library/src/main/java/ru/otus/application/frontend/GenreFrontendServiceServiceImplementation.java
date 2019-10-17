@@ -32,34 +32,34 @@ public class GenreFrontendServiceServiceImplementation implements GenreFrontendS
 	}
 
 	@Override
-	public Genre getCurrentGenre() {
+	public Genre chooseGenre() {
 		final Options<Genre> options = new Options<>(dao.findAll());
 		final String message = "Choose genre from the list:\n" + stringifier.stringify(options);
 		return io.getOneOf(options, message);
 	}
 
 	@Override
-	public int create(String name) throws OperationException {
+	public void create(String name) throws OperationException {
 		try {
-			return dao.save(new Genre(null, name));
+			dao.insert(new Genre(null, name));
 		} catch (DuplicateKeyException e) {
 			throw new OperationException("Operation failed: genre with that name already exists", e);
 		}
 	}
 
 	@Override
-	public int update(Genre genre, String name) throws OperationException {
+	public void update(Genre genre, String name) throws OperationException {
 		try {
-			return dao.save(new Genre(genre.getId(), name));
+			dao.update(new Genre(genre.getId(), name));
 		} catch (DuplicateKeyException e) {
 			throw new OperationException("Operation failed: name is already in use", e);
 		}
 	}
 
 	@Override
-	public int delete(Genre genre) throws OperationException {
+	public void delete(Genre genre) throws OperationException {
 		try {
-			return dao.deleteById(genre.getId());
+			dao.deleteById(genre.getId());
 		} catch (DataIntegrityViolationException e) {
 			throw new OperationException("Operation failed: genre assigned to the book", e);
 		}
