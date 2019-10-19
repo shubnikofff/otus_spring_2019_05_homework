@@ -31,12 +31,20 @@ class AuthorDaoJdbcTest {
 		assertThat(daoJdbc.findAll()).isNotNull().hasSize(AUTHOR_INITIAL_QUANTITY);
 	}
 
-	@DisplayName("should return all authors by list of names")
+	@DisplayName("should return all authors by given set of names")
 	@Test
 	void findAllByNameSet() {
 		val authors = daoJdbc.findAllByNameSet(new HashSet<>(Arrays.asList("Author #1", "Author #2", "Other author")));
 		assertThat(authors).hasSize(2);
 		assertThat(authors.stream().map(Author::getName)).doesNotContain("Other author");
+	}
+
+	@DisplayName("should return list of id by given set of names")
+	@Test
+	void findAllIdsByNameSet() {
+		val authorIds = daoJdbc.findAllIdsByNameSet(new HashSet<>(Arrays.asList("Author #1", "Author #2", "Other author")));
+		assertThat(authorIds).hasSize(2);
+		assertThat(authorIds).isEqualTo(Arrays.asList(1L, 2L));
 	}
 
 	@DisplayName("should return author by id")

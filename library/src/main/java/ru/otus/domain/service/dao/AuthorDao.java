@@ -10,6 +10,8 @@ public interface AuthorDao {
 
 	List<Author> findAllByNameSet(Set<String> names);
 
+	List<Long> findAllIdsByNameSet(Set<String> names);
+
 	Author findById(Long id);
 
 	Author findByName(String name);
