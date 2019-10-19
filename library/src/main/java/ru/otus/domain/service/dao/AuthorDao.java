@@ -20,6 +20,13 @@ public interface AuthorDao {
 
 	Long insert(Author author);
 
+	/**
+	 * Inserts author objects from the given list
+	 * @param authors objects for insert
+	 * @return the number of rows affected
+	 */
+	int insertAll(List<Author> authors);
+
 	int update(Author author);
 
 	int deleteById(Long id);

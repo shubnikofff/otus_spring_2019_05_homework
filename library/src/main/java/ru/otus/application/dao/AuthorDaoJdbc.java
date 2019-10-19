@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -65,6 +66,13 @@ public class AuthorDaoJdbc implements AuthorDao {
 		final KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcOperations.update("insert into authors (name) values (:name);", params, keyHolder);
 		return Objects.requireNonNull(keyHolder.getKey()).longValue();
+	}
+
+	@Override
+	public int insertAll(List<Author> authors) {
+		final String sql = "insert into authors (name) values (:name);";
+		final SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(authors.toArray());
+		return Arrays.stream(jdbcOperations.batchUpdate(sql, batch)).sum();
 	}
 
 	@Override

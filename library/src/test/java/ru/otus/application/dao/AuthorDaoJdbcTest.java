@@ -77,6 +77,15 @@ class AuthorDaoJdbcTest {
 		Assertions.assertThrows(DuplicateKeyException.class, () -> daoJdbc.insert(new Author(null, "New author")));
 	}
 
+	@DisplayName("should insert all authors from given list")
+	@Test
+	void insertAll() {
+		val insertedRowQuantity = daoJdbc.insertAll(Arrays.asList(new Author(null, "Author #9"), new Author(null, "Author #10")));
+		val authors = daoJdbc.findAll();
+		assertThat(insertedRowQuantity).isEqualTo(2);
+		assertThat(authors).hasSize(AUTHOR_INITIAL_QUANTITY + 2);
+	}
+
 	@DisplayName("should update author")
 	@Test
 	void update() {
