@@ -2,17 +2,18 @@ package ru.otus.application.dao;
 
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.domain.model.Author;
 import ru.otus.domain.service.dao.AuthorDao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 @AllArgsConstructor
@@ -52,16 +53,20 @@ public class AuthorDaoJdbc implements AuthorDao {
 	}
 
 	@Override
-	public int save(Author author) {
+	public Long insert(Author author) {
+		final SqlParameterSource params = new MapSqlParameterSource(Collections.singletonMap("name", author.getName()));
+		final KeyHolder keyHolder = new GeneratedKeyHolder();
+		jdbcOperations.update("insert into authors (name) values (:name);", params, keyHolder);
+		return Objects.requireNonNull(keyHolder.getKey()).longValue();
+	}
+
+	@Override
+	public int update(Author author) {
 		final Map<String, Object> params = new HashMap<>(2);
 		params.put("id", author.getId());
 		params.put("name", author.getName());
 
-		final String sql = author.getId() == null
-				? "insert into authors (name) values (:name);"
-				: "update authors set name = :name where id = :id;";
-
-		return jdbcOperations.update(sql, params);
+		return jdbcOperations.update("update authors set name = :name where id = :id;", params);
 	}
 
 	@Override

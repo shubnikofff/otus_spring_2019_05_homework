@@ -60,23 +60,18 @@ class AuthorDaoJdbcTest {
 	@DisplayName("should insert new author")
 	@Test
 	void insert() {
-		Assertions.assertThrows(DuplicateKeyException.class, () -> daoJdbc.save(new Author(null, "Author #1")));
-
-		daoJdbc.save(new Author(null, "New author"));
-		val author = daoJdbc.findById((long) (AUTHOR_INITIAL_QUANTITY + 2));
-		assertThat(author).isNotNull();
-		assertThat(author.getName()).isEqualTo("New author");
+		val id = daoJdbc.insert(new Author(null, "New author"));
+		assertThat(id).isEqualTo(9L);
+		assertThat(daoJdbc.findAll()).hasSize(AUTHOR_INITIAL_QUANTITY + 1);
+		Assertions.assertThrows(DuplicateKeyException.class, () -> daoJdbc.insert(new Author(null, "New author")));
 	}
 
 	@DisplayName("should update author")
 	@Test
 	void update() {
-		Assertions.assertThrows(DuplicateKeyException.class, () -> daoJdbc.save(new Author(2L, "Author #1")));
-
-		daoJdbc.save(new Author(2L, "Updated author"));
-		val author = daoJdbc.findById(2L);
-		assertThat(author).isNotNull();
-		assertThat(author.getName()).isEqualTo("Updated author");
+		daoJdbc.update(new Author(1L, "Updated author"));
+		assertThat(daoJdbc.findById(1L).getName()).isEqualTo("Updated author");
+		Assertions.assertThrows(DuplicateKeyException.class, () -> daoJdbc.update(new Author(2L, "Updated author")));
 	}
 
 	@DisplayName("should delete author by id")

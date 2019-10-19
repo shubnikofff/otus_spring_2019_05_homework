@@ -15,7 +15,9 @@ public interface AuthorDao {
 
 	List<Author> findAllUsed();
 
-	int save(Author author);
+	Long insert(Author author);
+
+	int update(Author author);
 
 	int deleteById(Long id);
 }
