@@ -26,6 +26,13 @@ public class AuthorDaoJdbc implements AuthorDao {
 	}
 
 	@Override
+	public List<Author> findAllByNameSet(Set<String> names) {
+		final Map<String, Set<String>> params = Collections.singletonMap("names", names);
+		final String sql = "select id, name from authors where name in (:names);";
+		return jdbcOperations.query(sql, params, new AuthorMapper());
+	}
+
+	@Override
 	public Author findById(Long id) {
 		final Map<String, Long> params = Collections.singletonMap("id", id);
 		final String sql = "select id, name from authors where id = :id;";

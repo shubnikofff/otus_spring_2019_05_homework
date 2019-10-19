@@ -11,6 +11,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import ru.otus.domain.model.Author;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Author dao")
@@ -26,6 +29,14 @@ class AuthorDaoJdbcTest {
 	@Test
 	void findAll() {
 		assertThat(daoJdbc.findAll()).isNotNull().hasSize(AUTHOR_INITIAL_QUANTITY);
+	}
+
+	@DisplayName("should return all authors by list of names")
+	@Test
+	void findAllByNameSet() {
+		val authors = daoJdbc.findAllByNameSet(new HashSet<>(Arrays.asList("Author #1", "Author #2", "Other author")));
+		assertThat(authors).hasSize(2);
+		assertThat(authors.stream().map(Author::getName)).doesNotContain("Other author");
 	}
 
 	@DisplayName("should return author by id")
