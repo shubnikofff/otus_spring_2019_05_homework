@@ -1,6 +1,7 @@
 package ru.otus.application.dao;
 
 import lombok.AllArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -44,14 +45,22 @@ public class AuthorDaoJdbc implements AuthorDao {
 	public Author findById(Long id) {
 		final Map<String, Long> params = Collections.singletonMap("id", id);
 		final String sql = "select id, name from authors where id = :id;";
-		return jdbcOperations.queryForObject(sql, params, new AuthorMapper());
+		try {
+			return jdbcOperations.queryForObject(sql, params, new AuthorMapper());
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
 	}
 
 	@Override
 	public Author findByName(String name) {
 		final Map<String, String> params = Collections.singletonMap("name", name);
 		final String sql = "select id, name from authors where name = :name;";
-		return jdbcOperations.queryForObject(sql, params, new AuthorMapper());
+		try {
+			return jdbcOperations.queryForObject(sql, params, new AuthorMapper());
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
 	}
 
 	@Override
