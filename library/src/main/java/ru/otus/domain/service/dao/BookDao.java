@@ -10,7 +10,9 @@ public interface BookDao {
 
 	Book getById(Long id);
 
-	int save(Book book);
+	Long insert(Book book);
+
+	int update(Book book);
 
 	int deleteById(Long id);
 }
