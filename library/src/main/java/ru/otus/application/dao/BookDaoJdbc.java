@@ -30,7 +30,7 @@ public class BookDaoJdbc implements BookDao {
 	private final GenreDao genreDao;
 
 	@Override
-	public List<Book> getAll() {
+	public List<Book> findAll() {
 		final List<BookAuthorRelation> bookAuthorRelations = getAllBookAuthorRelations();
 		final String sql = "select b.id, b.title, g.id as genre_id, g.name as genre_name from BOOKS b left outer join genres g on b.genre_id = g.id;";
 		final List<Book> books = jdbcOperations.query(sql, new BookMapper());
@@ -41,7 +41,7 @@ public class BookDaoJdbc implements BookDao {
 	}
 
 	@Override
-	public Book getById(Long id) {
+	public Book findById(Long id) {
 		final Map<String, Long> params = Collections.singletonMap("id", id);
 		final String sql = "select b.id, b.title, g.id as genre_id, g.name as genre_name from BOOKS b left outer join genres g on b.genre_id = g.id where b.id = :id;";
 

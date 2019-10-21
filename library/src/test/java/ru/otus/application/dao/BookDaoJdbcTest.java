@@ -27,8 +27,8 @@ class BookDaoJdbcTest {
 
 	@DisplayName("should return all books")
 	@Test
-	void getAll() {
-		val books = daoJdbc.getAll();
+	void findAll() {
+		val books = daoJdbc.findAll();
 		assertThat(books).isNotNull().hasSize(BOOKS_INITIAL_QUANTITY)
 				.allMatch(book -> book.getId() != null)
 				.allMatch(book -> !book.getTitle().isEmpty())
@@ -38,8 +38,8 @@ class BookDaoJdbcTest {
 
 	@DisplayName("should return book by id")
 	@Test
-	void getById() {
-		val book = daoJdbc.getById(6L);
+	void findById() {
+		val book = daoJdbc.findById(6L);
 		assertThat(book.getId()).isEqualTo(6L);
 		assertThat(book.getTitle()).isEqualTo("Book #6");
 		assertThat(book.getGenre()).isEqualTo(new Genre(6L, "Genre #6"));
@@ -53,7 +53,7 @@ class BookDaoJdbcTest {
 	void insertWithNewGenreAndNewAuthor() {
 		val authorList = Arrays.asList(new Author(null, "Author #1"), new Author(null, "New Author"));
 		val id = daoJdbc.insert(new Book(null, "New Book", authorList, new Genre(null, "New Genre")));
-		val book = daoJdbc.getById(id);
+		val book = daoJdbc.findById(id);
 		assertThat(book.getId()).isEqualTo(7L);
 		assertThat(book.getTitle()).isEqualTo("New Book");
 		assertThat(book.getGenre()).isEqualTo(new Genre(7L, "New Genre"));
@@ -67,7 +67,7 @@ class BookDaoJdbcTest {
 	void insertWithExistingGenreAndExistingAuthor() {
 		val authorList = Arrays.asList(new Author(null, "Author #1"), new Author(null, "Author #2"));
 		val id = daoJdbc.insert(new Book(null, "New Book", authorList, new Genre(null, "Genre #1")));
-		val book = daoJdbc.getById(id);
+		val book = daoJdbc.findById(id);
 		assertThat(book.getId()).isEqualTo(7L);
 		assertThat(book.getTitle()).isEqualTo("New Book");
 		assertThat(book.getGenre()).isEqualTo(new Genre(1L, "Genre #1"));
@@ -83,7 +83,7 @@ class BookDaoJdbcTest {
 		val updatedRows = daoJdbc.update(new Book(1L, "Updated Book", authorList, new Genre(null, "New Genre")));
 		assertThat(updatedRows).isEqualTo(1);
 
-		val book = daoJdbc.getById(1L);
+		val book = daoJdbc.findById(1L);
 		assertThat(book.getTitle()).isEqualTo("Updated Book");
 		assertThat(book.getGenre()).isEqualTo(new Genre(7L, "New Genre"));
 		assertThat(book.getAuthors()).hasSize(2);
@@ -98,7 +98,7 @@ class BookDaoJdbcTest {
 		val updatedRows = daoJdbc.update(new Book(1L, "Updated Book", authorList, new Genre(1L, "Genre #1")));
 		assertThat(updatedRows).isEqualTo(1);
 
-		val book = daoJdbc.getById(1L);
+		val book = daoJdbc.findById(1L);
 		assertThat(book.getTitle()).isEqualTo("Updated Book");
 		assertThat(book.getGenre()).isEqualTo(new Genre(1L, "Genre #1"));
 		assertThat(book.getAuthors()).hasSize(2);
@@ -109,9 +109,9 @@ class BookDaoJdbcTest {
 	@DisplayName("should delete book by id")
 	@Test
 	void deleteById() {
-		val quantityBeforeDelete = daoJdbc.getAll().size();
+		val quantityBeforeDelete = daoJdbc.findAll().size();
 		daoJdbc.deleteById(1L);
-		val quantityAfterDelete = daoJdbc.getAll().size();
+		val quantityAfterDelete = daoJdbc.findAll().size();
 		assertThat(quantityBeforeDelete - quantityAfterDelete).isEqualTo(1);
 	}
 }
