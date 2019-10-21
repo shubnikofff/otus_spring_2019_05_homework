@@ -50,7 +50,7 @@ class BookDaoJdbcTest {
 
 	@DisplayName("should insert book with new author and new genre")
 	@Test
-	void insertInsertWithNewGenreAndNewAuthor() {
+	void insertWithNewGenreAndNewAuthor() {
 		val authorList = Arrays.asList(new Author(null, "Author #1"), new Author(null, "New Author"));
 		val id = daoJdbc.insert(new Book(null, "New Book", authorList, new Genre(null, "New Genre")));
 		val book = daoJdbc.getById(id);
@@ -64,12 +64,42 @@ class BookDaoJdbcTest {
 
 	@DisplayName("should insert book with new author and new genre")
 	@Test
-	void insertInsertWithExistingGenreAndExistingAuthor() {
+	void insertWithExistingGenreAndExistingAuthor() {
 		val authorList = Arrays.asList(new Author(null, "Author #1"), new Author(null, "Author #2"));
 		val id = daoJdbc.insert(new Book(null, "New Book", authorList, new Genre(null, "Genre #1")));
 		val book = daoJdbc.getById(id);
 		assertThat(book.getId()).isEqualTo(7L);
 		assertThat(book.getTitle()).isEqualTo("New Book");
+		assertThat(book.getGenre()).isEqualTo(new Genre(1L, "Genre #1"));
+		assertThat(book.getAuthors()).hasSize(2);
+		assertThat(book.getAuthors().get(0)).isEqualTo(new Author(1L, "Author #1"));
+		assertThat(book.getAuthors().get(1)).isEqualTo(new Author(2L, "Author #2"));
+	}
+
+	@DisplayName("should update book with new author and new genre")
+	@Test
+	void updateWithNewGenreAndNewAuthor() {
+		val authorList = Arrays.asList(new Author(1L, "Author #1"), new Author(null, "New Author"));
+		val updatedRows = daoJdbc.update(new Book(1L, "Updated Book", authorList, new Genre(null, "New Genre")));
+		assertThat(updatedRows).isEqualTo(1);
+
+		val book = daoJdbc.getById(1L);
+		assertThat(book.getTitle()).isEqualTo("Updated Book");
+		assertThat(book.getGenre()).isEqualTo(new Genre(7L, "New Genre"));
+		assertThat(book.getAuthors()).hasSize(2);
+		assertThat(book.getAuthors().get(0)).isEqualTo(new Author(1L, "Author #1"));
+		assertThat(book.getAuthors().get(1)).isEqualTo(new Author(9L, "New Author"));
+	}
+
+	@DisplayName("should insert book with new author and new genre")
+	@Test
+	void updateWithExistingGenreAndExistingAuthor() {
+		val authorList = Arrays.asList(new Author(1L, "Author #1"), new Author(2L, "Author #2"));
+		val updatedRows = daoJdbc.update(new Book(1L, "Updated Book", authorList, new Genre(1L, "Genre #1")));
+		assertThat(updatedRows).isEqualTo(1);
+
+		val book = daoJdbc.getById(1L);
+		assertThat(book.getTitle()).isEqualTo("Updated Book");
 		assertThat(book.getGenre()).isEqualTo(new Genre(1L, "Genre #1"));
 		assertThat(book.getAuthors()).hasSize(2);
 		assertThat(book.getAuthors().get(0)).isEqualTo(new Author(1L, "Author #1"));

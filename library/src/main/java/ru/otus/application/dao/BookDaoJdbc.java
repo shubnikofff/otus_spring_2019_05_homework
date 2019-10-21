@@ -58,11 +58,10 @@ public class BookDaoJdbc implements BookDao {
 
 	@Override
 	public Long insert(Book book) {
-		final String sql = "insert into books (title, genre_id) values (:title, :genreId)";
-		final Genre genre = findGenreByNameInsertIfNotExists(book.getGenre().getName());
+		final String sql = "insert into books (title, genre_id) values (:title, :genreId);";
 		final Map<String, Object> paramsMap = new HashMap<>(2);
 		paramsMap.put("title", book.getTitle());
-		paramsMap.put("genreId", genre.getId());
+		paramsMap.put("genreId", getGenreId(book.getGenre()));
 		final KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcOperations.update(sql, new MapSqlParameterSource(paramsMap), keyHolder);
 
@@ -74,7 +73,16 @@ public class BookDaoJdbc implements BookDao {
 
 	@Override
 	public int update(Book book) {
-		return 0;
+		final String sql = "update books set title = :title, genre_id = :genreId where id = :id;";
+		final Map<String, Object> paramsMap = new HashMap<>(3);
+		paramsMap.put("id", book.getId());
+		paramsMap.put("title", book.getTitle());
+		paramsMap.put("genreId", getGenreId(book.getGenre()));
+		final int numberOfRowsUpdated = jdbcOperations.update(sql, paramsMap);
+
+		updateAuthors(book.getAuthors());
+		updateBookAuthorRelations(book.getId(), book.getAuthors());
+		return numberOfRowsUpdated;
 	}
 
 	@Override
@@ -84,14 +92,17 @@ public class BookDaoJdbc implements BookDao {
 		return jdbcOperations.update("delete from books where id = :id;", params);
 	}
 
-	private Genre findGenreByNameInsertIfNotExists(String name) {
-		final Genre genre = genreDao.findByName(name);
-		if (genre != null) {
-			return genre;
+	private Long getGenreId(Genre genre) {
+		if (genre.getId() != null) {
+			return genre.getId();
 		}
 
-		final Long id = genreDao.insert(new Genre(null, name));
-		return new Genre(id, name);
+		Genre foundGenre = genreDao.findByName(genre.getName());
+		if (foundGenre != null) {
+			return foundGenre.getId();
+		}
+
+		return genreDao.insert(genre);
 	}
 
 	private void updateAuthors(List<Author> authors) {
