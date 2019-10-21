@@ -43,7 +43,7 @@ public class GenreFrontendServiceServiceImplementation implements GenreFrontendS
 		try {
 			dao.insert(new Genre(null, name));
 		} catch (DuplicateKeyException e) {
-			throw new OperationException("Operation failed: genre with that name already exists", e);
+			throw new OperationException("Genre with that name already exists", e);
 		}
 	}
 
@@ -52,7 +52,7 @@ public class GenreFrontendServiceServiceImplementation implements GenreFrontendS
 		try {
 			dao.update(new Genre(genre.getId(), name));
 		} catch (DuplicateKeyException e) {
-			throw new OperationException("Operation failed: name is already in use", e);
+			throw new OperationException("Genre with that name already exists", e);
 		}
 	}
 
@@ -61,7 +61,7 @@ public class GenreFrontendServiceServiceImplementation implements GenreFrontendS
 		try {
 			dao.deleteById(genre.getId());
 		} catch (DataIntegrityViolationException e) {
-			throw new OperationException("Operation failed: genre assigned to the book", e);
+			throw new OperationException("Genre assigned to the book", e);
 		}
 	}
 }
