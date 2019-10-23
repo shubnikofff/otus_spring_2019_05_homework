@@ -9,7 +9,7 @@ import ru.otus.domain.model.Genre;
 import ru.otus.domain.model.Options;
 import ru.otus.domain.service.IOService;
 import ru.otus.domain.service.Stringifier;
-import ru.otus.domain.service.dao.BookDao;
+import ru.otus.domain.dao.BookDao;
 import ru.otus.domain.service.frontend.BookFrontendService;
 
 import java.util.List;

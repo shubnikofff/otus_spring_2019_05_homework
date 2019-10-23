@@ -13,9 +13,9 @@ import ru.otus.application.dao.relation.BookAuthorRelation;
 import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
 import ru.otus.domain.model.Genre;
-import ru.otus.domain.service.dao.AuthorDao;
-import ru.otus.domain.service.dao.BookDao;
-import ru.otus.domain.service.dao.GenreDao;
+import ru.otus.domain.dao.AuthorDao;
+import ru.otus.domain.dao.BookDao;
+import ru.otus.domain.dao.GenreDao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

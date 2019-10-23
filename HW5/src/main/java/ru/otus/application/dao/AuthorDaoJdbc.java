@@ -11,7 +11,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.domain.model.Author;
-import ru.otus.domain.service.dao.AuthorDao;
+import ru.otus.domain.dao.AuthorDao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

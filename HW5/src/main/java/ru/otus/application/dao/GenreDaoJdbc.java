@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.domain.model.Genre;
-import ru.otus.domain.service.dao.GenreDao;
+import ru.otus.domain.dao.GenreDao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

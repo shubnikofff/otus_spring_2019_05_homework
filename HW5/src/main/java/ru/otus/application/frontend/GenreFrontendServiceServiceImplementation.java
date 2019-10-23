@@ -8,7 +8,7 @@ import ru.otus.domain.model.Genre;
 import ru.otus.domain.model.Options;
 import ru.otus.domain.service.IOService;
 import ru.otus.domain.service.Stringifier;
-import ru.otus.domain.service.dao.GenreDao;
+import ru.otus.domain.dao.GenreDao;
 import ru.otus.domain.service.frontend.GenreFrontendService;
 
 import java.util.List;

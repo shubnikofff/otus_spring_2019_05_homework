@@ -8,7 +8,7 @@ import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Options;
 import ru.otus.domain.service.IOService;
 import ru.otus.domain.service.Stringifier;
-import ru.otus.domain.service.dao.AuthorDao;
+import ru.otus.domain.dao.AuthorDao;
 import ru.otus.domain.service.frontend.AuthorFrontendService;
 
 @Service

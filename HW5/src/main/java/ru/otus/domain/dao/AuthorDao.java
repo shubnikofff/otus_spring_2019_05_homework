@@ -1,4 +1,4 @@
-package ru.otus.domain.service.dao;
+package ru.otus.domain.dao;
 
 import ru.otus.domain.model.Author;
 
