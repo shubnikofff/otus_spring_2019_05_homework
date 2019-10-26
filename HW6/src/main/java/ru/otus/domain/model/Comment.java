@@ -10,12 +10,12 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "genres")
-public class Genre {
+@Table(name = "comments")
+public class Comment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(name = "name", unique = true, nullable = false)
-	private String name;
+	@Column(name = "text", nullable = false, length = 1024)
+	private String text;
 }
