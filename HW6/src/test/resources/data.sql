@@ -24,6 +24,13 @@ VALUES (1, 'Book #1', 1),
        (5, 'Book #5', 2),
        (6, 'Book #6', 6);
 
+INSERT INTO COMMENTS (ID, NAME, TEXT, BOOK_ID)
+VALUES (1, 'User #1', 'Comment #1', 1),
+       (2, 'User #1', 'Comment #2', 1),
+       (3, 'User #2', 'Comment #3', 1),
+       (4, 'User #1', 'Comment #4', 2),
+       (5, 'User #2', 'Comment #5', 2);
+
 INSERT INTO BOOKS_AUTHORS(BOOK_ID, AUTHOR_ID)
 VALUES (1, 1),
        (2, 2),
