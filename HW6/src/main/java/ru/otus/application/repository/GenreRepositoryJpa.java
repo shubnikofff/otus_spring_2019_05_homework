@@ -1,6 +1,7 @@
 package ru.otus.application.repository;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.model.Genre;
 import ru.otus.domain.repository.GenreRepository;
 
@@ -20,6 +21,7 @@ public class GenreRepositoryJpa implements GenreRepository {
 	}
 
 	@Override
+	@Transactional
 	public Genre save(Genre genre) {
 		if(genre.getId() <= 0) {
 			entityManager.persist(genre);
