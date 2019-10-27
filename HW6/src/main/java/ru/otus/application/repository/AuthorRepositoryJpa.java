@@ -32,6 +32,7 @@ public class AuthorRepositoryJpa implements AuthorRepository {
 		return author;
 	}
 
+	@Transactional
 	@Override
 	public void remove(Author author) {
 		entityManager.remove(author);
