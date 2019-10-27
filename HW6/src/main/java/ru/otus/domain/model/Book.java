@@ -3,6 +3,8 @@ package ru.otus.domain.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -28,10 +30,11 @@ public class Book {
 	@JoinColumn(name = "genre_id")
 	private Genre genre;
 
+	@Fetch(FetchMode.SUBSELECT)
 	@ManyToMany(
 			targetEntity = Author.class,
 			cascade = CascadeType.ALL,
-			fetch = FetchType.LAZY
+			fetch = FetchType.EAGER
 	)
 	@JoinTable(
 			name = "books_authors",
