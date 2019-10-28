@@ -1,3 +1,5 @@
 spring:
   jpa:
     show-sql: true
+  datasource:
+    data: data.sql
