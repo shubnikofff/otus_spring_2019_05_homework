@@ -34,6 +34,6 @@ public class GenreRepositoryJpa implements GenreRepository {
 
 	@Override
 	public void remove(Genre genre) {
-		entityManager.remove(genre);
+		entityManager.remove(entityManager.contains(genre) ? genre : entityManager.merge(genre));
 	}
 }

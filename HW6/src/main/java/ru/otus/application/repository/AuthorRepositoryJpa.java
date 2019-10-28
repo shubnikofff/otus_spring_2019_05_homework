@@ -1,7 +1,6 @@
 package ru.otus.application.repository;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.model.Author;
 import ru.otus.domain.repository.AuthorRepository;
 
@@ -20,7 +19,6 @@ public class AuthorRepositoryJpa implements AuthorRepository {
 		return entityManager.createQuery("select a from Author a", Author.class).getResultList();
 	}
 
-	@Transactional
 	@Override
 	public Author save(Author author) {
 		if (author.getId() <= 0) {
@@ -32,9 +30,8 @@ public class AuthorRepositoryJpa implements AuthorRepository {
 		return author;
 	}
 
-	@Transactional
 	@Override
 	public void remove(Author author) {
-		entityManager.remove(author);
+		entityManager.remove(entityManager.contains(author) ? author : entityManager.merge(author));
 	}
 }

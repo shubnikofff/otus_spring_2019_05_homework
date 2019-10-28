@@ -36,6 +36,6 @@ public class BookRepositoryJpa implements BookRepository {
 	@Transactional
 	@Override
 	public void remove(Book book) {
-		entityManager.remove(book);
+		entityManager.remove(entityManager.contains(book) ? book : entityManager.merge(book));
 	}
 }
