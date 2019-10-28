@@ -1,4 +1,4 @@
-package ru.otus.application.frontend;
+package ru.otus.application.service.frontend;
 
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -10,6 +10,8 @@ import ru.otus.domain.service.IOService;
 import ru.otus.domain.service.Options;
 import ru.otus.domain.service.Stringifier;
 import ru.otus.domain.service.frontend.AuthorFrontend;
+
+import javax.transaction.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -31,6 +33,7 @@ public class AuthorFrontendImplementation implements AuthorFrontend {
 	}
 
 	@Override
+	@Transactional(rollbackOn = DataIntegrityViolationException.class)
 	public void create(String name) throws OperationException {
 		try {
 			repository.save(new Author(0, name));
@@ -40,6 +43,7 @@ public class AuthorFrontendImplementation implements AuthorFrontend {
 	}
 
 	@Override
+	@Transactional(rollbackOn = DataIntegrityViolationException.class)
 	public void update(Author author, String name) throws OperationException {
 		try {
 			repository.save(new Author(author.getId(), name));
@@ -49,6 +53,7 @@ public class AuthorFrontendImplementation implements AuthorFrontend {
 	}
 
 	@Override
+	@Transactional(rollbackOn = DataIntegrityViolationException.class)
 	public void delete(Author author) throws OperationException {
 		try {
 			repository.remove(author);
