@@ -5,6 +5,7 @@ import ru.otus.domain.model.Genre;
 import ru.otus.domain.repository.GenreRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -24,8 +25,15 @@ public class GenreRepositoryJpa implements GenreRepository {
 	@Override
 	public Optional<Genre> findByName(String name) {
 		final TypedQuery<Genre> query = entityManager.createQuery("select g from Genre g where g.name = :name", Genre.class);
-		query.setParameter("name", name);
-		return Optional.ofNullable(query.getSingleResult());
+		Genre result;
+
+		try {
+			result = query.setParameter("name", name).getSingleResult();
+		} catch (NoResultException e) {
+			result = null;
+		}
+
+		return Optional.ofNullable(result);
 	}
 
 	@Override
