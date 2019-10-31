@@ -7,6 +7,8 @@ import java.util.List;
 public interface AuthorRepository {
 	List<Author> findAll();
 
+	List<Author> findByNames(List<String> names);
+
 	Author save(Author author);
 
 	void remove(Author author);

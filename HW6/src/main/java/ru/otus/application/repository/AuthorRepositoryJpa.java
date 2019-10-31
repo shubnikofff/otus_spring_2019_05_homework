@@ -6,6 +6,7 @@ import ru.otus.domain.repository.AuthorRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
@@ -17,6 +18,13 @@ public class AuthorRepositoryJpa implements AuthorRepository {
 	@Override
 	public List<Author> findAll() {
 		return entityManager.createQuery("select a from Author a", Author.class).getResultList();
+	}
+
+	@Override
+	public List<Author> findByNames(List<String> names) {
+		final TypedQuery<Author> query = entityManager.createQuery("select a from Author a where a.name in :names", Author.class);
+		query.setParameter("names", names);
+		return query.getResultList();
 	}
 
 	@Override

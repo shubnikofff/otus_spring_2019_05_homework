@@ -16,7 +16,7 @@ import javax.transaction.Transactional;
 @Service
 @AllArgsConstructor
 public class AuthorFrontendImplementation implements AuthorFrontend {
-	private AuthorRepository repository;
+	private final AuthorRepository repository;
 	private final IOService io;
 	private final Stringifier<Author> stringifier;
 

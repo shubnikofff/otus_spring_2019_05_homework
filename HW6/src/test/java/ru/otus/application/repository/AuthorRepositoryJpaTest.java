@@ -9,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.domain.model.Author;
 
+import java.util.Arrays;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Author repository based on JPA")
@@ -16,7 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(AuthorRepositoryJpa.class)
 class AuthorRepositoryJpaTest {
 	private static final int AUTHOR_INITIAL_QUANTITY = 8;
-	private static final long DELETED_AUTHOR_ID = 1L;
+	private static final long FIRST_AUTHOR_ID = 1L;
+	private static final long SECOND_AUTHOR_ID = 2L;
+	private static final String FIRST_AUTHOR_NAME = "Author #1";
+	private static final String SECOND_AUTHOR_NAME = "Author #2";
 	private static final String NEW_AUTHOR_NAME = "New Author";
 	private static final String UPDATED_AUTHOR_NAME = "Updated Author";
 
@@ -55,9 +60,21 @@ class AuthorRepositoryJpaTest {
 	@DisplayName("should remove author")
 	@Test
 	void remove() {
-		val author = entityManager.find(Author.class, DELETED_AUTHOR_ID);
+		val author = entityManager.find(Author.class, FIRST_AUTHOR_ID);
 		repository.remove(author);
 
-		assertThat(entityManager.find(Author.class, DELETED_AUTHOR_ID)).isNull();
+		assertThat(entityManager.find(Author.class, FIRST_AUTHOR_ID)).isNull();
+	}
+
+	@DisplayName("should find authors by given name list")
+	@Test
+	void findByNames() {
+		val authorList = repository.findByNames(Arrays.asList(FIRST_AUTHOR_NAME, SECOND_AUTHOR_NAME));
+		val expectedAuthorList = Arrays.asList(
+				entityManager.find(Author.class, FIRST_AUTHOR_ID),
+				entityManager.find(Author.class, SECOND_AUTHOR_ID)
+		);
+
+		assertThat(authorList).isEqualTo(expectedAuthorList);
 	}
 }
