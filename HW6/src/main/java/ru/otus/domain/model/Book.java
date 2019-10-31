@@ -19,7 +19,7 @@ public class Book {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(name = "title", unique = true, nullable = false)
+	@Column(name = "title", nullable = false)
 	private String title;
 
 	@ManyToOne(
