@@ -1,13 +1,14 @@
 package ru.otus.application.repository;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.model.Genre;
 import ru.otus.domain.repository.GenreRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class GenreRepositoryJpa implements GenreRepository {
@@ -21,7 +22,13 @@ public class GenreRepositoryJpa implements GenreRepository {
 	}
 
 	@Override
-	@Transactional
+	public Optional<Genre> findByName(String name) {
+		final TypedQuery<Genre> query = entityManager.createQuery("select g from Genre g where g.name = :name", Genre.class);
+		query.setParameter("name", name);
+		return Optional.ofNullable(query.getSingleResult());
+	}
+
+	@Override
 	public Genre save(Genre genre) {
 		if(genre.getId() <= 0) {
 			entityManager.persist(genre);

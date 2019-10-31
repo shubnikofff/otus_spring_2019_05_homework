@@ -19,7 +19,8 @@ class GenreRepositoryJpaTest {
 	private static final int GENRE_INITIAL_QUANTITY = 6;
 	private static final String NEW_GENRE_NAME = "New Genre";
 	private static final String UPDATED_GENRE_NAME = "Updated Genre";
-	private static final long DELETED_GENRE_ID = 1L;
+	private static final long FIRST_GENRE_ID = 1L;
+	private static final String FIRST_GENRE_NAME = "Genre #1";
 
 	@Autowired
 	private GenreRepositoryJpa repository;
@@ -58,9 +59,18 @@ class GenreRepositoryJpaTest {
 	@DisplayName("should remove genre")
 	@Test
 	void remove() {
-		val genre = entityManager.find(Genre.class, DELETED_GENRE_ID);
+		val genre = entityManager.find(Genre.class, FIRST_GENRE_ID);
 		repository.remove(genre);
 
-		assertThat(entityManager.find(Genre.class, DELETED_GENRE_ID)).isNull();
+		assertThat(entityManager.find(Genre.class, FIRST_GENRE_ID)).isNull();
+	}
+
+	@DisplayName("should find genre by name")
+	@Test
+	void findByName() {
+		val foundGenre = repository.findByName(FIRST_GENRE_NAME);
+		val expectedGenre = entityManager.find(Genre.class, FIRST_GENRE_ID);
+
+		assertThat(foundGenre).isPresent().get().isEqualToComparingFieldByField(expectedGenre);
 	}
 }
