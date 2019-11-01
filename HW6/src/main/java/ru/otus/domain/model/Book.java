@@ -24,7 +24,6 @@ public class Book {
 
 	@ManyToOne(
 			targetEntity = Genre.class,
-			cascade = CascadeType.ALL,
 			fetch = FetchType.EAGER
 	)
 	@JoinColumn(name = "genre_id")
@@ -33,7 +32,7 @@ public class Book {
 	@Fetch(FetchMode.SUBSELECT)
 	@ManyToMany(
 			targetEntity = Author.class,
-			cascade = CascadeType.ALL,
+			cascade = {CascadeType.PERSIST, CascadeType.MERGE},
 			fetch = FetchType.EAGER
 	)
 	@JoinTable(
