@@ -36,7 +36,7 @@ public class AuthorFrontendImplementation implements AuthorFrontend {
 	@Transactional(rollbackOn = OperationException.class)
 	public void create(String name) throws OperationException {
 		try {
-			repository.save(new Author(0, name));
+			repository.save(new Author(null, name));
 		} catch (DataIntegrityViolationException e) {
 			throw new OperationException("Author with that name already exists", e);
 		}

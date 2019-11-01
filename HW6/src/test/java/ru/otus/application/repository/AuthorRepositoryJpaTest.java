@@ -41,8 +41,8 @@ class AuthorRepositoryJpaTest {
 	@DisplayName("should save new author")
 	@Test
 	void saveNewAuthor() {
-		val newAuthor = repository.save(new Author(0, NEW_AUTHOR_NAME));
-		assertThat(newAuthor.getId()).isGreaterThan(0);
+		val newAuthor = repository.save(new Author(null, NEW_AUTHOR_NAME));
+		assertThat(newAuthor.getId()).isNotNull();
 
 		val foundAuthor = entityManager.find(Author.class, newAuthor.getId());
 		assertThat(foundAuthor.getName()).isEqualTo(NEW_AUTHOR_NAME);
