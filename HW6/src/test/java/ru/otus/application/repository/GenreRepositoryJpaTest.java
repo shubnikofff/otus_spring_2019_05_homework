@@ -38,9 +38,9 @@ class GenreRepositoryJpaTest {
 	@DisplayName("should insert genre")
 	@Test
 	void saveNewGenre() {
-		val genre = new Genre(0, NEW_GENRE_NAME);
+		val genre = new Genre(null, NEW_GENRE_NAME);
 		val savedGenre = repository.save(genre);
-		assertThat(savedGenre.getId()).isGreaterThan(0);
+		assertThat(savedGenre.getId()).isNotNull();
 
 		val foundGenre = entityManager.find(Genre.class, savedGenre.getId());
 		assertThat(foundGenre.getName()).isEqualTo(NEW_GENRE_NAME);
