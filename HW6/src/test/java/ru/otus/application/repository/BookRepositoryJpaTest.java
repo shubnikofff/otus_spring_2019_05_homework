@@ -54,8 +54,8 @@ class BookRepositoryJpaTest {
 			0,
 			BOOK_TITLE,
 			new Genre(0, GENRE_NAME),
-			Collections.singletonList(new Author(0, AUTHOR_NAME)),
-			Collections.singletonList(new Comment(0, COMMENT_NAME, COMMENT_TEXT))
+			Collections.singletonList(new Author(null, AUTHOR_NAME)),
+			Collections.singletonList(new Comment(null, COMMENT_NAME, COMMENT_TEXT))
 		);
 
 		repository.save(newBook);
