@@ -33,7 +33,7 @@ public class AuthorShell {
 	@ShellMethod(key = {"ca"}, value = "Create author")
 	String create(@ShellOption(help = "Name of the new author") final String name) throws OperationException {
 		frontend.create(name);
-		return "Genre created";
+		return "Author created";
 	}
 
 	@ShellMethod(key = {"ua"}, value = "Update author")

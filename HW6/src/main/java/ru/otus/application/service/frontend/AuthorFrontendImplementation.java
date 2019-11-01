@@ -33,7 +33,7 @@ public class AuthorFrontendImplementation implements AuthorFrontend {
 	}
 
 	@Override
-	@Transactional(rollbackOn = DataIntegrityViolationException.class)
+	@Transactional(rollbackOn = OperationException.class)
 	public void create(String name) throws OperationException {
 		try {
 			repository.save(new Author(0, name));
@@ -43,7 +43,7 @@ public class AuthorFrontendImplementation implements AuthorFrontend {
 	}
 
 	@Override
-	@Transactional(rollbackOn = DataIntegrityViolationException.class)
+	@Transactional(rollbackOn = OperationException.class)
 	public void update(Author author, String name) throws OperationException {
 		try {
 			repository.save(new Author(author.getId(), name));
@@ -53,7 +53,7 @@ public class AuthorFrontendImplementation implements AuthorFrontend {
 	}
 
 	@Override
-	@Transactional(rollbackOn = DataIntegrityViolationException.class)
+	@Transactional(rollbackOn = OperationException.class)
 	public void delete(Author author) throws OperationException {
 		try {
 			repository.remove(author);
