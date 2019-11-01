@@ -51,7 +51,7 @@ class BookRepositoryJpaTest {
 	@Test
 	void save() {
 		val newBook = new Book(
-			0,
+			null,
 			BOOK_TITLE,
 			new Genre(null, GENRE_NAME),
 			Collections.singletonList(new Author(null, AUTHOR_NAME)),

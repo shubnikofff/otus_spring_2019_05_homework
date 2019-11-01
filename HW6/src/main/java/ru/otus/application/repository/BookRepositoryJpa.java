@@ -1,7 +1,7 @@
 package ru.otus.application.repository;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.model.Book;
 import ru.otus.domain.repository.BookRepository;
 
@@ -10,21 +10,20 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@AllArgsConstructor
 public class BookRepositoryJpa implements BookRepository {
 
 	@PersistenceContext
-	private EntityManager entityManager;
+	private final EntityManager entityManager;
 
-	@Transactional(readOnly = true)
 	@Override
 	public List<Book> findAll() {
 		return entityManager.createQuery("select b from Book b join fetch b.genre", Book.class).getResultList();
 	}
 
-	@Transactional
 	@Override
 	public Book save(Book book) {
-		if (book.getId() <= 0) {
+		if (book.getId() == null) {
 			entityManager.persist(book);
 		} else {
 			entityManager.merge(book);
@@ -33,7 +32,6 @@ public class BookRepositoryJpa implements BookRepository {
 		return book;
 	}
 
-	@Transactional
 	@Override
 	public void remove(Book book) {
 		entityManager.remove(entityManager.contains(book) ? book : entityManager.merge(book));
