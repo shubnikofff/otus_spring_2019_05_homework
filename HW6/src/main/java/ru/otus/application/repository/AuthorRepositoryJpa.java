@@ -32,6 +32,7 @@ public class AuthorRepositoryJpa implements AuthorRepository {
 			entityManager.persist(author);
 		} else {
 			entityManager.merge(author);
+			entityManager.flush();
 		}
 
 		return author;
@@ -40,5 +41,6 @@ public class AuthorRepositoryJpa implements AuthorRepository {
 	@Override
 	public void remove(Author author) {
 		entityManager.remove(entityManager.contains(author) ? author : entityManager.merge(author));
+		entityManager.flush();
 	}
 }
