@@ -24,11 +24,13 @@ public class GenreRepositoryJpa implements GenreRepository {
 
 	@Override
 	public Optional<Genre> findByName(String name) {
-		final TypedQuery<Genre> query = entityManager.createQuery("select g from Genre g where g.name = :name", Genre.class);
-		Genre result;
+		final TypedQuery<Genre> query = entityManager
+				.createQuery("select g from Genre g where g.name = :name", Genre.class)
+				.setParameter("name", name);
 
+		Genre result;
 		try {
-			result = query.setParameter("name", name).getSingleResult();
+			result = query.getSingleResult();
 		} catch (NoResultException e) {
 			result = null;
 		}
