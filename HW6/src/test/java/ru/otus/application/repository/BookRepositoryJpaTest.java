@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(BookRepositoryJpa.class)
 class BookRepositoryJpaTest {
 	private static final int BOOKS_INITIAL_QUANTITY = 6;
-	private static final Long DELETED_BOOK_ID = 1L;
+	private static final Long FIRST_BOOK_ID = 1L;
 	private static final Long FIRST_AUTHOR_ID = 1L;
 	private static final String FIRST_AUTHOR_NAME = "Author #1";
 	private static final String BOOK_TITLE = "Title";
@@ -80,9 +80,19 @@ class BookRepositoryJpaTest {
 	@DisplayName("should remove book")
 	@Test
 	void remove() {
-		val book = entityManager.find(Book.class, DELETED_BOOK_ID);
+		val book = entityManager.find(Book.class, FIRST_BOOK_ID);
 		repository.remove(book);
 
-		assertThat(entityManager.find(Book.class, DELETED_BOOK_ID)).isNull();
+		assertThat(entityManager.find(Book.class, FIRST_BOOK_ID)).isNull();
+	}
+
+	@Test
+	@DisplayName("should find book by id")
+	void findById() {
+		val book = repository.findById(FIRST_BOOK_ID);
+		val expectedBook = entityManager.find(Book.class, FIRST_BOOK_ID);
+
+		assertThat(book).isPresent().get().isEqualToComparingFieldByField(expectedBook);
+
 	}
 }

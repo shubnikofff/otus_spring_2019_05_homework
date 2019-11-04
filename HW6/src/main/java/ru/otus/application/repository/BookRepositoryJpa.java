@@ -6,8 +6,11 @@ import ru.otus.domain.model.Book;
 import ru.otus.domain.repository.BookRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -18,7 +21,23 @@ public class BookRepositoryJpa implements BookRepository {
 
 	@Override
 	public List<Book> findAll() {
-		return entityManager.createQuery("select b from Book b join fetch b.genre", Book.class).getResultList();
+		return entityManager.createQuery("select b from Book b", Book.class).getResultList();
+	}
+
+	@Override
+	public Optional<Book> findById(Long id) {
+		final TypedQuery<Book> query = entityManager
+				.createQuery("select b from Book b join fetch b.comments where b.id = :id", Book.class)
+				.setParameter("id", id);
+
+		Book result;
+		try {
+			result = query.getSingleResult();
+		} catch (NoResultException e) {
+			result = null;
+		}
+
+		return Optional.ofNullable(result);
 	}
 
 	@Override
