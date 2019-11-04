@@ -32,9 +32,9 @@ public class AuthorRepositoryJpa implements AuthorRepository {
 			entityManager.persist(author);
 		} else {
 			entityManager.merge(author);
-			entityManager.flush();
 		}
 
+		entityManager.flush();
 		return author;
 	}
 

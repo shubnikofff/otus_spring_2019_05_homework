@@ -11,7 +11,6 @@ import ru.otus.domain.model.Genre;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 @DisplayName("Genre repository based on JPA")
 @DataJpaTest
 @Import(GenreRepositoryJpa.class)
@@ -19,7 +18,8 @@ class GenreRepositoryJpaTest {
 	private static final int GENRE_INITIAL_QUANTITY = 6;
 	private static final String NEW_GENRE_NAME = "New Genre";
 	private static final String UPDATED_GENRE_NAME = "Updated Genre";
-	private static final long FIRST_GENRE_ID = 1L;
+	private static final Long FIRST_GENRE_ID = 1L;
+	private static final Long THIRD_GENRE_ID = 3L;
 	private static final String FIRST_GENRE_NAME = "Genre #1";
 
 	@Autowired
@@ -49,7 +49,7 @@ class GenreRepositoryJpaTest {
 	@DisplayName("should update genre")
 	@Test
 	void saveExistingGenre() {
-		val genre = new Genre(1L, UPDATED_GENRE_NAME);
+		val genre = new Genre(FIRST_GENRE_ID, UPDATED_GENRE_NAME);
 		val savedGenre = repository.save(genre);
 
 		val foundGenre = entityManager.find(Genre.class, savedGenre.getId());
@@ -59,10 +59,10 @@ class GenreRepositoryJpaTest {
 	@DisplayName("should remove genre")
 	@Test
 	void remove() {
-		val genre = entityManager.find(Genre.class, FIRST_GENRE_ID);
+		val genre = entityManager.find(Genre.class, THIRD_GENRE_ID);
 		repository.remove(genre);
 
-		assertThat(entityManager.find(Genre.class, FIRST_GENRE_ID)).isNull();
+		assertThat(entityManager.find(Genre.class, THIRD_GENRE_ID)).isNull();
 	}
 
 	@DisplayName("should find genre by name")

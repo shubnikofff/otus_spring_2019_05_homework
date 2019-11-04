@@ -44,11 +44,13 @@ public class GenreRepositoryJpa implements GenreRepository {
 			entityManager.merge(genre);
 		}
 
+		entityManager.flush();
 		return genre;
 	}
 
 	@Override
 	public void remove(Genre genre) {
 		entityManager.remove(entityManager.contains(genre) ? genre : entityManager.merge(genre));
+		entityManager.flush();
 	}
 }

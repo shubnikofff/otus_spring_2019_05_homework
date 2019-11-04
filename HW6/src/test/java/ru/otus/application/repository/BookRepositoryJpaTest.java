@@ -21,12 +21,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(BookRepositoryJpa.class)
 class BookRepositoryJpaTest {
 	private static final int BOOKS_INITIAL_QUANTITY = 6;
-	private static final long DELETED_BOOK_ID = 1L;
-	private static final String AUTHOR_NAME = "Author";
+	private static final Long DELETED_BOOK_ID = 1L;
+	private static final Long FIRST_AUTHOR_ID = 1L;
+	private static final String FIRST_AUTHOR_NAME = "Author #1";
 	private static final String BOOK_TITLE = "Title";
-	private static final String GENRE_NAME = "Genre";
-	private static final String COMMENT_NAME = "Name";
-	private static final String COMMENT_TEXT = "Text";
+	private static final Long FIRST_GENRE_ID = 1L;
+	private static final String FIRST_GENRE_NAME = "Genre #1";
+	private static final Long FIRST_COMMENT_ID = 1L;
+	private static final String FIRST_COMMENT_NAME = "User #1";
+	private static final String FIRST_COMMENT_TEXT = "Comment #1";
 
 	@Autowired
 	private BookRepositoryJpa repository;
@@ -53,20 +56,25 @@ class BookRepositoryJpaTest {
 		val newBook = new Book(
 			null,
 			BOOK_TITLE,
-			new Genre(null, GENRE_NAME),
-			Collections.singletonList(new Author(null, AUTHOR_NAME)),
-			Collections.singletonList(new Comment(null, COMMENT_NAME, COMMENT_TEXT))
+			entityManager.find(Genre.class, FIRST_GENRE_ID),
+			Collections.singletonList(entityManager.find(Author.class, FIRST_AUTHOR_ID)),
+			Collections.singletonList(entityManager.find(Comment.class, FIRST_COMMENT_ID))
 		);
 
 		repository.save(newBook);
-		assertThat(newBook.getId()).isGreaterThan(0);
+		assertThat(newBook.getId()).isNotNull();
 
 		val actualBook = entityManager.find(Book.class, newBook.getId());
 		assertThat(actualBook).isNotNull()
 				.matches(book -> book.getTitle().equals(BOOK_TITLE))
-				.matches(book -> book.getGenre() != null)
+				.matches(book -> book.getGenre().getName().equals(FIRST_GENRE_NAME))
 				.matches(book -> book.getAuthors().size() == 1)
+				.matches(book -> book.getAuthors().get(0).getName().equals(FIRST_AUTHOR_NAME))
 				.matches(book -> book.getComments().size() == 1);
+
+		assertThat(actualBook.getComments().get(0))
+				.matches(comment -> comment.getName().equals(FIRST_COMMENT_NAME))
+				.matches(comment -> comment.getText().equals(FIRST_COMMENT_TEXT));
 	}
 
 	@DisplayName("should remove book")

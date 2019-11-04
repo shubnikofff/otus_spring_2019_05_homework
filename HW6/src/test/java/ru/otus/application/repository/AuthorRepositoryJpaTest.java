@@ -18,8 +18,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(AuthorRepositoryJpa.class)
 class AuthorRepositoryJpaTest {
 	private static final int AUTHOR_INITIAL_QUANTITY = 8;
-	private static final long FIRST_AUTHOR_ID = 1L;
-	private static final long SECOND_AUTHOR_ID = 2L;
+	private static final Long FIRST_AUTHOR_ID = 1L;
+	private static final Long SECOND_AUTHOR_ID = 2L;
+	private static final Long EIGHTH_AUTHOR_ID = 8L;
 	private static final String FIRST_AUTHOR_NAME = "Author #1";
 	private static final String SECOND_AUTHOR_NAME = "Author #2";
 	private static final String NEW_AUTHOR_NAME = "New Author";
@@ -60,10 +61,10 @@ class AuthorRepositoryJpaTest {
 	@DisplayName("should remove author")
 	@Test
 	void remove() {
-		val author = entityManager.find(Author.class, FIRST_AUTHOR_ID);
+		val author = entityManager.find(Author.class, EIGHTH_AUTHOR_ID);
 		repository.remove(author);
 
-		assertThat(entityManager.find(Author.class, FIRST_AUTHOR_ID)).isNull();
+		assertThat(entityManager.find(Author.class, EIGHTH_AUTHOR_ID)).isNull();
 	}
 
 	@DisplayName("should find authors by given name list")

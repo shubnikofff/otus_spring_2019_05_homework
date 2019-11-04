@@ -29,11 +29,13 @@ public class BookRepositoryJpa implements BookRepository {
 			entityManager.merge(book);
 		}
 
+		entityManager.flush();
 		return book;
 	}
 
 	@Override
 	public void remove(Book book) {
 		entityManager.remove(entityManager.contains(book) ? book : entityManager.merge(book));
+		entityManager.flush();
 	}
 }
