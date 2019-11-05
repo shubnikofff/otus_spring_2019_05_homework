@@ -14,6 +14,13 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "books")
+@NamedEntityGraph(
+		name = "BookWithGenreAndComments",
+		attributeNodes = {
+				@NamedAttributeNode(value = "genre"),
+				@NamedAttributeNode(value = "comments")
+		}
+)
 public class Book {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

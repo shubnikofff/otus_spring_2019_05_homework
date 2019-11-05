@@ -5,10 +5,7 @@ import org.springframework.stereotype.Repository;
 import ru.otus.domain.model.Book;
 import ru.otus.domain.repository.BookRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,13 +18,15 @@ public class BookRepositoryJpa implements BookRepository {
 
 	@Override
 	public List<Book> findAll() {
-		return entityManager.createQuery("select b from Book b", Book.class).getResultList();
+		return entityManager.createQuery("select b from Book b join fetch b.genre", Book.class).getResultList();
 	}
 
 	@Override
 	public Optional<Book> findById(Long id) {
+		final EntityGraph<?> entityGraph = entityManager.getEntityGraph("BookWithGenreAndComments");
 		final TypedQuery<Book> query = entityManager
-				.createQuery("select b from Book b join fetch b.comments where b.id = :id", Book.class)
+				.createQuery("select b from Book b where b.id = :id", Book.class)
+				.setHint("javax.persistence.fetchgraph", entityGraph)
 				.setParameter("id", id);
 
 		Book result;
