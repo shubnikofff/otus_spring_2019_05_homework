@@ -21,4 +21,12 @@ public class Comment {
 
 	@Column(name = "text", nullable = false, length = 1024)
 	private String text;
+
+	@OneToOne(
+			cascade = CascadeType.ALL,
+			targetEntity = Book.class,
+			fetch = FetchType.LAZY
+	)
+	@JoinColumn(name = "book_id")
+	private Book book;
 }
