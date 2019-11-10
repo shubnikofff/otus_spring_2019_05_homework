@@ -34,7 +34,7 @@ class CommentRepositoryJpaTest {
 	@DisplayName("should return all comments by given book id")
 	@Test
 	void findAll() {
-		val comments = repository.findAll(BOOK_ID);
+		val comments = repository.findAllByBookId(BOOK_ID);
 		val expectedComments = Arrays.asList(
 				entityManager.find(Comment.class, FIRST_COMMENT_ID),
 				entityManager.find(Comment.class, SECOND_COMMENT_ID),
@@ -52,5 +52,15 @@ class CommentRepositoryJpaTest {
 		val expectedComment = entityManager.find(Comment.class, comment.getId());
 
 		assertThat(comment).isEqualToComparingFieldByField(expectedComment);
+	}
+
+	@DisplayName("should delete comments by book id")
+	@Test
+	void deleteByBookId() {
+		repository.deleteByBookId(BOOK_ID);
+
+		assertThat(entityManager.find(Comment.class, FIRST_COMMENT_ID)).isNull();
+		assertThat(entityManager.find(Comment.class, SECOND_COMMENT_ID)).isNull();
+		assertThat(entityManager.find(Comment.class, THIRD_COMMENT_ID)).isNull();
 	}
 }

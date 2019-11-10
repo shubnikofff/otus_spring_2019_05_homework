@@ -15,7 +15,7 @@ public class CommentRepositoryJpa implements CommentRepository {
 	private EntityManager entityManager;
 
 	@Override
-	public List<Comment> findAll(Long bookId) {
+	public List<Comment> findAllByBookId(Long bookId) {
 		return entityManager.createQuery("select c from Comment c where c.book.id = :bookId", Comment.class)
 				.setParameter("bookId", bookId)
 				.getResultList();
@@ -23,7 +23,7 @@ public class CommentRepositoryJpa implements CommentRepository {
 
 	@Override
 	public Comment save(Comment comment) {
-		if(comment.getId() == null) {
+		if (comment.getId() == null) {
 			entityManager.persist(comment);
 		} else {
 			entityManager.merge(comment);
@@ -31,5 +31,12 @@ public class CommentRepositoryJpa implements CommentRepository {
 		entityManager.flush();
 
 		return comment;
+	}
+
+	@Override
+	public void deleteByBookId(Long bookId) {
+		entityManager.createQuery("delete from Comment c where c.book.id = :bookId")
+				.setParameter("bookId", bookId)
+				.executeUpdate();
 	}
 }
