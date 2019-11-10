@@ -14,13 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "books")
-@NamedEntityGraph(
-		name = "BookWithGenreAndComments",
-		attributeNodes = {
-				@NamedAttributeNode(value = "genre"),
-				@NamedAttributeNode(value = "comments")
-		}
-)
 public class Book {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,12 +41,4 @@ public class Book {
 			inverseJoinColumns = @JoinColumn(name = "author_id")
 	)
 	private List<Author> authors;
-
-	@OneToMany(
-			targetEntity = Comment.class,
-			cascade = CascadeType.ALL,
-			fetch = FetchType.LAZY
-	)
-	@JoinColumn(name = "book_id")
-	private List<Comment> comments;
 }
