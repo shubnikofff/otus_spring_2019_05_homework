@@ -7,7 +7,6 @@ import ru.otus.domain.model.Book;
 import ru.otus.domain.service.Stringifier;
 import ru.otus.domain.service.frontend.BookFrontend;
 
-import javax.management.OperationsException;
 import java.util.Arrays;
 
 @ShellComponent
@@ -76,7 +75,7 @@ public class BookShell {
 	String addComment(
 			@ShellOption(help = "Commentator name", defaultValue = "Anonymous") String name,
 			@ShellOption(help = "Comment text") String text
-	) throws OperationsException {
+	) throws OperationException {
 		frontend.addComment(currentBook, name, text);
 		currentBook = null;
 		return "Comment added";

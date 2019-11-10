@@ -3,7 +3,6 @@ package ru.otus.domain.service.frontend;
 import ru.otus.domain.exception.OperationException;
 import ru.otus.domain.model.Book;
 
-import javax.management.OperationsException;
 import java.util.List;
 
 public interface BookFrontend {
@@ -19,5 +18,5 @@ public interface BookFrontend {
 
 	void delete(Book book) throws OperationException;
 
-	void addComment(Book book, String name, String text) throws OperationsException;
+	void addComment(Book book, String name, String text) throws OperationException;
 }

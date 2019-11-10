@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
-import ru.otus.domain.model.Comment;
 import ru.otus.domain.model.Genre;
 
 import java.util.Collections;
@@ -27,9 +26,6 @@ class BookRepositoryJpaTest {
 	private static final String BOOK_TITLE = "Title";
 	private static final Long FIRST_GENRE_ID = 1L;
 	private static final String FIRST_GENRE_NAME = "Genre #1";
-	private static final Long FIRST_COMMENT_ID = 1L;
-	private static final String FIRST_COMMENT_NAME = "User #1";
-	private static final String FIRST_COMMENT_TEXT = "Comment #1";
 
 	@Autowired
 	private BookRepositoryJpa repository;
@@ -47,7 +43,6 @@ class BookRepositoryJpaTest {
 				.allMatch(book -> book.getGenre() != null)
 				.allMatch(book -> !book.getAuthors().isEmpty());
 
-		assertThat(books.get(0).getComments()).hasSize(3);
 	}
 
 	@DisplayName("should save book")
@@ -57,8 +52,7 @@ class BookRepositoryJpaTest {
 			null,
 			BOOK_TITLE,
 			entityManager.find(Genre.class, FIRST_GENRE_ID),
-			Collections.singletonList(entityManager.find(Author.class, FIRST_AUTHOR_ID)),
-			Collections.singletonList(entityManager.find(Comment.class, FIRST_COMMENT_ID))
+			Collections.singletonList(entityManager.find(Author.class, FIRST_AUTHOR_ID))
 		);
 
 		repository.save(newBook);
@@ -69,20 +63,13 @@ class BookRepositoryJpaTest {
 				.matches(book -> book.getTitle().equals(BOOK_TITLE))
 				.matches(book -> book.getGenre().getName().equals(FIRST_GENRE_NAME))
 				.matches(book -> book.getAuthors().size() == 1)
-				.matches(book -> book.getAuthors().get(0).getName().equals(FIRST_AUTHOR_NAME))
-				.matches(book -> book.getComments().size() == 1);
-
-		assertThat(actualBook.getComments().get(0))
-				.matches(comment -> comment.getName().equals(FIRST_COMMENT_NAME))
-				.matches(comment -> comment.getText().equals(FIRST_COMMENT_TEXT));
+				.matches(book -> book.getAuthors().get(0).getName().equals(FIRST_AUTHOR_NAME));
 	}
 
-	@DisplayName("should remove book")
+	@DisplayName("should delete book by id")
 	@Test
-	void remove() {
-		val book = entityManager.find(Book.class, FIRST_BOOK_ID);
-		repository.remove(book);
-
+	void deleteBuId() {
+		repository.deleteById(FIRST_BOOK_ID);
 		assertThat(entityManager.find(Book.class, FIRST_BOOK_ID)).isNull();
 	}
 
