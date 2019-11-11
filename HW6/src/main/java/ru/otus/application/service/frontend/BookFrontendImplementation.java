@@ -10,26 +10,26 @@ import ru.otus.domain.model.Comment;
 import ru.otus.domain.model.Genre;
 import ru.otus.domain.repository.AuthorRepository;
 import ru.otus.domain.repository.BookRepository;
+import ru.otus.domain.repository.CommentRepository;
 import ru.otus.domain.repository.GenreRepository;
 import ru.otus.domain.service.IOService;
 import ru.otus.domain.service.Options;
 import ru.otus.domain.service.Stringifier;
 import ru.otus.domain.service.frontend.BookFrontend;
 
-import javax.management.OperationsException;
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class BookFrontendImplementation implements BookFrontend {
-	private final BookRepository bookRepository;
-	private final GenreRepository genreRepository;
 	private final AuthorRepository authorRepository;
+	private final BookRepository bookRepository;
+	private final CommentRepository commentRepository;
+	private final GenreRepository genreRepository;
 	private final IOService io;
 	private final Stringifier<Book> bookStringifier;
 	private final Stringifier<Comment> commentStringifier;
@@ -40,11 +40,9 @@ public class BookFrontendImplementation implements BookFrontend {
 	}
 
 	@Override
+	@Transactional
 	public String printComments(Book book) {
-		final Optional<Book> searchResult = bookRepository.findById(book.getId());
-		return searchResult.isPresent()
-				? commentStringifier.stringify(searchResult.get().getComments())
-				: "Book not found";
+		return commentStringifier.stringify(commentRepository.findAllByBookId(book.getId()));
 	}
 
 	@Override
@@ -57,7 +55,7 @@ public class BookFrontendImplementation implements BookFrontend {
 	@Override
 	@Transactional(rollbackOn = OperationException.class)
 	public void create(String title, String genreName, List<String> authorNames) throws OperationException {
-		final Book book = new Book(null, title, getGenreByName(genreName), getAuthorsByNames(authorNames), Collections.emptyList());
+		final Book book = new Book(null, title, getGenreByName(genreName), getAuthorsByNames(authorNames));
 
 		try {
 			bookRepository.save(book);
@@ -84,22 +82,23 @@ public class BookFrontendImplementation implements BookFrontend {
 	@Transactional(rollbackOn = OperationException.class)
 	public void delete(Book book) throws OperationException {
 		try {
-			bookRepository.remove(book);
+			commentRepository.deleteByBookId(book.getId());
+			bookRepository.deleteById(book.getId());
 		} catch (DataIntegrityViolationException e) {
 			throw new OperationException("Cannot delete book", e);
 		}
 	}
 
 	@Override
-	@Transactional(rollbackOn = OperationException.class)
-	public void addComment(Book book, String name, String text) throws OperationsException {
-		final Book commentedBook = bookRepository.findById(book.getId()).orElseThrow(OperationsException::new);
-		commentedBook.getComments().add(new Comment(null, name, text));
-		bookRepository.save(commentedBook);
+	@Transactional
+	public void addComment(Book book, String name, String text) {
+		bookRepository.findById(book.getId()).ifPresent(b -> commentRepository.save(new Comment(null, name, text, b)));
 	}
 
 	private List<Author> getAuthorsByNames(List<String> names) {
-		final Map<String, Author> existingAuthors = authorRepository.findByNames(names).stream().collect(Collectors.toMap(Author::getName, a -> a));
+		final Map<String, Author> existingAuthors = authorRepository.findByNames(names).stream()
+				.collect(Collectors.toMap(Author::getName, Function.identity()));
+
 		return names.stream()
 				.map(name -> existingAuthors.containsKey(name) ? existingAuthors.get(name) : new Author(null, name))
 				.collect(Collectors.toList());
