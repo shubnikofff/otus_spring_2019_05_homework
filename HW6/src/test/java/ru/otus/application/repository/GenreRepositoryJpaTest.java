@@ -58,10 +58,8 @@ class GenreRepositoryJpaTest {
 
 	@DisplayName("should remove genre")
 	@Test
-	void remove() {
-		val genre = entityManager.find(Genre.class, THIRD_GENRE_ID);
-		repository.remove(genre);
-
+	void deleteById() {
+		repository.deleteById(THIRD_GENRE_ID);
 		assertThat(entityManager.find(Genre.class, THIRD_GENRE_ID)).isNull();
 	}
 

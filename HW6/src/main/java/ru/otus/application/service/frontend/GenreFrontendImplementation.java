@@ -56,7 +56,7 @@ public class GenreFrontendImplementation implements GenreFrontend {
 	@Transactional(rollbackOn = OperationException.class)
 	public void delete(Genre genre) throws OperationException {
 		try {
-			repository.remove(genre);
+			repository.deleteById(genre.getId());
 		} catch (DataIntegrityViolationException e) {
 			throw new OperationException("Genre assigned to books", e);
 		}
