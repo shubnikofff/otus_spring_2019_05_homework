@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BookRepositoryJpaTest {
 	private static final int BOOKS_INITIAL_QUANTITY = 6;
 	private static final Long FIRST_BOOK_ID = 1L;
+	private static final Long THIRD_BOOK_ID = 3L;
 	private static final Long FIRST_AUTHOR_ID = 1L;
 	private static final String FIRST_AUTHOR_NAME = "Author #1";
 	private static final String BOOK_TITLE = "Title";
@@ -68,9 +69,9 @@ class BookRepositoryJpaTest {
 
 	@DisplayName("should delete book by id")
 	@Test
-	void deleteBuId() {
-		repository.deleteById(FIRST_BOOK_ID);
-		assertThat(entityManager.find(Book.class, FIRST_BOOK_ID)).isNull();
+	void deleteById() {
+		repository.deleteById(THIRD_BOOK_ID);
+		assertThat(entityManager.find(Book.class, THIRD_BOOK_ID)).isNull();
 	}
 
 	@Test

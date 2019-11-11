@@ -23,10 +23,8 @@ public class BookRepositoryJpa implements BookRepository {
 
 	@Override
 	public Optional<Book> findById(Long id) {
-		final EntityGraph<?> entityGraph = entityManager.getEntityGraph("BookWithGenreAndComments");
 		final TypedQuery<Book> query = entityManager
 				.createQuery("select b from Book b where b.id = :id", Book.class)
-				.setHint("javax.persistence.fetchgraph", entityGraph)
 				.setParameter("id", id);
 
 		Book result;
@@ -52,8 +50,9 @@ public class BookRepositoryJpa implements BookRepository {
 	}
 
 	@Override
-	public void remove(Book book) {
-		entityManager.remove(entityManager.contains(book) ? book : entityManager.merge(book));
-		entityManager.flush();
+	public void deleteById(Long id) {
+		entityManager.createQuery("delete from Book b where b.id = :id")
+				.setParameter("id", id)
+				.executeUpdate();
 	}
 }
