@@ -39,8 +39,11 @@ public class AuthorRepositoryJpa implements AuthorRepository {
 	}
 
 	@Override
-	public void remove(Author author) {
-		entityManager.remove(entityManager.contains(author) ? author : entityManager.merge(author));
+	public void deleteById(Long id) {
+		entityManager.createQuery("delete from Author a where a.id = :id")
+				.setParameter("id", id)
+				.executeUpdate();
+
 		entityManager.flush();
 	}
 }

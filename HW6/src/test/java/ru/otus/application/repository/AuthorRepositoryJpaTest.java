@@ -60,10 +60,8 @@ class AuthorRepositoryJpaTest {
 
 	@DisplayName("should remove author")
 	@Test
-	void remove() {
-		val author = entityManager.find(Author.class, EIGHTH_AUTHOR_ID);
-		repository.remove(author);
-
+	void deleteById() {
+		repository.deleteById(EIGHTH_AUTHOR_ID);
 		assertThat(entityManager.find(Author.class, EIGHTH_AUTHOR_ID)).isNull();
 	}
 

@@ -54,5 +54,7 @@ public class BookRepositoryJpa implements BookRepository {
 		entityManager.createQuery("delete from Book b where b.id = :id")
 				.setParameter("id", id)
 				.executeUpdate();
+
+		entityManager.flush();
 	}
 }

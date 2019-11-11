@@ -56,7 +56,7 @@ public class AuthorFrontendImplementation implements AuthorFrontend {
 	@Transactional(rollbackOn = OperationException.class)
 	public void delete(Author author) throws OperationException {
 		try {
-			repository.remove(author);
+			repository.deleteById(author.getId());
 		} catch (DataIntegrityViolationException e) {
 			throw new OperationException("Author has books", e);
 		}
