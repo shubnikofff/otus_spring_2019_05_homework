@@ -21,6 +21,7 @@ public class GenreFrontendImplementation implements GenreFrontend {
 	private final Stringifier<Genre> stringifier;
 
 	@Override
+	@Transactional
 	public String printAll() {
 		return stringifier.stringify(repository.findAll());
 	}

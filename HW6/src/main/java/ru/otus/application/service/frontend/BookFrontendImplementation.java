@@ -35,6 +35,7 @@ public class BookFrontendImplementation implements BookFrontend {
 	private final Stringifier<Comment> commentStringifier;
 
 	@Override
+	@Transactional
 	public String printAll() {
 		return bookStringifier.stringify(bookRepository.findAll());
 	}

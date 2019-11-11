@@ -21,6 +21,7 @@ public class AuthorFrontendImplementation implements AuthorFrontend {
 	private final Stringifier<Author> stringifier;
 
 	@Override
+	@Transactional
 	public String printAll() {
 		return stringifier.stringify(repository.findAll());
 	}
