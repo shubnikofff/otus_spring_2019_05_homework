@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005.books_authors
+      author: shubnikofff
+      runOnChange: true
+      loadData:
+        file: csv/books_authors.csv
+        relativeToChangelogFile: true
+        quotChar: '"'
+        seperator: ','
+        encoding: UTF-8
+        tableName: books_authors

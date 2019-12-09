@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001.authors
+      author: shubnikofff
+      runOnChange: true
+      loadUpdateData:
+        primaryKey: id
+        file: csv/authors.csv
+        relativeToChangelogFile: true
+        quotChar: '"'
+        seperator: ','
+        encoding: UTF-8
+        tableName: authors
