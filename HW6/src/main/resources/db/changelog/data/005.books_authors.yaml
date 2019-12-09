@@ -3,8 +3,21 @@ databaseChangeLog:
       id: 005.books_authors
       author: shubnikofff
       runOnChange: true
+      context: prod
       loadData:
         file: csv/books_authors.csv
+        relativeToChangelogFile: true
+        quotChar: '"'
+        seperator: ','
+        encoding: UTF-8
+        tableName: books_authors
+  - changeSet:
+      id: 005.books_authors
+      author: shubnikofff
+      runOnChange: true
+      context: test
+      loadData:
+        file: csv/books_authors.test.csv
         relativeToChangelogFile: true
         quotChar: '"'
         seperator: ','
