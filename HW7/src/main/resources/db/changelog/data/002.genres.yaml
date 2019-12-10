@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002.genres
+      author: shubnikofff
+      runOnChange: true
+      context: prod
+      loadUpdateData:
+        primaryKey: id
+        file: csv/genres.csv
+        relativeToChangelogFile: true
+        quotChar: '"'
+        seperator: ','
+        encoding: UTF-8
+        tableName: genres
+  - changeSet:
+      id: 002.genres
+      author: shubnikofff
+      runOnChange: true
+      context: test
+      loadUpdateData:
+        primaryKey: id
+        file: csv/genres.test.csv
+        relativeToChangelogFile: true
+        quotChar: '"'
+        seperator: ','
+        encoding: UTF-8
+        tableName: genres

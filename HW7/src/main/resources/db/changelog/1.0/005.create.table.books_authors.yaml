@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005.create.table.books_authors
+      author: shubnikofff
+      changes:
+        - createTable:
+            tableName: books_authors
+            columns:
+              - column:
+                  name: book_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    references: books(id)
+                    foreignKeyName: book_id1
+              - column:
+                  name: author_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    references: authors(id)
+                    foreignKeyName: author_id1

@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:library
+  jpa:
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    enabled: true
+    contexts: prod
+  h2:
+    console:
+      enabled: true
