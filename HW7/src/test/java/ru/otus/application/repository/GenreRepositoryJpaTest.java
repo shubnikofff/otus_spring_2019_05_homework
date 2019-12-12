@@ -6,14 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 import ru.otus.domain.model.Genre;
+import ru.otus.domain.repository.GenreRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Genre repository based on JPA")
 @DataJpaTest
-@Import(GenreRepositoryJpa.class)
 class GenreRepositoryJpaTest {
 	private static final int GENRE_INITIAL_QUANTITY = 6;
 	private static final String NEW_GENRE_NAME = "New Genre";
@@ -23,7 +22,7 @@ class GenreRepositoryJpaTest {
 	private static final String FIRST_GENRE_NAME = "Genre #1";
 
 	@Autowired
-	private GenreRepositoryJpa repository;
+	private GenreRepository repository;
 
 	@Autowired
 	private TestEntityManager entityManager;
