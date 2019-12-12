@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 import ru.otus.domain.model.Author;
+import ru.otus.domain.repository.AuthorRepository;
 
 import java.util.Arrays;
 
@@ -15,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Author repository based on JPA")
 @DataJpaTest
-@Import(AuthorRepositoryJpa.class)
 class AuthorRepositoryJpaTest {
 	private static final int AUTHOR_INITIAL_QUANTITY = 8;
 	private static final Long FIRST_AUTHOR_ID = 1L;
@@ -27,7 +26,7 @@ class AuthorRepositoryJpaTest {
 	private static final String UPDATED_AUTHOR_NAME = "Updated Author";
 
 	@Autowired
-	private AuthorRepositoryJpa repository;
+	private AuthorRepository repository;
 
 	@Autowired
 	private TestEntityManager entityManager;
@@ -67,8 +66,8 @@ class AuthorRepositoryJpaTest {
 
 	@DisplayName("should find authors by given name list")
 	@Test
-	void findByNames() {
-		val authorList = repository.findByNames(Arrays.asList(FIRST_AUTHOR_NAME, SECOND_AUTHOR_NAME));
+	void findByNameIn() {
+		val authorList = repository.findByNameIn(Arrays.asList(FIRST_AUTHOR_NAME, SECOND_AUTHOR_NAME));
 		val expectedAuthorList = Arrays.asList(
 				entityManager.find(Author.class, FIRST_AUTHOR_ID),
 				entityManager.find(Author.class, SECOND_AUTHOR_ID)

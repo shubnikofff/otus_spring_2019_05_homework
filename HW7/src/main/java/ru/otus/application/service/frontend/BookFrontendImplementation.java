@@ -97,7 +97,7 @@ public class BookFrontendImplementation implements BookFrontend {
 	}
 
 	private List<Author> getAuthorsByNames(List<String> names) {
-		final Map<String, Author> existingAuthors = authorRepository.findByNames(names).stream()
+		final Map<String, Author> existingAuthors = authorRepository.findByNameIn(names).stream()
 				.collect(Collectors.toMap(Author::getName, Function.identity()));
 
 		return names.stream()
