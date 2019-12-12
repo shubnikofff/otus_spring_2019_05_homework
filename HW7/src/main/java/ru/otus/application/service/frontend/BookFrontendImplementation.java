@@ -106,6 +106,6 @@ public class BookFrontendImplementation implements BookFrontend {
 	}
 
 	private Genre getGenreByName(String name) {
-		return genreRepository.findByName(name).orElse(new Genre(null, name));
+		return genreRepository.findByName(name).orElse(genreRepository.save(new Genre(null, name)));
 	}
 }
