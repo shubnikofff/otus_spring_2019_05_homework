@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
 import ru.otus.domain.model.Genre;
+import ru.otus.domain.repository.BookRepository;
 
 import java.util.Collections;
 
@@ -17,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Book repository based on JPA")
 @DataJpaTest
-@Import(BookRepositoryJpa.class)
 class BookRepositoryJpaTest {
 	private static final int BOOKS_INITIAL_QUANTITY = 6;
 	private static final Long FIRST_BOOK_ID = 1L;
@@ -29,7 +28,7 @@ class BookRepositoryJpaTest {
 	private static final String FIRST_GENRE_NAME = "Genre #1";
 
 	@Autowired
-	private BookRepositoryJpa repository;
+	private BookRepository repository;
 
 	@Autowired
 	private TestEntityManager entityManager;
