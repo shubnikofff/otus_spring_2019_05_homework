@@ -80,6 +80,5 @@ class BookRepositoryJpaTest {
 		val expectedBook = entityManager.find(Book.class, FIRST_BOOK_ID);
 
 		assertThat(book).isPresent().get().isEqualToComparingFieldByField(expectedBook);
-
 	}
 }
