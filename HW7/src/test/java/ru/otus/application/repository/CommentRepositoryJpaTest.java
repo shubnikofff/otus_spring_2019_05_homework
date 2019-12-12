@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 import ru.otus.domain.model.Book;
 import ru.otus.domain.model.Comment;
+import ru.otus.domain.repository.CommentRepository;
 
 import java.util.Arrays;
 
@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Comment repository based on JPA")
 @DataJpaTest
-@Import(CommentRepositoryJpa.class)
 class CommentRepositoryJpaTest {
 	private static final Long BOOK_ID = 1L;
 	private static final Long FIRST_COMMENT_ID = 1L;
@@ -26,7 +25,7 @@ class CommentRepositoryJpaTest {
 	private static final String NEW_COMMENT_TEXT = "New comment";
 
 	@Autowired
-	private CommentRepositoryJpa repository;
+	private CommentRepository repository;
 
 	@Autowired
 	private TestEntityManager entityManager;
