@@ -25,6 +25,6 @@ databaseChangeLog:
                   name: book_id
                   type: bigint
                   constraints:
-                    nullable: false
+                    nullable: true
                     references: books(id)
                     foreignKeyName: book_id
