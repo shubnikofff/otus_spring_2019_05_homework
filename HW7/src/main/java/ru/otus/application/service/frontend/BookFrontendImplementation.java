@@ -18,6 +18,7 @@ import ru.otus.domain.service.Stringifier;
 import ru.otus.domain.service.frontend.BookFrontend;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -56,7 +57,13 @@ public class BookFrontendImplementation implements BookFrontend {
 	@Override
 	@Transactional(rollbackOn = OperationException.class)
 	public void create(String title, String genreName, List<String> authorNames) throws OperationException {
-		final Book book = new Book(null, title, getGenreByName(genreName), getAuthorsByNames(authorNames));
+		final Book book = new Book(
+				null,
+				title,
+				getGenreByName(genreName),
+				getAuthorsByNames(authorNames),
+				Collections.emptyList()
+		);
 
 		try {
 			bookRepository.save(book);
@@ -83,7 +90,6 @@ public class BookFrontendImplementation implements BookFrontend {
 	@Transactional(rollbackOn = OperationException.class)
 	public void delete(Book book) throws OperationException {
 		try {
-			commentRepository.deleteByBookId(book.getId());
 			bookRepository.deleteById(book.getId());
 		} catch (DataIntegrityViolationException e) {
 			throw new OperationException("Cannot delete book", e);
