@@ -41,4 +41,12 @@ public class Book {
 			inverseJoinColumns = @JoinColumn(name = "author_id")
 	)
 	private List<Author> authors;
+
+	@OneToMany(
+			targetEntity = Comment.class,
+			cascade = CascadeType.REMOVE,
+			fetch = FetchType.LAZY
+	)
+	@JoinColumn(name = "book_id")
+	private List<Comment> comments;
 }
