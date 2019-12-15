@@ -18,7 +18,6 @@ import ru.otus.domain.service.Stringifier;
 import ru.otus.domain.service.frontend.BookFrontend;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -57,13 +56,11 @@ public class BookFrontendImplementation implements BookFrontend {
 	@Override
 	@Transactional(rollbackOn = OperationException.class)
 	public void create(String title, String genreName, List<String> authorNames) throws OperationException {
-		final Book book = new Book(
-				null,
-				title,
-				getGenreByName(genreName),
-				getAuthorsByNames(authorNames),
-				Collections.emptyList()
-		);
+		final Book book = Book.builder()
+				.title(title)
+				.genre(getGenreByName(genreName))
+				.authors(getAuthorsByNames(authorNames))
+				.build();
 
 		try {
 			bookRepository.save(book);
@@ -75,12 +72,15 @@ public class BookFrontendImplementation implements BookFrontend {
 	@Override
 	@Transactional(rollbackOn = OperationException.class)
 	public void update(Book book, String title, String genreName, List<String> authorNames) throws OperationException {
-		book.setTitle(title);
-		book.setGenre(getGenreByName(genreName));
-		book.setAuthors(getAuthorsByNames(authorNames));
+		final Book updatedBook = Book.builder()
+				.id(book.getId())
+				.title(title)
+				.genre(getGenreByName(genreName))
+				.authors(getAuthorsByNames(authorNames))
+				.build();
 
 		try {
-			bookRepository.save(book);
+			bookRepository.save(updatedBook);
 		} catch (DataIntegrityViolationException e) {
 			throw new OperationException("Cannot update book", e);
 		}
@@ -99,7 +99,12 @@ public class BookFrontendImplementation implements BookFrontend {
 	@Override
 	@Transactional
 	public void addComment(Book book, String name, String text) {
-		bookRepository.findById(book.getId()).ifPresent(b -> commentRepository.save(new Comment(null, name, text, b)));
+		bookRepository.findById(book.getId()).ifPresent(b -> commentRepository.save(Comment.builder()
+				.name(name)
+				.text(text)
+				.book(b)
+				.build()
+		));
 	}
 
 	private List<Author> getAuthorsByNames(List<String> names) {
@@ -107,11 +112,11 @@ public class BookFrontendImplementation implements BookFrontend {
 				.collect(Collectors.toMap(Author::getName, Function.identity()));
 
 		return names.stream()
-				.map(name -> existingAuthors.containsKey(name) ? existingAuthors.get(name) : new Author(null, name))
+				.map(name -> existingAuthors.containsKey(name) ? existingAuthors.get(name) : Author.builder().name(name).build())
 				.collect(Collectors.toList());
 	}
 
 	private Genre getGenreByName(String name) {
-		return genreRepository.findByName(name).orElse(genreRepository.save(new Genre(null, name)));
+		return genreRepository.findByName(name).orElse(genreRepository.save(Genre.builder().name(name).build()));
 	}
 }

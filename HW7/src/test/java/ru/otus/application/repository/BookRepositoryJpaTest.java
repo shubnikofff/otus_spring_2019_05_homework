@@ -48,13 +48,11 @@ class BookRepositoryJpaTest {
 	@DisplayName("should save book")
 	@Test
 	void save() {
-		val newBook = new Book(
-				null,
-				BOOK_TITLE,
-				entityManager.find(Genre.class, FIRST_GENRE_ID),
-				Collections.singletonList(entityManager.find(Author.class, FIRST_AUTHOR_ID)),
-				Collections.emptyList()
-		);
+		val newBook = Book.builder()
+				.title(BOOK_TITLE)
+				.genre(entityManager.find(Genre.class, FIRST_GENRE_ID))
+				.authors(Collections.singletonList(entityManager.find(Author.class, FIRST_AUTHOR_ID)))
+				.build();
 
 		repository.save(newBook);
 		assertThat(newBook.getId()).isNotNull();

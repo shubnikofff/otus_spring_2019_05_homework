@@ -37,7 +37,7 @@ class GenreRepositoryJpaTest {
 	@DisplayName("should insert genre")
 	@Test
 	void saveNewGenre() {
-		val genre = new Genre(null, NEW_GENRE_NAME);
+		val genre = Genre.builder().name(NEW_GENRE_NAME).build();
 		val savedGenre = repository.save(genre);
 		assertThat(savedGenre.getId()).isNotNull();
 
@@ -48,7 +48,10 @@ class GenreRepositoryJpaTest {
 	@DisplayName("should update genre")
 	@Test
 	void saveExistingGenre() {
-		val genre = new Genre(FIRST_GENRE_ID, UPDATED_GENRE_NAME);
+		val genre = Genre.builder()
+				.id(FIRST_GENRE_ID)
+				.name(UPDATED_GENRE_NAME)
+				.build();
 		val savedGenre = repository.save(genre);
 
 		val foundGenre = entityManager.find(Genre.class, savedGenre.getId());

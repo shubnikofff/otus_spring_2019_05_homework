@@ -1,14 +1,14 @@
 package ru.otus.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Setter(value = AccessLevel.PRIVATE)
+@Getter
+@Builder
 @Entity
 @Table(name = "comments")
 public class Comment {
@@ -19,7 +19,10 @@ public class Comment {
 	@Column(name = "name")
 	private String name;
 
-	@Column(name = "text", nullable = false, length = 1024)
+	@Column(
+			name = "text",
+			nullable = false
+	)
 	private String text;
 
 	@ManyToOne(targetEntity = Book.class)

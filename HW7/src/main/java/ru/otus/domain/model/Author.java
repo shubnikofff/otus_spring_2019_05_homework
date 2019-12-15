@@ -1,14 +1,17 @@
 package ru.otus.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.List;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Setter(value = AccessLevel.PRIVATE)
+@Getter
+@Builder
 @Entity
 @Table(name = "authors")
 public class Author {
@@ -18,4 +21,17 @@ public class Author {
 
 	@Column(name = "name", unique = true, nullable = false)
 	private String name;
+
+	@ManyToMany(
+			targetEntity = Book.class,
+			cascade = CascadeType.ALL,
+			fetch = FetchType.EAGER
+	)
+	@JoinTable(
+			name = "books_authors",
+			joinColumns = @JoinColumn(name = "author_id"),
+			inverseJoinColumns = @JoinColumn(name = "book_id")
+	)
+	@Fetch(FetchMode.SUBSELECT)
+	private List<Book> books;
 }

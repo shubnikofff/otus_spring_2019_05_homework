@@ -37,7 +37,7 @@ public class GenreFrontendImplementation implements GenreFrontend {
 	@Transactional(rollbackOn = OperationException.class)
 	public void create(String name) throws OperationException {
 		try {
-			repository.save(new Genre(null, name));
+			repository.save(Genre.builder().name(name).build());
 		} catch (DataIntegrityViolationException e) {
 			throw new OperationException("Genre with that name already exists", e);
 		}
@@ -47,7 +47,11 @@ public class GenreFrontendImplementation implements GenreFrontend {
 	@Transactional(rollbackOn = OperationException.class)
 	public void update(Genre genre, String name) throws OperationException {
 		try {
-			repository.save(new Genre(genre.getId(), name));
+			repository.save(Genre.builder()
+					.id(genre.getId())
+					.name(name)
+					.build()
+			);
 		} catch (DataIntegrityViolationException e) {
 			throw new OperationException("Genre with that name already exists", e);
 		}

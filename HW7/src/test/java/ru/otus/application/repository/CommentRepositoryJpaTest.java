@@ -47,7 +47,12 @@ class CommentRepositoryJpaTest {
 	@Test
 	void save() {
 		val book = entityManager.find(Book.class, BOOK_ID);
-		val comment = repository.save( new Comment(null, NEW_COMMENT_NAME, NEW_COMMENT_TEXT, book));
+		val comment = repository.save(Comment.builder()
+				.name(NEW_COMMENT_NAME)
+				.text(NEW_COMMENT_TEXT)
+				.book(book)
+				.build()
+		);
 		val expectedComment = entityManager.find(Comment.class, comment.getId());
 
 		assertThat(comment).isEqualToComparingFieldByField(expectedComment);

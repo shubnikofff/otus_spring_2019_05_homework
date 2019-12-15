@@ -10,6 +10,7 @@ import ru.otus.domain.model.Author;
 import ru.otus.domain.repository.AuthorRepository;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,7 +42,7 @@ class AuthorRepositoryJpaTest {
 	@DisplayName("should save new author")
 	@Test
 	void saveNewAuthor() {
-		val newAuthor = repository.save(new Author(null, NEW_AUTHOR_NAME));
+		val newAuthor = repository.save(Author.builder().name(NEW_AUTHOR_NAME).build());
 		assertThat(newAuthor.getId()).isNotNull();
 
 		val foundAuthor = entityManager.find(Author.class, newAuthor.getId());
@@ -51,7 +52,7 @@ class AuthorRepositoryJpaTest {
 	@DisplayName("should save existing author")
 	@Test
 	void saveExistingAuthor() {
-		val newAuthor = repository.save(new Author(1L, UPDATED_AUTHOR_NAME));
+		val newAuthor = repository.save(Author.builder().id(1L).name(UPDATED_AUTHOR_NAME).build());
 
 		val foundAuthor = entityManager.find(Author.class, newAuthor.getId());
 		assertThat(foundAuthor.getName()).isEqualTo(UPDATED_AUTHOR_NAME);

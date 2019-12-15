@@ -1,14 +1,15 @@
 package ru.otus.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Setter(value = AccessLevel.PRIVATE)
+@Getter
+@Builder
 @Entity
 @Table(name = "genres")
 public class Genre {
@@ -16,6 +17,17 @@ public class Genre {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "name", unique = true, nullable = false)
+	@Column(
+			name = "name",
+			unique = true,
+			nullable = false
+	)
 	private String name;
+
+	@OneToMany(
+			targetEntity = Book.class,
+			fetch = FetchType.LAZY
+	)
+	@JoinColumn(name = "id")
+	private List<Book> books;
 }
