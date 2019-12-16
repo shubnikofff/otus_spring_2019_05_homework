@@ -32,7 +32,6 @@ public class Book {
 	@Fetch(FetchMode.SUBSELECT)
 	@ManyToMany(
 			targetEntity = Author.class,
-			cascade = {CascadeType.PERSIST, CascadeType.MERGE},
 			fetch = FetchType.EAGER
 	)
 	@JoinTable(
