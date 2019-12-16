@@ -19,14 +19,18 @@ public class Book {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "title", nullable = false)
+	@Column(
+			name = "title",
+			nullable = false,
+			unique = true
+	)
 	private String title;
 
 	@ManyToOne(
 			targetEntity = Genre.class,
 			fetch = FetchType.EAGER
 	)
-	@JoinColumn(name = "genre_id")
+	@JoinColumn(name = "genre_id", nullable = false)
 	private Genre genre;
 
 	@Fetch(FetchMode.SUBSELECT)
