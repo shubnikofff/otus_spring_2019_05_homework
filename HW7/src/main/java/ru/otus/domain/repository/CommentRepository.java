@@ -9,8 +9,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
 	List<Comment> findAllByBookId(Long bookId);
 
-	@Override
-	<S extends Comment> S save(S entity);
-
 	void deleteByBookId(Long bookId);
 }

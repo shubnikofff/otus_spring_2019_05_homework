@@ -85,7 +85,7 @@ public class BookFrontendImplementation implements BookFrontend {
 	}
 
 	@Override
-	@Transactional(rollbackOn = OperationException.class)
+	@Transactional
 	public void delete(Book book) {
 		bookRepository.delete(book);
 	}
