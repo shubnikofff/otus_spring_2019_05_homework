@@ -1,7 +1,6 @@
 package ru.otus.application.service.frontend;
 
 import lombok.AllArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ru.otus.domain.exception.OperationException;
 import ru.otus.domain.model.Author;
@@ -36,30 +35,31 @@ public class AuthorFrontendImplementation implements AuthorFrontend {
 	@Override
 	@Transactional(rollbackOn = OperationException.class)
 	public void create(String name) throws OperationException {
-		try {
-			repository.save(Author.builder().name(name).build());
-		} catch (DataIntegrityViolationException e) {
-			throw new OperationException("Author with that name already exists", e);
+		if (repository.findByName(name) != null) {
+			throw new OperationException("Author with that name already exists");
 		}
+
+		repository.save(Author.builder().name(name).build());
 	}
 
 	@Override
 	@Transactional(rollbackOn = OperationException.class)
 	public void update(Author author, String name) throws OperationException {
-		try {
-			repository.save(Author.builder().id(author.getId()).name(name).build());
-		} catch (DataIntegrityViolationException e) {
-			throw new OperationException("Author with that name already exists", e);
+		if (!author.getName().equals(name) && repository.findByName(name) != null) {
+			throw new OperationException("Author with that name already exists");
 		}
+
+		author.setName(name);
+		repository.save(author);
 	}
 
 	@Override
 	@Transactional(rollbackOn = OperationException.class)
 	public void delete(Author author) throws OperationException {
-		try {
-			repository.deleteById(author.getId());
-		} catch (DataIntegrityViolationException e) {
-			throw new OperationException("Author has books", e);
+		if (!repository.findById(author.getId()).orElse(Author.builder().build()).getBooks().isEmpty()) {
+			throw new OperationException("Cannot delete an author who has books");
 		}
+
+		repository.delete(author);
 	}
 }

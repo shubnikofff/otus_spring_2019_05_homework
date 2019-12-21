@@ -7,14 +7,7 @@ import java.util.List;
 
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
-	@Override
-	List<Author> findAll();
+	Author findByName(String name);
 
 	List<Author> findByNameIn(List<String> names);
-
-	@Override
-	<S extends Author> S save(S entity);
-
-	@Override
-	void deleteById(Long id);
 }

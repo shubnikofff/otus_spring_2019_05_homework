@@ -9,8 +9,7 @@ import java.util.List;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@Setter(value = AccessLevel.PRIVATE)
-@Getter
+@Data
 @Builder
 @Entity
 @Table(name = "authors")

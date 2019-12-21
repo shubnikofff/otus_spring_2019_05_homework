@@ -20,8 +20,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @DataJpaTest
 class AuthorRepositoryJpaTest {
 	private static final int AUTHOR_INITIAL_QUANTITY = 8;
+
 	private static final Long FIRST_AUTHOR_ID = 1L;
 	private static final Long SECOND_AUTHOR_ID = 2L;
+
 	private static final String FIRST_AUTHOR_NAME = "Author #1";
 	private static final String SECOND_AUTHOR_NAME = "Author #2";
 	private static final String NEW_AUTHOR_NAME = "New Author";
@@ -40,6 +42,16 @@ class AuthorRepositoryJpaTest {
 		assertThat(allAuthors).isNotNull().hasSize(AUTHOR_INITIAL_QUANTITY);
 	}
 
+	@DisplayName("should find author by given name")
+	@Test
+	void findByName() {
+		val author = repository.findByName(FIRST_AUTHOR_NAME);
+		assertThat(author).isEqualTo(entityManager.find(Author.class, FIRST_AUTHOR_ID));
+
+		val anonymous = repository.findByName("Anonymous");
+		assertThat(anonymous).isNull();
+	}
+
 	@DisplayName("should find authors by given name list")
 	@Test
 	void findByNameIn() {
@@ -55,20 +67,22 @@ class AuthorRepositoryJpaTest {
 	@DisplayName("should save new author")
 	@Test
 	void saveNewAuthor() {
-		val newAuthor = repository.save(Author.builder().name(NEW_AUTHOR_NAME).build());
-		assertThat(newAuthor.getId()).isNotNull();
+		val author = repository.save(Author.builder().name(NEW_AUTHOR_NAME).build());
+		assertThat(author.getId()).isNotNull();
 
-		val foundAuthor = entityManager.find(Author.class, newAuthor.getId());
-		assertThat(foundAuthor.getName()).isEqualTo(NEW_AUTHOR_NAME);
+		val savedAuthor = entityManager.find(Author.class, author.getId());
+		assertThat(savedAuthor.getName()).isEqualTo(NEW_AUTHOR_NAME);
 	}
 
 	@DisplayName("should save existing author")
 	@Test
 	void saveExistingAuthor() {
-		val author = repository.save(Author.builder().id(1L).name(UPDATED_AUTHOR_NAME).build());
-		val foundAuthor = entityManager.find(Author.class, author.getId());
+		val author = entityManager.find(Author.class, FIRST_AUTHOR_ID);
+		author.setName(UPDATED_AUTHOR_NAME);
+		repository.save(author);
 
-		assertThat(foundAuthor.getName()).isEqualTo(UPDATED_AUTHOR_NAME);
+		val savedAuthor = entityManager.find(Author.class, FIRST_AUTHOR_ID);
+		assertThat(savedAuthor.getName()).isEqualTo(UPDATED_AUTHOR_NAME);
 	}
 
 	@DisplayName("should throw DataIntegrityViolationException when save without name")
@@ -89,8 +103,10 @@ class AuthorRepositoryJpaTest {
 
 	@DisplayName("should remove author")
 	@Test
-	void deleteById() {
-		repository.deleteById(FIRST_AUTHOR_ID);
+	void delete() {
+		val author = entityManager.find(Author.class, FIRST_AUTHOR_ID);
+		repository.delete(author);
+
 		assertThat(entityManager.find(Author.class, FIRST_AUTHOR_ID)).isNull();
 	}
 }
