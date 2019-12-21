@@ -1,7 +1,6 @@
 package ru.otus.application.service.frontend;
 
 import lombok.AllArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ru.otus.domain.exception.OperationException;
 import ru.otus.domain.model.Author;
@@ -56,44 +55,39 @@ public class BookFrontendImplementation implements BookFrontend {
 	@Override
 	@Transactional(rollbackOn = OperationException.class)
 	public void create(String title, String genreName, List<String> authorNames) throws OperationException {
+		if (bookRepository.findByTitle(title) != null) {
+			throw new OperationException("Book with that name already exists");
+		}
+
+		final Genre genre = genreRepository.save(getGenreByName(genreName));
+		final List<Author> authors = authorRepository.saveAll(getAuthorsByNames(authorNames));
 		final Book book = Book.builder()
 				.title(title)
-				.genre(getGenreByName(genreName))
-				.authors(getAuthorsByNames(authorNames))
+				.genre(genre)
+				.authors(authors)
 				.build();
 
-		try {
-			bookRepository.save(book);
-		} catch (DataIntegrityViolationException e) {
-			throw new OperationException("Cannot create book", e);
-		}
+		bookRepository.save(book);
 	}
 
 	@Override
 	@Transactional(rollbackOn = OperationException.class)
 	public void update(Book book, String title, String genreName, List<String> authorNames) throws OperationException {
-		final Book updatedBook = Book.builder()
-				.id(book.getId())
-				.title(title)
-				.genre(getGenreByName(genreName))
-				.authors(getAuthorsByNames(authorNames))
-				.build();
-
-		try {
-			bookRepository.save(updatedBook);
-		} catch (DataIntegrityViolationException e) {
-			throw new OperationException("Cannot update book", e);
+		if (!book.getTitle().equals(title) && bookRepository.findByTitle(title) != null) {
+			throw new OperationException("Book with that name already exists");
 		}
+
+		book.setTitle(title);
+		book.setGenre(genreRepository.save(getGenreByName(genreName)));
+		book.setAuthors(authorRepository.saveAll(getAuthorsByNames(authorNames)));
+
+		bookRepository.save(book);
 	}
 
 	@Override
 	@Transactional(rollbackOn = OperationException.class)
-	public void delete(Book book) throws OperationException {
-		try {
-			bookRepository.deleteById(book.getId());
-		} catch (DataIntegrityViolationException e) {
-			throw new OperationException("Cannot delete book", e);
-		}
+	public void delete(Book book) {
+		bookRepository.delete(book);
 	}
 
 	@Override
@@ -117,6 +111,6 @@ public class BookFrontendImplementation implements BookFrontend {
 	}
 
 	private Genre getGenreByName(String name) {
-		return genreRepository.findByName(name).orElse(genreRepository.save(Genre.builder().name(name).build()));
+		return genreRepository.findByName(name).orElse(Genre.builder().name(name).build());
 	}
 }

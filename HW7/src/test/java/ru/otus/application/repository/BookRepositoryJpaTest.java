@@ -48,13 +48,21 @@ class BookRepositoryJpaTest {
 				.allMatch(book -> !book.getAuthors().isEmpty());
 	}
 
-	@Test
 	@DisplayName("should find book by id")
+	@Test
 	void findById() {
 		val book = repository.findById(FIRST_BOOK_ID);
 		val expectedBook = entityManager.find(Book.class, FIRST_BOOK_ID);
 
 		assertThat(book).isPresent().get().isEqualToComparingFieldByField(expectedBook);
+	}
+
+	@DisplayName("should find book by title")
+	@Test
+	void findByTitle() {
+		val book = repository.findByTitle(FIRST_BOOK_TITLE);
+		assertThat(book).isEqualTo(entityManager.find(Book.class, FIRST_BOOK_ID));
+		assertThat(repository.findByTitle("No title")).isNull();
 	}
 
 	@DisplayName("should save new book")
