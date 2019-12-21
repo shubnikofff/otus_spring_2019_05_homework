@@ -18,7 +18,6 @@ class GenreRepositoryJpaTest {
 	private static final String NEW_GENRE_NAME = "New Genre";
 	private static final String UPDATED_GENRE_NAME = "Updated Genre";
 	private static final Long FIRST_GENRE_ID = 1L;
-	private static final Long THIRD_GENRE_ID = 3L;
 	private static final String FIRST_GENRE_NAME = "Genre #1";
 
 	@Autowired
@@ -34,43 +33,42 @@ class GenreRepositoryJpaTest {
 		assertThat(allGenres).isNotNull().hasSize(GENRE_INITIAL_QUANTITY);
 	}
 
-	@DisplayName("should insert genre")
+	@DisplayName("should find genre by name")
+	@Test
+	void findByName() {
+		val genre = repository.findByName(FIRST_GENRE_NAME);
+		assertThat(genre).isPresent().hasValue(entityManager.find(Genre.class, FIRST_GENRE_ID));
+
+		assertThat(repository.findByName("No genre")).isNotPresent();
+	}
+
+	@DisplayName("should save new genre")
 	@Test
 	void saveNewGenre() {
-		val genre = Genre.builder().name(NEW_GENRE_NAME).build();
-		val savedGenre = repository.save(genre);
-		assertThat(savedGenre.getId()).isNotNull();
+		val genre = repository.save(Genre.builder().name(NEW_GENRE_NAME).build());
+		assertThat(genre.getId()).isNotNull();
 
-		val foundGenre = entityManager.find(Genre.class, savedGenre.getId());
-		assertThat(foundGenre.getName()).isEqualTo(NEW_GENRE_NAME);
+		val savedGenre = entityManager.find(Genre.class, genre.getId());
+		assertThat(savedGenre.getName()).isEqualTo(NEW_GENRE_NAME);
 	}
 
 	@DisplayName("should update genre")
 	@Test
 	void saveExistingGenre() {
-		val genre = Genre.builder()
-				.id(FIRST_GENRE_ID)
-				.name(UPDATED_GENRE_NAME)
-				.build();
-		val savedGenre = repository.save(genre);
+		val genre = entityManager.find(Genre.class, FIRST_GENRE_ID);
+		genre.setName(UPDATED_GENRE_NAME);
+		repository.save(genre);
 
-		val foundGenre = entityManager.find(Genre.class, savedGenre.getId());
-		assertThat(foundGenre.getName()).isEqualTo(UPDATED_GENRE_NAME);
+		val savedGenre = entityManager.find(Genre.class, FIRST_GENRE_ID);
+		assertThat(savedGenre.getName()).isEqualTo(UPDATED_GENRE_NAME);
 	}
 
 	@DisplayName("should remove genre")
 	@Test
-	void deleteById() {
-		repository.deleteById(THIRD_GENRE_ID);
-		assertThat(entityManager.find(Genre.class, THIRD_GENRE_ID)).isNull();
-	}
+	void delete() {
+		val genre = entityManager.find(Genre.class, FIRST_GENRE_ID);
+		repository.delete(genre);
 
-	@DisplayName("should find genre by name")
-	@Test
-	void findByName() {
-		val foundGenre = repository.findByName(FIRST_GENRE_NAME);
-		val expectedGenre = entityManager.find(Genre.class, FIRST_GENRE_ID);
-
-		assertThat(foundGenre).isPresent().get().isEqualToComparingFieldByField(expectedGenre);
+		assertThat(entityManager.find(Genre.class, FIRST_GENRE_ID)).isNull();
 	}
 }

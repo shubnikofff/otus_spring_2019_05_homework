@@ -1,7 +1,6 @@
 package ru.otus.application.service.frontend;
 
 import lombok.AllArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ru.otus.domain.exception.OperationException;
 import ru.otus.domain.model.Genre;
@@ -36,34 +35,31 @@ public class GenreFrontendImplementation implements GenreFrontend {
 	@Override
 	@Transactional(rollbackOn = OperationException.class)
 	public void create(String name) throws OperationException {
-		try {
-			repository.save(Genre.builder().name(name).build());
-		} catch (DataIntegrityViolationException e) {
-			throw new OperationException("Genre with that name already exists", e);
+		if (repository.findByName(name).isPresent()) {
+			throw new OperationException("Genre with that name already exists");
 		}
+
+		repository.save(Genre.builder().name(name).build());
 	}
 
 	@Override
 	@Transactional(rollbackOn = OperationException.class)
 	public void update(Genre genre, String name) throws OperationException {
-		try {
-			repository.save(Genre.builder()
-					.id(genre.getId())
-					.name(name)
-					.build()
-			);
-		} catch (DataIntegrityViolationException e) {
-			throw new OperationException("Genre with that name already exists", e);
+		if (!genre.getName().equals(name) && repository.findByName(name).isPresent()) {
+			throw new OperationException(("Genre with that name already exists"));
 		}
+
+		genre.setName(name);
+		repository.save(genre);
 	}
 
 	@Override
 	@Transactional(rollbackOn = OperationException.class)
 	public void delete(Genre genre) throws OperationException {
-		try {
-			repository.deleteById(genre.getId());
-		} catch (DataIntegrityViolationException e) {
-			throw new OperationException("Genre assigned to books", e);
+		if (!repository.findById(genre.getId()).orElse(Genre.builder().build()).getBooks().isEmpty()) {
+			throw new OperationException("Cannot delete a genre which has books");
 		}
+
+		repository.delete(genre);
 	}
 }
