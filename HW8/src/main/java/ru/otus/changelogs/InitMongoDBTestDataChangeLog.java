@@ -27,7 +27,7 @@ public class InitMongoDBTestDataChangeLog {
 	public void initBooks(MongoTemplate template) {
 		books.add(template.save(new Book("Book #1", new Genre("Genre #1"), new Author("Author #1"))));
 		books.add(template.save(new Book("Book #2", new Genre("Genre #1"), new Author("Author #2"))));
-		books.add(template.save(new Book("Book #3", new Genre("Genre #1"), new Author("Author #1"), new Author("Author #2"))));
+		books.add(template.save(new Book("Book #3", new Genre("Genre #2"), new Author("Author #1"), new Author("Author #2"))));
 	}
 
 	@ChangeSet(order = "002", id = "initComments", author = "shubnikofff", runAlways = true)
