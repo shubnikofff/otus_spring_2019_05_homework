@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("BookRepository")
 class BookRepositoryTest {
 	public static final int INITIAL_BOOK_QUANTITY = 3;
+	public static final String FIRST_GENRE_NAME =  "Genre #1";
 
 	@Autowired
 	private MongoOperations mongoOperations;
@@ -60,5 +61,13 @@ class BookRepositoryTest {
 
 		val comments = commentRepository.findByBookId(book.getId());
 		assertThat(comments).isEmpty();
+	}
+
+	@Test
+	@DisplayName("should find books by genre name")
+	void findByGenreName() {
+		val books = bookRepository.findByGenreName(FIRST_GENRE_NAME);
+
+		assertThat(books).isNotEmpty().allMatch(book -> book.getGenre().getName().equals(FIRST_GENRE_NAME));
 	}
 }
