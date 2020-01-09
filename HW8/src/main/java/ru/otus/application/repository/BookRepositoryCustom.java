@@ -1,4 +1,4 @@
-package ru.otus.domain.repository;
+package ru.otus.application.repository;
 
 import ru.otus.domain.model.Book;
 

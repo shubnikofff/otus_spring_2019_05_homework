@@ -11,6 +11,8 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.annotation.DirtiesContext;
+import ru.otus.application.repository.BookRepository;
+import ru.otus.application.repository.CommentRepository;
 import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
 import ru.otus.domain.model.Genre;
@@ -19,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest
 @EnableConfigurationProperties
-@ComponentScan({"ru.otus.configuration", "ru.otus.domain.repository", "ru.otus.application.repository"})
+@ComponentScan({"ru.otus.configuration", "ru.otus.application.repository"})
 @DisplayName("BookRepository")
 class BookRepositoryTest {
 	public static final int INITIAL_BOOK_QUANTITY = 3;

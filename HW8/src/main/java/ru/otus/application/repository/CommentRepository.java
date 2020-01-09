@@ -1,4 +1,4 @@
-package ru.otus.domain.repository;
+package ru.otus.application.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.otus.domain.model.Comment;

@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.event.AfterDeleteEvent;
 import org.springframework.stereotype.Component;
 import ru.otus.domain.model.Book;
 import ru.otus.domain.model.Comment;
-import ru.otus.domain.repository.CommentRepository;
+import ru.otus.application.repository.CommentRepository;
 
 import java.util.List;
 
