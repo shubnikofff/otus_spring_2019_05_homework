@@ -19,11 +19,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest
 @EnableConfigurationProperties
-@ComponentScan({"ru.otus.configuration", "ru.otus.domain.repository", "ru.otus.application.repository.event"})
+@ComponentScan({"ru.otus.configuration", "ru.otus.domain.repository", "ru.otus.application.repository"})
 @DisplayName("BookRepository")
 class BookRepositoryTest {
 	public static final int INITIAL_BOOK_QUANTITY = 3;
 	public static final String FIRST_GENRE_NAME =  "Genre #1";
+	public static final String FIRST_AUTHOR_NAME =  "Author #1";
 
 	@Autowired
 	private MongoOperations mongoOperations;
@@ -67,7 +68,13 @@ class BookRepositoryTest {
 	@DisplayName("should find books by genre name")
 	void findByGenreName() {
 		val books = bookRepository.findByGenreName(FIRST_GENRE_NAME);
-
 		assertThat(books).isNotEmpty().allMatch(book -> book.getGenre().getName().equals(FIRST_GENRE_NAME));
+	}
+
+	@Test
+	@DisplayName("should find books by author name")
+	void findByAuthorName() {
+		val books = bookRepository.findByAuthorName(FIRST_AUTHOR_NAME);
+		assertThat(books).isNotEmpty().allMatch(book -> book.getAuthors().contains(new Author(FIRST_AUTHOR_NAME)));
 	}
 }
