@@ -1,4 +1,4 @@
-package ru.otus.domain.repository;
+package ru.otus.application.repository;
 
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
@@ -11,8 +11,6 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.annotation.DirtiesContext;
-import ru.otus.application.repository.BookRepository;
-import ru.otus.application.repository.CommentRepository;
 import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
 import ru.otus.domain.model.Genre;
@@ -22,11 +20,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataMongoTest
 @EnableConfigurationProperties
 @ComponentScan({"ru.otus.configuration", "ru.otus.application.repository"})
-@DisplayName("BookRepository")
+@DisplayName("Book repository")
 class BookRepositoryTest {
-	public static final int INITIAL_BOOK_QUANTITY = 3;
-	public static final String FIRST_GENRE_NAME =  "Genre #1";
-	public static final String FIRST_AUTHOR_NAME =  "Author #1";
+	private static final int INITIAL_BOOK_QUANTITY = 3;
+	private static final String FIRST_GENRE_NAME =  "Genre #1";
+	private static final String FIRST_AUTHOR_NAME =  "Author #1";
 
 	@Autowired
 	private MongoOperations mongoOperations;
