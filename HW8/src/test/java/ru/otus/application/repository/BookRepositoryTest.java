@@ -23,8 +23,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Book repository")
 class BookRepositoryTest {
 	private static final int INITIAL_BOOK_QUANTITY = 3;
-	private static final String FIRST_GENRE_NAME =  "Genre #1";
-	private static final String FIRST_AUTHOR_NAME =  "Author #1";
+	private static final String AUTHOR_NAME =  "Author #1";
+	private static final String BOOK_TITLE =  "Book #1";
+	private static final String GENRE_NAME =  "Genre #1";
 
 	@Autowired
 	private MongoOperations mongoOperations;
@@ -65,16 +66,24 @@ class BookRepositoryTest {
 	}
 
 	@Test
+	@DisplayName("should find books by title")
+	void findByTitle() {
+		val book = bookRepository.findByTitle(BOOK_TITLE);
+		assertThat(book).isNotNull();
+		assertThat(book.getTitle()).isEqualTo(BOOK_TITLE);
+	}
+
+	@Test
 	@DisplayName("should find books by genre name")
 	void findByGenreName() {
-		val books = bookRepository.findByGenreName(FIRST_GENRE_NAME);
-		assertThat(books).isNotEmpty().allMatch(book -> book.getGenre().getName().equals(FIRST_GENRE_NAME));
+		val books = bookRepository.findByGenreName(GENRE_NAME);
+		assertThat(books).isNotEmpty().allMatch(book -> book.getGenre().getName().equals(GENRE_NAME));
 	}
 
 	@Test
 	@DisplayName("should find books by author name")
 	void findByAuthorName() {
-		val books = bookRepository.findByAuthorName(FIRST_AUTHOR_NAME);
-		assertThat(books).isNotEmpty().allMatch(book -> book.getAuthors().contains(new Author(FIRST_AUTHOR_NAME)));
+		val books = bookRepository.findByAuthorName(AUTHOR_NAME);
+		assertThat(books).isNotEmpty().allMatch(book -> book.getAuthors().contains(new Author(AUTHOR_NAME)));
 	}
 }
