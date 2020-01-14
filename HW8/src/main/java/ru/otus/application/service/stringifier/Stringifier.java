@@ -1,4 +1,6 @@
-package ru.otus.domain.service;
+package ru.otus.application.service.stringifier;
+
+import ru.otus.application.service.frontend.Options;
 
 import java.util.List;
 

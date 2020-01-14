@@ -9,10 +9,8 @@ import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
 import ru.otus.domain.model.Comment;
 import ru.otus.domain.model.Genre;
-import ru.otus.domain.service.IOService;
-import ru.otus.domain.service.Options;
-import ru.otus.domain.service.Stringifier;
-import ru.otus.domain.service.frontend.BookFrontend;
+import ru.otus.application.service.io.IOService;
+import ru.otus.application.service.stringifier.Stringifier;
 
 import java.util.List;
 import java.util.stream.Collectors;

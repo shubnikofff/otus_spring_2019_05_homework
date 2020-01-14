@@ -4,8 +4,8 @@ import org.springframework.shell.Availability;
 import org.springframework.shell.standard.*;
 import ru.otus.domain.exception.OperationException;
 import ru.otus.domain.model.Book;
-import ru.otus.domain.service.Stringifier;
-import ru.otus.domain.service.frontend.BookFrontend;
+import ru.otus.application.service.stringifier.Stringifier;
+import ru.otus.application.service.frontend.BookFrontend;
 
 import java.util.Arrays;
 

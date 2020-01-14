@@ -3,8 +3,7 @@ package ru.otus.application.service.stringifier;
 import org.springframework.stereotype.Service;
 import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
-import ru.otus.domain.service.Options;
-import ru.otus.domain.service.Stringifier;
+import ru.otus.application.service.frontend.Options;
 
 import java.util.List;
 import java.util.stream.Collectors;

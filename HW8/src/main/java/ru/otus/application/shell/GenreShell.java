@@ -4,8 +4,8 @@ import org.springframework.shell.Availability;
 import org.springframework.shell.standard.*;
 import ru.otus.domain.exception.OperationException;
 import ru.otus.domain.model.Genre;
-import ru.otus.domain.service.Stringifier;
-import ru.otus.domain.service.frontend.GenreFrontend;
+import ru.otus.application.service.stringifier.Stringifier;
+import ru.otus.application.service.frontend.GenreFrontend;
 
 @ShellComponent
 @ShellCommandGroup("Genres")

@@ -4,10 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.application.repository.AuthorRepository;
 import ru.otus.domain.model.Author;
-import ru.otus.domain.service.IOService;
-import ru.otus.domain.service.Options;
-import ru.otus.domain.service.Stringifier;
-import ru.otus.domain.service.frontend.AuthorFrontend;
+import ru.otus.application.service.io.IOService;
+import ru.otus.application.service.stringifier.Stringifier;
 
 @Service
 @RequiredArgsConstructor

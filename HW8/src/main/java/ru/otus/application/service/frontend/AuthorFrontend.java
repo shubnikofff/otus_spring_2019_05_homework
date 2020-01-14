@@ -1,4 +1,4 @@
-package ru.otus.domain.service.frontend;
+package ru.otus.application.service.frontend;
 
 import ru.otus.domain.model.Author;
 

@@ -1,8 +1,7 @@
 package ru.otus.application.service.io;
 
 import org.springframework.stereotype.Service;
-import ru.otus.domain.service.IOService;
-import ru.otus.domain.service.Options;
+import ru.otus.application.service.frontend.Options;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

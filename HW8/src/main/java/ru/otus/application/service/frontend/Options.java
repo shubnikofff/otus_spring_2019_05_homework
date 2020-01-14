@@ -1,4 +1,4 @@
-package ru.otus.domain.service;
+package ru.otus.application.service.frontend;
 
 import java.util.List;
 import java.util.Map;
