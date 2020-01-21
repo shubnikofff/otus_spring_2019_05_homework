@@ -9,28 +9,43 @@
 	</head>
 	<body>
 		<h2 id="header" th:text="${book.title}">Book title</h2>
-		<dl id="content" class="col"  th:object="${book}">
-			<dt>Genre</dt>
-			<dd th:text="*{genre.name}">Genre name</dd>
-			<dt>Authors</dt>
-			<dd>
-				<ul class="list-inline">
-					<li class="list-inline-item" th:each="author : *{authors}">
-						<span th:text="${author.name}">Author name</span>
+		<div id="content" class="d-flex flex-column justify-content-between book-details-content">
+			<div th:object="${book}">
+				<dl class="col">
+					<dt>Genre</dt>
+					<dd th:text="*{genre.name}">Genre name</dd>
+					<dt>Authors</dt>
+					<dd>
+						<ul class="list-inline">
+							<li class="list-inline-item" th:each="author : *{authors}">
+								<span th:text="${author.name}">Author name</span>
+							</li>
+						</ul>
+					</dd>
+				</dl>
+			</div>
+			<div>
+				<ul class="list-unstyled">
+					<li th:each="comment : ${comments}" class="card mb-3">
+						<div class="card-body">
+							<blockquote>
+								<p th:text="${comment.text}">Comment text</p>
+								<footer class="blockquote-footer" th:text="${comment.user}">User name</footer>
+							</blockquote>
+						</div>
 					</li>
 				</ul>
-			</dd>
-			<dt>Comments</dt>
-			<dd>
-				<ul>
-					<li th:each="comment : ${comments}">
-						<blockquote>
-							<p class="mb-0" th:text="${comment.text}">Comment text</p>
-							<footer class="blockquote-footer" th:text="${comment.user}">User name</footer>
-						</blockquote>
-					</li>
-				</ul>
-			</dd>
-		</dl>
+				<a class="btn btn-outline-primary" href="form.html" th:href="@{/book/{id}/update(id=${book.id})}">
+					Update
+				</a>
+				<a class="btn btn-outline-secondary" href="comment/form.html"
+				   th:href="@{/book/{id}/add-comment(id=${book.id})}">
+					Add comment
+				</a>
+				<a class="btn btn-danger" th:href="@{/book/{id}/delete(id=${book.id})}" th:method="delete">
+					Delete
+				</a>
+			</div>
+		</div>
 	</body>
 </html>
