@@ -3,10 +3,7 @@ package ru.otus.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import ru.otus.domain.exception.NotFoundException;
 import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
@@ -52,7 +49,7 @@ public class BookController {
 	}
 
 	@PostMapping("/book/{id}/update")
-	String updateBook(@PathVariable("id") String id, @RequestBody BookForm form, Model model) {
+	String updateBook(@PathVariable("id") String id, @ModelAttribute BookForm form, Model model) {
 		final Book book = bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book was not found"));
 		book.setTitle(form.getTitle());
 		book.setGenre(new Genre(form.getGenre()));
