@@ -10,23 +10,20 @@
 	<body>
 		<h2 id="header">Book form</h2>
 		<form id="content" method="post"
-			  th:action="@{(${book} ? @{/book/{id}/update(id=${book.id})} : '/book/create')}"
+			  th:action="@{(${id} ? @{/book/{id}/update(id=${id})} : '/book/create')}"
 		>
 			<div class="form-group">
 				<label for="title">Title</label>
-				<!--/*@thymesVar id="book" type="ru.otus.domain.model.Book"*/-->
-				<input class="form-control" id="title" name="title" th:value="${book?.title}" />
+				<input class="form-control" id="title" name="title" required th:value="${book?.title}" />
 			</div>
 			<div class="form-group">
 				<label for="genre">Genre</label>
-				<!--/*@thymesVar id="book" type="ru.otus.domain.model.Book"*/-->
-				<input class="form-control" id="genre" name="genre" th:value="${book} ? ${book.genre.name} : ''" />
+				<input class="form-control" id="genre" name="genre" required th:value="${book?.genre}" />
 			</div>
 			<div class="form-group">
 				<label for="authors">Authors</label>
-				<!--/*@thymesVar id="authorsListAsString" type="java.lang.String"*/-->
-				<input class="form-control" id="authors" name="authors" aria-describedby="authorsHelp"
-					   th:value="${authorsListAsString}" />
+				<input class="form-control" id="authors" name="authors" aria-describedby="authorsHelp" required
+					   th:value="${book?.authors}" />
 				<small id="authorsHelp" class="form-text text-muted">Enter author names separated by commas.</small>
 			</div>
 			<button type="submit" class="btn btn-primary">Save</button>
