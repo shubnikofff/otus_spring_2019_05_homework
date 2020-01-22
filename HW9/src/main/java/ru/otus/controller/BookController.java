@@ -1,21 +1,14 @@
 package ru.otus.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ru.otus.domain.exception.NotFoundException;
-import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
-import ru.otus.domain.model.Genre;
 import ru.otus.repository.BookRepository;
 import ru.otus.repository.CommentRepository;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 @Controller
@@ -26,38 +19,17 @@ public class BookController {
 	private final CommentRepository commentRepository;
 
 	@GetMapping("/")
-	String getBookList(Model model) {
-		model.addAttribute("books", bookRepository.findAll());
-		return "book/list";
+	ModelAndView getBookList() {
+		return new ModelAndView("book/list", HttpStatus.OK)
+				.addObject("books", bookRepository.findAll());
 	}
 
 	@GetMapping("/book/{id}/details")
-	String getBookDetails(@PathVariable("id") String id, Model model) {
+	ModelAndView getBookDetails(@PathVariable("id") String id) {
 		final Book book = bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book was not found"));
-		model.addAttribute("book", book);
-		model.addAttribute("comments", commentRepository.findByBookId(book.getId()));
-		return "book/details";
-	}
-
-	@GetMapping("/book/{id}/update")
-	String getBookForm(@PathVariable("id") String id, Model model) {
-		final Book book = bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book was not found"));
-		model.addAttribute("book", book);
-		final String authorListAsString = book.getAuthors().stream().map(Author::getName).collect(joining(", "));
-		model.addAttribute("authorsListAsString", authorListAsString);
-		return "book/form";
-	}
-
-	@PostMapping("/book/{id}/update")
-	String updateBook(@PathVariable("id") String id, @ModelAttribute BookForm form, Model model) {
-		final Book book = bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book was not found"));
-		book.setTitle(form.getTitle());
-		book.setGenre(new Genre(form.getGenre()));
-		book.setAuthors(getAuthorListFromString(form.getAuthors()));
-		bookRepository.save(book);
-		model.addAttribute("book", book);
-		model.addAttribute("comments", commentRepository.findByBookId(book.getId()));
-		return "book/details";
+		return new ModelAndView("book/details", HttpStatus.OK)
+				.addObject("book", book)
+				.addObject("comments", commentRepository.findByBookId(book.getId()));
 	}
 
 	@GetMapping("/book/create")
@@ -66,14 +38,34 @@ public class BookController {
 	}
 
 	@PostMapping("/book/create")
-	String createBook(@ModelAttribute BookForm form, Model model) {
-		final Book book = new Book(form.getTitle(), new Genre(form.getGenre()), getAuthorListFromString(form.getAuthors()));
-		bookRepository.save(book);
-		model.addAttribute("book", book);
-		return "book/details";
+	ModelAndView createBook(@ModelAttribute BookForm form) {
+		final Book book = bookRepository.save(Mapper.map(form));
+		return new ModelAndView("book/details", HttpStatus.CREATED)
+				.addObject("book", book);
 	}
 
-	private static List<Author> getAuthorListFromString(String str) {
-		return Arrays.stream(str.split("\\s*,\\s*")).map(Author::new).collect(toList());
+	@GetMapping("/book/{id}/update")
+	ModelAndView getBookForm(@PathVariable("id") String id) {
+		final Book book = bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book was not found"));
+		return new ModelAndView("book/form", HttpStatus.OK)
+				.addObject("id", id)
+				.addObject("book", Mapper.map(book));
+	}
+
+	@PostMapping("/book/{id}/update")
+	ModelAndView updateBook(@PathVariable("id") String id, @ModelAttribute BookForm form) {
+		final Book book = bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book was not found"));
+		return new ModelAndView("book/details", HttpStatus.OK)
+				.addObject("book", bookRepository.save(Mapper.map(form, book)))
+				.addObject("comments", commentRepository.findByBookId(book.getId()));
+	}
+
+	@PostMapping("/book/{id}/add-comment")
+	ModelAndView addComment(@PathVariable("id") String bookId, @ModelAttribute CommentForm form) {
+		final Book book = bookRepository.findById(bookId).orElseThrow(() -> new NotFoundException("Book was not found"));
+		commentRepository.save(Mapper.map(form, book));
+		return new ModelAndView("book/details", HttpStatus.CREATED)
+				.addObject("book", book)
+				.addObject("comments", commentRepository.findByBookId(book.getId()));
 	}
 }
