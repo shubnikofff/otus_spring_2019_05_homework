@@ -60,6 +60,19 @@ public class BookController {
 		return "book/details";
 	}
 
+	@GetMapping("/book/create")
+	String getNewBookForm() {
+		return "book/form";
+	}
+
+	@PostMapping("/book/create")
+	String createBook(@ModelAttribute BookForm form, Model model) {
+		final Book book = new Book(form.getTitle(), new Genre(form.getGenre()), getAuthorListFromString(form.getAuthors()));
+		bookRepository.save(book);
+		model.addAttribute("book", book);
+		return "book/details";
+	}
+
 	private static List<Author> getAuthorListFromString(String str) {
 		return Arrays.stream(str.split("\\s*,\\s*")).map(Author::new).collect(toList());
 	}

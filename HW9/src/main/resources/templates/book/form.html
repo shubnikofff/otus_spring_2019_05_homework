@@ -9,14 +9,16 @@
 	</head>
 	<body>
 		<h2 id="header">Book form</h2>
-		<form id="content" th:object="${book}" method="post" th:action="@{/book/{id}/update(id=*{id})}">
+		<form id="content" method="post"
+			  th:action="@{(${book} ? @{/book/{id}/update(id=${book.id})} : '/book/create')}"
+		>
 			<div class="form-group">
 				<label for="title">Title</label>
-				<input class="form-control" id="title" name="title" th:value="*{title}" />
+				<input class="form-control" id="title" name="title" th:value="${book?.title}" />
 			</div>
 			<div class="form-group">
 				<label for="genre">Genre</label>
-				<input class="form-control" id="genre" name="genre" th:value="*{genre.name}" />
+				<input class="form-control" id="genre" name="genre" th:value="${book} ? ${book.genre.name} : ''" />
 			</div>
 			<div class="form-group">
 				<label for="authors">Authors</label>
