@@ -10,6 +10,7 @@
 	<body>
 		<h2 id="header">Book list</h2>
 		<ul id="content" class="list-group list-group-flush">
+			<!--/*@thymesVar id="books" type="java.util.List<ru.otus.domain.model.Book>"*/-->
 			<li th:each="book :${books}" class="list-group-item">
 				<a th:text="${book.title}" href="/book/details.html" th:href="@{/book/{id}/details(id=${book.id})}">
 					Book title

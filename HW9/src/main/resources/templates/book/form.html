@@ -14,14 +14,17 @@
 		>
 			<div class="form-group">
 				<label for="title">Title</label>
+				<!--/*@thymesVar id="book" type="ru.otus.domain.model.Book"*/-->
 				<input class="form-control" id="title" name="title" th:value="${book?.title}" />
 			</div>
 			<div class="form-group">
 				<label for="genre">Genre</label>
+				<!--/*@thymesVar id="book" type="ru.otus.domain.model.Book"*/-->
 				<input class="form-control" id="genre" name="genre" th:value="${book} ? ${book.genre.name} : ''" />
 			</div>
 			<div class="form-group">
 				<label for="authors">Authors</label>
+				<!--/*@thymesVar id="authorsListAsString" type="java.lang.String"*/-->
 				<input class="form-control" id="authors" name="authors" aria-describedby="authorsHelp"
 					   th:value="${authorsListAsString}" />
 				<small id="authorsHelp" class="form-text text-muted">Enter author names separated by commas.</small>
