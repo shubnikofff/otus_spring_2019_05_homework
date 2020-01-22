@@ -68,4 +68,10 @@ public class BookController {
 				.addObject("book", book)
 				.addObject("comments", commentRepository.findByBookId(book.getId()));
 	}
+
+	@GetMapping("/book/{id}/delete")
+	ModelAndView deleteBook(@PathVariable("id") String id) {
+		bookRepository.deleteById(id);
+		return new ModelAndView("book/list").addObject("books", bookRepository.findAll());
+	}
 }
