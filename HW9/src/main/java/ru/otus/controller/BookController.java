@@ -56,6 +56,7 @@ public class BookController {
 		book.setAuthors(getAuthorListFromString(form.getAuthors()));
 		bookRepository.save(book);
 		model.addAttribute("book", book);
+		model.addAttribute("comments", commentRepository.findByBookId(book.getId()));
 		return "book/details";
 	}
 
