@@ -45,10 +45,19 @@
 					</div>
 				</li>
 			</ul>
-			<a class="btn btn-outline-secondary" href="comment/form.html"
-			   th:href="@{/book/{id}/add-comment(id=${book.id})}">
-				Add comment
-			</a>
+			<form class="card mb-5" method="post" name="comment-form" th:action="@{/book/{id}/add-comment(id=${book.id})}">
+				<div class="card-body">
+					<div class="form-group">
+						<label for="user">User</label>
+						<input class="form-control" id="user" name="user" required />
+					</div>
+					<div class="form-group">
+						<label for="text">Text</label>
+						<textarea class="form-control" id="text" name="text" required></textarea>
+					</div>
+					<button type="submit" class="btn btn-outline-secondary">Add comment</button>
+				</div>
+			</form>
 		</div>
 	</body>
 </html>
