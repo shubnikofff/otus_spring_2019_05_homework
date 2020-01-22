@@ -26,4 +26,10 @@ public class Book {
 		this.genre = genre;
 		this.authors = Arrays.asList(authors);
 	}
+
+	public Book(String title, Genre genre, List<Author> authors) {
+		this.title = title;
+		this.genre = genre;
+		this.authors = authors;
+	}
 }
