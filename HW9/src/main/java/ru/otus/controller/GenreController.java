@@ -22,7 +22,7 @@ public class GenreController {
 				.addObject("genres", genreRepository.findAll());
 	}
 
-	@GetMapping("genre/{name}/details")
+	@GetMapping("/genre/{name}/details")
 	ModelAndView getGenreDetails(@PathVariable("name") String name) {
 		return new ModelAndView("genre/details")
 				.addObject("name", name)
