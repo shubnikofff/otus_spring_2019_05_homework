@@ -1,4 +1,4 @@
-package ru.otus.controller;
+package ru.otus.controller.form;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

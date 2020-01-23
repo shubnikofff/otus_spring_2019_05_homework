@@ -1,5 +1,7 @@
 package ru.otus.controller;
 
+import ru.otus.controller.form.BookForm;
+import ru.otus.controller.form.CommentForm;
 import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
 import ru.otus.domain.model.Comment;
