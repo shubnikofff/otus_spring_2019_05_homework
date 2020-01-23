@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{layout::main-fragment(~{::title},~{::#header},~{::#content})}"
+>
+	<head>
+		<meta charset="UTF-8">
+		<title>Authors</title>
+	</head>
+	<body>
+		<h2 id="header">Author list</h2>
+		<ul id="content" class="list-group list-group-flush">
+			<li th:each="author :${authors}" class="list-group-item">
+				<a href="/author/details.html" th:text="${author.name}"
+				   th:href="@{/author/{name}/details(name=${author.name})}">
+					Author name
+				</a>
+			</li>
+		</ul>
+	</body>
+</html>
