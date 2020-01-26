@@ -72,8 +72,16 @@ public class BookController {
 	}
 
 	@GetMapping("/book/{id}/delete")
+	ModelAndView getDeleteForm(@PathVariable("id") String id) {
+		final Book book = bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book was not found"));
+		return new ModelAndView("book/delete")
+				.addObject("book", book);
+	}
+
+	@PostMapping("/book/{id}/delete")
 	ModelAndView deleteBook(@PathVariable("id") String id) {
 		bookRepository.deleteById(id);
-		return new ModelAndView("book/list").addObject("books", bookRepository.findAll());
+		return new ModelAndView("redirect:/", HttpStatus.PERMANENT_REDIRECT);
+
 	}
 }
