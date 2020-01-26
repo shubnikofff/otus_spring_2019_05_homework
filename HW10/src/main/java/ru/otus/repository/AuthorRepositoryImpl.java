@@ -10,6 +10,7 @@ import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.data.domain.Sort.by;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
@@ -40,5 +41,17 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 				.set( "authors.$[element].name", newName);
 
 		mongoOperations.updateMulti(new Query(), update, Book.class);
+	}
+
+	@Override
+	public Optional<Author> findByName(String name) {
+		final Aggregation aggregation = newAggregation(
+				match(where("authors.name").is(name)),
+				unwind("authors"),
+				group("authors.name"),
+				project().and("_id").as("name").andExclude("_id")
+		);
+
+		return Optional.ofNullable(mongoOperations.aggregate(aggregation, Book.class, Author.class).getUniqueMappedResult());
 	}
 }
