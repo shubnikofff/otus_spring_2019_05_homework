@@ -39,7 +39,7 @@ class GenreControllerTest {
 	private CommentRepository commentRepository;
 
 	@Test
-	@DisplayName("should return model and view with genre list")
+	@DisplayName("GET /genre/list")
 	void getGenreList() throws Exception {
 		val genres = singletonList(new Genre("Genre name"));
 		when(genreRepository.findAll()).thenReturn(genres);
@@ -51,7 +51,7 @@ class GenreControllerTest {
 	}
 
 	@Test
-	@DisplayName("should return model and view with genre details")
+	@DisplayName("GET /genre/{name}/details")
 	void getGenreDetails() throws Exception {
 		val genreName = "Genre name";
 		val books = singletonList(new Book("Book", new Genre(genreName), new Author("Author name")));

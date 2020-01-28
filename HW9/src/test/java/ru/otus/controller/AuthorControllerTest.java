@@ -39,7 +39,7 @@ class AuthorControllerTest {
 	private CommentRepository commentRepository;
 
 	@Test
-	@DisplayName("should return model and view with author list")
+	@DisplayName("GET /author/list")
 	void findAllAuthors() throws Exception {
 		val authors = singletonList(new Author("Author name"));
 		when(authorRepository.findAll()).thenReturn(authors);
@@ -51,7 +51,7 @@ class AuthorControllerTest {
 	}
 
 	@Test
-	@DisplayName("should return model and view with author details")
+	@DisplayName("GET /author/{name}/details")
 	void getAuthorDetails() throws Exception {
 		val authorName = "Author name";
 		val books = singletonList(new Book("Book", new Genre("Genre"), new Author(authorName)));
