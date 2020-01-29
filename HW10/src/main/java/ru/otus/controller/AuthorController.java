@@ -15,20 +15,17 @@ import java.util.List;
 @RestController
 public class AuthorController {
 
-	private final AuthorRepository authorRepository;
+	private final AuthorRepository repository;
 
 	@GetMapping("/author")
 	List<Author> getAllAuthors() {
-		return authorRepository.findAll();
+		return repository.findAll();
 	}
 
 	@PutMapping("/author/{name}")
-	ResponseEntity<HttpStatus> changeName(
-			@PathVariable("name") String name,
-			@RequestBody AuthorForm form
-	) {
-		final Author author = authorRepository.findByName(name).orElseThrow(() -> new NotFoundException("Author not found"));
-		authorRepository.updateName(author, form.getName());
+	ResponseEntity<HttpStatus> update(@PathVariable("name") String name, @RequestBody AuthorForm form) {
+		final Author author = repository.findByName(name).orElseThrow(() -> new NotFoundException("Author not found"));
+		repository.updateName(author, form.getName());
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
