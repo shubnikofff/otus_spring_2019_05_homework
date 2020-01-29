@@ -57,23 +57,28 @@ public class BookController {
 	@PostMapping("/book/{id}/update")
 	ModelAndView updateBook(@PathVariable("id") String id, @ModelAttribute BookForm form) {
 		final Book book = bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book was not found"));
-		return new ModelAndView("book/details", HttpStatus.OK)
-				.addObject("book", bookRepository.save(Mapper.map(form, book)))
-				.addObject("comments", commentRepository.findByBookId(book.getId()));
+		bookRepository.save(Mapper.map(form, book));
+		return new ModelAndView("redirect:/book/" + book.getId() + "/details");
 	}
 
 	@PostMapping("/book/{id}/add-comment")
 	ModelAndView addComment(@PathVariable("id") String bookId, @ModelAttribute CommentForm form) {
 		final Book book = bookRepository.findById(bookId).orElseThrow(() -> new NotFoundException("Book was not found"));
 		commentRepository.save(Mapper.map(form, book));
-		return new ModelAndView("book/details", HttpStatus.CREATED)
-				.addObject("book", book)
-				.addObject("comments", commentRepository.findByBookId(book.getId()));
+		return new ModelAndView("redirect:/book/" + book.getId() + "/details");
 	}
 
 	@GetMapping("/book/{id}/delete")
+	ModelAndView getDeleteForm(@PathVariable("id") String id) {
+		final Book book = bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book was not found"));
+		return new ModelAndView("book/delete")
+				.addObject("book", book);
+	}
+
+	@PostMapping("/book/{id}/delete")
 	ModelAndView deleteBook(@PathVariable("id") String id) {
 		bookRepository.deleteById(id);
-		return new ModelAndView("book/list").addObject("books", bookRepository.findAll());
+		return new ModelAndView("redirect:/");
+
 	}
 }
