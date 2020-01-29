@@ -2,12 +2,15 @@ package ru.otus.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.stereotype.Repository;
 import ru.otus.domain.model.Book;
 import ru.otus.domain.model.Genre;
 
 import java.util.List;
+import java.util.Optional;
 
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -24,6 +27,17 @@ public class GenreRepositoryImpl implements GenreRepository {
 	}
 
 	@Override
+	public Optional<Genre> findByName(String name) {
+		final Aggregation aggregation = newAggregation(
+				match(where("genre.name").is(name)),
+				group("genre.name"),
+				project().and("_id").as("name").andExclude("_id")
+		);
+
+		return Optional.ofNullable(mongoOperations.aggregate(aggregation, Book.class, Genre.class).getUniqueMappedResult());
+	}
+
+	@Override
 	public void updateName(Genre genre, String newName) {
 		mongoOperations.updateMulti(
 				query(where("genre.name").is(genre.getName())),
@@ -31,5 +45,4 @@ public class GenreRepositoryImpl implements GenreRepository {
 				Book.class
 		);
 	}
-
 }

@@ -3,10 +3,13 @@ package ru.otus.repository;
 import ru.otus.domain.model.Genre;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GenreRepository {
 
 	List<Genre> findAll();
+
+	Optional<Genre> findByName(String name);
 
 	void updateName(Genre genre, String newName);
 }

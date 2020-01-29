@@ -13,9 +13,11 @@ import ru.otus.domain.model.Genre;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest
@@ -40,6 +42,18 @@ class GenreRepositoryTest {
 
 		assertThat(genres).isNotEmpty();
 		assertThat(genres.size()).isEqualTo(new HashSet<>(genres).size());
+	}
+
+	@Test
+	@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+	@DisplayName("should find genre by name")
+	void findByName() {
+		val expectedGenre = new Genre(NEW_GENRE_NAME);
+		bookRepository.save(new Book("Title", expectedGenre, emptyList()));
+		val genre = genreRepository.findByName(NEW_GENRE_NAME);
+
+		assertThat(genre).isNotEmpty();
+		assertThat(genre).isEqualTo(Optional.of(expectedGenre));
 	}
 
 	@Test
