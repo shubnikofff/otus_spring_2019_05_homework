@@ -22,10 +22,10 @@ public class GenreController {
 		return repository.findAll();
 	}
 
-	@PutMapping("/author/{name}")
+	@PutMapping("/genre/{name}")
 	ResponseEntity<HttpStatus> update(@PathVariable("name") String name, @RequestBody GenreForm form) {
 		final Genre genre = repository.findByName(name).orElseThrow(() -> new NotFoundException("Genre not found"));
-		repository.updateName(genre, name);
+		repository.updateName(genre, form.getName());
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
