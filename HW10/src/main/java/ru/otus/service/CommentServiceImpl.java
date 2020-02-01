@@ -10,8 +10,11 @@ import ru.otus.repository.BookRepository;
 import ru.otus.repository.CommentRepository;
 import ru.otus.request.CreateCommentRequest;
 import ru.otus.request.UpdateCommentRequest;
+import ru.otus.response.CommentResponse;
 
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 @Service
@@ -22,8 +25,14 @@ public class CommentServiceImpl implements CommentService {
 	private final CommentRepository commentRepository;
 
 	@Override
-	public List<Comment> getAll(String bookId) {
-		return commentRepository.findByBookId(bookId);
+	public List<CommentResponse> getAll(String bookId) {
+		final List<Comment> comments = commentRepository.findByBookId(bookId);
+		return comments.stream().map(comment -> new CommentResponse(
+				comment.getId(),
+				comment.getUser(),
+				comment.getText(),
+				comment.getBook().getId()
+		)).collect(toList());
 	}
 
 	@Override

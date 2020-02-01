@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.otus.domain.model.Comment;
 import ru.otus.request.CreateCommentRequest;
 import ru.otus.request.UpdateCommentRequest;
+import ru.otus.response.CommentResponse;
 import ru.otus.service.CommentService;
 
 import java.util.List;
@@ -18,8 +18,8 @@ public class CommentController {
 	private final CommentService service;
 
 	@GetMapping("/comments")
-	ResponseEntity<List<Comment>> getAll(@RequestParam("bookId") String bookId) {
-		final List<Comment> comments = service.getAll(bookId);
+	ResponseEntity<List<CommentResponse>> getAll(@RequestParam("bookId") String bookId) {
+		final List<CommentResponse> comments = service.getAll(bookId);
 		return new ResponseEntity<>(comments, HttpStatus.OK);
 	}
 
