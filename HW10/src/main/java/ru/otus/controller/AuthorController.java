@@ -4,10 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.otus.controller.form.AuthorForm;
-import ru.otus.domain.exception.NotFoundException;
 import ru.otus.domain.model.Author;
-import ru.otus.repository.AuthorRepository;
+import ru.otus.request.AuthorRequest;
+import ru.otus.service.AuthorService;
 
 import java.util.List;
 
@@ -15,17 +14,17 @@ import java.util.List;
 @RestController
 public class AuthorController {
 
-	private final AuthorRepository repository;
+	private final AuthorService service;
 
-	@GetMapping("/author")
-	List<Author> getAllAuthors() {
-		return repository.findAll();
+	@GetMapping("/authors")
+	ResponseEntity<List<Author>> getAllAuthors() {
+		final List<Author> authors = service.getAll();
+		return new ResponseEntity<>(authors, HttpStatus.OK);
 	}
 
-	@PutMapping("/author/{name}")
-	ResponseEntity<HttpStatus> update(@PathVariable("name") String name, @RequestBody AuthorForm form) {
-		final Author author = repository.findByName(name).orElseThrow(() -> new NotFoundException("Author not found"));
-		repository.updateName(author, form.getName());
+	@PutMapping("/authors/{name}")
+	ResponseEntity<HttpStatus> update(@PathVariable("name") String name, @RequestBody AuthorRequest request) {
+		service.update(name, request);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

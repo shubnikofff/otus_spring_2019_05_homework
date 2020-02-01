@@ -1,11 +1,11 @@
-package ru.otus.controller.form;
+package ru.otus.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @NoArgsConstructor
-public class AuthorForm {
+@Getter
+public class AuthorRequest {
 
 	private String name;
 }
