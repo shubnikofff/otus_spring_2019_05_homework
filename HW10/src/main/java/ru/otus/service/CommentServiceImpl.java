@@ -8,7 +8,8 @@ import ru.otus.exception.BookNotFound;
 import ru.otus.exception.CommentNotFound;
 import ru.otus.repository.BookRepository;
 import ru.otus.repository.CommentRepository;
-import ru.otus.request.CommentRequest;
+import ru.otus.request.CreateCommentRequest;
+import ru.otus.request.UpdateCommentRequest;
 
 import java.util.List;
 
@@ -26,24 +27,22 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public void create(CommentRequest request) throws BookNotFound {
+	public void create(CreateCommentRequest request) {
 		final Book book = bookRepository.findById(request.getBookId()).orElseThrow(BookNotFound::new);
 		final Comment comment = new Comment(request.getUser(), request.getText(), book);
 		commentRepository.save(comment);
 	}
 
 	@Override
-	public void update(String id, CommentRequest request) throws CommentNotFound, BookNotFound {
-		final Book book = bookRepository.findById(request.getBookId()).orElseThrow(BookNotFound::new);
+	public void update(String id, UpdateCommentRequest request) {
 		final Comment comment = commentRepository.findById(id).orElseThrow(CommentNotFound::new);
 		comment.setUser(request.getUser());
 		comment.setText(request.getText());
-		comment.setBook(book);
 		commentRepository.save(comment);
 	}
 
 	@Override
-	public void delete(String id) throws CommentNotFound {
+	public void delete(String id) {
 		final Comment comment = commentRepository.findById(id).orElseThrow(CommentNotFound::new);
 		commentRepository.delete(comment);
 	}

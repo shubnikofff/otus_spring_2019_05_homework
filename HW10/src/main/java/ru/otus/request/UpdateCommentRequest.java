@@ -5,11 +5,9 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class CommentRequest {
+public class UpdateCommentRequest {
 
 	private String user;
 
 	private String text;
-
-	private String bookId;
 }

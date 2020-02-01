@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.domain.model.Comment;
-import ru.otus.request.CommentRequest;
+import ru.otus.request.CreateCommentRequest;
+import ru.otus.request.UpdateCommentRequest;
 import ru.otus.service.CommentService;
 
 import java.util.List;
@@ -23,13 +24,13 @@ public class CommentController {
 	}
 
 	@PostMapping("/comments")
-	ResponseEntity<HttpStatus> create(@RequestBody CommentRequest request) {
+	ResponseEntity<HttpStatus> create(@RequestBody CreateCommentRequest request) {
 		service.create(request);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 	@PutMapping("/comments/{id}")
-	ResponseEntity<HttpStatus> update(@PathVariable("id") String id, @RequestBody CommentRequest request) {
+	ResponseEntity<HttpStatus> update(@PathVariable("id") String id, @RequestBody UpdateCommentRequest request) {
 		service.update(id, request);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
