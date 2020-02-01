@@ -4,61 +4,45 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.otus.controller.dto.BookDto;
-import ru.otus.domain.exception.NotFoundException;
-import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
-import ru.otus.domain.model.Genre;
-import ru.otus.repository.BookRepository;
+import ru.otus.request.BookRequest;
+import ru.otus.service.BookService;
 
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 @RestController
 public class BookController {
 
-	private final BookRepository bookRepository;
+	private final BookService service;
 
-	@GetMapping("/book")
-	List<Book> getBooks() {
-		return bookRepository.findAll();
+	@GetMapping("/books")
+	ResponseEntity<List<Book>> getBooks() {
+		final List<Book> books = service.getAll();
+		return new ResponseEntity<>(books, HttpStatus.OK);
 	}
 
-	@GetMapping("/book/{id}")
-	Book getBook(@PathVariable("id") String id) {
-		return bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book was not found"));
+	@GetMapping("/books/{id}")
+	ResponseEntity<Book> getBook(@PathVariable("id") String id) {
+		final Book book = service.getOne(id);
+		return new ResponseEntity<>(book, HttpStatus.OK);
 	}
 
-	@PostMapping("/book")
-	ResponseEntity<Book> create(@RequestBody BookDto dto) {
-		final Book book = new Book(
-				dto.getTitle(),
-				new Genre(dto.getGenre()),
-				dto.getAuthors().stream().map(Author::new).collect(toList())
-		);
-
-		bookRepository.save(book);
-		return new ResponseEntity<>(book, HttpStatus.CREATED);
+	@PostMapping("/books")
+	ResponseEntity<HttpStatus> create(@RequestBody BookRequest request) {
+		service.create(request);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
-	@PutMapping("/book/{id}")
-	ResponseEntity<HttpStatus> update(@PathVariable("id") String id, @RequestBody BookDto dto) {
-		final Book book = bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book was not found"));
-		book.setTitle(dto.getTitle());
-		book.setGenre(new Genre(dto.getGenre()));
-		book.setAuthors(dto.getAuthors().stream().map(Author::new).collect(toList()));
-
-		bookRepository.save(book);
+	@PutMapping("/books/{id}")
+	ResponseEntity<HttpStatus> update(@PathVariable("id") String id, @RequestBody BookRequest request) {
+		service.update(id, request);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@DeleteMapping("/book/{id}")
+	@DeleteMapping("/books/{id}")
 	ResponseEntity<HttpStatus> delete(@PathVariable("id") String id) {
-		final Book book = bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book was not found"));
-
-		bookRepository.delete(book);
+		service.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
