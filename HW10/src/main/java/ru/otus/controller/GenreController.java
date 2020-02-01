@@ -4,10 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.otus.controller.form.GenreForm;
-import ru.otus.domain.exception.NotFoundException;
 import ru.otus.domain.model.Genre;
-import ru.otus.repository.GenreRepository;
+import ru.otus.request.GenreRequest;
+import ru.otus.service.GenreService;
 
 import java.util.List;
 
@@ -15,17 +14,17 @@ import java.util.List;
 @RestController
 public class GenreController {
 
-	private final GenreRepository repository;
+	private final GenreService service;
 
-	@GetMapping("/genre")
-	List<Genre> getAllGenres() {
-		return repository.findAll();
+	@GetMapping("/genres")
+	ResponseEntity<List<Genre>> getAllGenres() {
+		final List<Genre> genres = service.getAll();
+		return new ResponseEntity<>(genres, HttpStatus.OK);
 	}
 
-	@PutMapping("/genre/{name}")
-	ResponseEntity<HttpStatus> update(@PathVariable("name") String name, @RequestBody GenreForm form) {
-		final Genre genre = repository.findByName(name).orElseThrow(() -> new NotFoundException("Genre not found"));
-		repository.updateName(genre, form.getName());
+	@PutMapping("/genres/{name}")
+	ResponseEntity<HttpStatus> update(@PathVariable("name") String name, @RequestBody GenreRequest request) {
+		service.update(name, request);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
