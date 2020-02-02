@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.domain.model.Author;
-import ru.otus.request.AuthorRequest;
+import ru.otus.request.UpdateAuthorRequest;
 import ru.otus.service.AuthorService;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class AuthorController {
 	}
 
 	@PutMapping("/authors/{name}")
-	ResponseEntity<HttpStatus> update(@PathVariable("name") String name, @RequestBody AuthorRequest request) {
+	ResponseEntity<HttpStatus> update(@PathVariable("name") String name, @RequestBody UpdateAuthorRequest request) {
 		service.update(name, request);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
