@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.domain.model.Genre;
 import ru.otus.exception.GenreNotFound;
 import ru.otus.repository.GenreRepository;
-import ru.otus.request.GenreRequest;
+import ru.otus.request.UpdateGenreRequest;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class GenreServiceImpl implements GenreService {
 	}
 
 	@Override
-	public void update(String name, GenreRequest request) {
+	public void update(String name, UpdateGenreRequest request) {
 		final Genre genre = repository.findByName(name).orElseThrow(GenreNotFound::new);
 		repository.updateName(genre, request.getName());
 	}

@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.domain.model.Genre;
-import ru.otus.request.GenreRequest;
+import ru.otus.request.UpdateGenreRequest;
 import ru.otus.service.GenreService;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class GenreController {
 	}
 
 	@PutMapping("/genres/{name}")
-	ResponseEntity<HttpStatus> update(@PathVariable("name") String name, @RequestBody GenreRequest request) {
+	ResponseEntity<HttpStatus> update(@PathVariable("name") String name, @RequestBody UpdateGenreRequest request) {
 		service.update(name, request);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
