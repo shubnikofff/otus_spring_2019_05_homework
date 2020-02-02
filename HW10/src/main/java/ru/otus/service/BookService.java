@@ -1,7 +1,7 @@
 package ru.otus.service;
 
 import ru.otus.domain.model.Book;
-import ru.otus.request.BookRequest;
+import ru.otus.request.SaveBookRequest;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ public interface BookService {
 
 	Book getOne(String id);
 
-	void create(BookRequest request);
+	void create(SaveBookRequest request);
 
-	void update(String id, BookRequest request);
+	void update(String id, SaveBookRequest request);
 
 	void delete(String id);
 }

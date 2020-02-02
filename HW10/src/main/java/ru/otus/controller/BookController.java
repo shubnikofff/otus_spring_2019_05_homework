@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.domain.model.Book;
-import ru.otus.request.BookRequest;
+import ru.otus.request.SaveBookRequest;
 import ru.otus.service.BookService;
 
 import java.util.List;
@@ -29,13 +29,13 @@ public class BookController {
 	}
 
 	@PostMapping("/books")
-	ResponseEntity<HttpStatus> create(@RequestBody BookRequest request) {
+	ResponseEntity<HttpStatus> create(@RequestBody SaveBookRequest request) {
 		service.create(request);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 	@PutMapping("/books/{id}")
-	ResponseEntity<HttpStatus> update(@PathVariable("id") String id, @RequestBody BookRequest request) {
+	ResponseEntity<HttpStatus> update(@PathVariable("id") String id, @RequestBody SaveBookRequest request) {
 		service.update(id, request);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

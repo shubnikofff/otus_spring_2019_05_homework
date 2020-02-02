@@ -7,7 +7,7 @@ import ru.otus.domain.model.Book;
 import ru.otus.domain.model.Genre;
 import ru.otus.exception.BookNotFound;
 import ru.otus.repository.BookRepository;
-import ru.otus.request.BookRequest;
+import ru.otus.request.SaveBookRequest;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public void create(BookRequest request) {
+	public void create(SaveBookRequest request) {
 		final Book book = new Book(
 				request.getTitle(),
 				new Genre(request.getGenre()),
@@ -40,7 +40,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public void update(String id, BookRequest request) {
+	public void update(String id, SaveBookRequest request) {
 		final Book book = repository.findById(id).orElseThrow(BookNotFound::new);
 		book.setTitle(request.getTitle());
 		book.setGenre(new Genre(request.getGenre()));
