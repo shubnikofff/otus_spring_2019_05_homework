@@ -72,7 +72,7 @@ class BookControllerTest {
 		mockMvc.perform(get("/book/" + NONEXISTENT_ID + "/details"))
 				.andExpect(status().isNotFound());
 
-		mockMvc.perform(get("/book/" + ID + "/details"))
+		mockMvc.perform(get("/book/{id}/details", ID))
 				.andExpect(status().isOk())
 				.andExpect(view().name("book/details"))
 				.andExpect(model().size(2))
@@ -91,8 +91,10 @@ class BookControllerTest {
 	@Test
 	@DisplayName("POST /book/crete")
 	void createBook() throws Exception {
+		val id = "id";
 		val form = new BookForm("Title", "Genre", "Author #1, Author #2");
 		val book = new Book("Book", new Genre("Genre"), new Author("Author #1"), new Author("Author #2"));
+		book.setId(id);
 
 		when(bookRepository.save(Mapper.map(form))).thenReturn(book);
 
@@ -101,8 +103,8 @@ class BookControllerTest {
 				.param("title", form.getTitle())
 				.param("genre", form.getGenre())
 				.param("authors", form.getAuthors()))
-				.andExpect(status().isCreated())
-				.andExpect(view().name("book/details"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/book/" + id + "/details"))
 				.andExpect(model().attribute("book", book));
 	}
 
@@ -115,10 +117,10 @@ class BookControllerTest {
 		when(bookRepository.findById(ID)).thenReturn(Optional.of(book));
 		when(bookRepository.findById(NONEXISTENT_ID)).thenReturn(Optional.empty());
 
-		mockMvc.perform(get("/book/" + NONEXISTENT_ID + "/update"))
+		mockMvc.perform(get("/book/{id}/update", NONEXISTENT_ID))
 				.andExpect(status().isNotFound());
 
-		mockMvc.perform(get("/book/" + ID + "/update"))
+		mockMvc.perform(get("/book/{id}/update", ID))
 				.andExpect(status().isOk())
 				.andExpect(view().name("book/form"))
 				.andExpect(model().size(2))
@@ -136,10 +138,10 @@ class BookControllerTest {
 		when(bookRepository.findById(NONEXISTENT_ID)).thenReturn(Optional.empty());
 		when(bookRepository.save(Mapper.map(form))).thenReturn(book);
 
-		mockMvc.perform(post("/book/" + NONEXISTENT_ID + "/update"))
+		mockMvc.perform(post("/book/{id}/update", NONEXISTENT_ID))
 				.andExpect(status().isNotFound());
 
-		mockMvc.perform(post("/book/" + ID + "/update")
+		mockMvc.perform(post("/book/{id}/update", ID)
 				.param("title", form.getTitle())
 				.param("genre", form.getGenre())
 				.param("authors", form.getAuthors()))
@@ -158,10 +160,10 @@ class BookControllerTest {
 		when(bookRepository.findById(NONEXISTENT_ID)).thenReturn(Optional.empty());
 		when(commentRepository.save(Mapper.map(form, book))).thenReturn(new Comment("User", "Text", book));
 
-		mockMvc.perform(post("/book/" + NONEXISTENT_ID + "/add-comment"))
+		mockMvc.perform(post("/book/{id}/add-comment", NONEXISTENT_ID))
 				.andExpect(status().isNotFound());
 
-		mockMvc.perform(post("/book/" + ID + "/add-comment")
+		mockMvc.perform(post("/book/{id}/add-comment", ID)
 				.param("user", form.getUser())
 				.param("text", form.getText()))
 				.andExpect(status().is3xxRedirection())
@@ -177,10 +179,10 @@ class BookControllerTest {
 		when(bookRepository.findById(ID)).thenReturn(Optional.of(book));
 		when(bookRepository.findById(NONEXISTENT_ID)).thenReturn(Optional.empty());
 
-		mockMvc.perform(get("/book/" + NONEXISTENT_ID + "/delete"))
+		mockMvc.perform(get("/book/{id}/delete", NONEXISTENT_ID))
 				.andExpect(status().isNotFound());
 
-		mockMvc.perform(get("/book/" + ID + "/delete"))
+		mockMvc.perform(get("/book/{id}/delete", ID))
 				.andExpect(status().isOk())
 				.andExpect(view().name("book/delete"))
 				.andExpect(model().size(1))

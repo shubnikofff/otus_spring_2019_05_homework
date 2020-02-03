@@ -42,7 +42,7 @@ public class BookController {
 	@PostMapping("/book/create")
 	ModelAndView createBook(@ModelAttribute BookForm form) {
 		final Book book = bookRepository.save(Mapper.map(form));
-		return new ModelAndView("book/details", HttpStatus.CREATED)
+		return new ModelAndView("redirect:/book/" + book.getId() + "/details")
 				.addObject("book", book);
 	}
 
