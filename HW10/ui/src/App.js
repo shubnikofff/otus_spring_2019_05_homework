@@ -1,17 +1,22 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography } from '@material-ui/core';
+import { BrowserRouter, Route } from 'react-router-dom';
+import {
+	Authors,
+	Books,
+	Genres,
+	Header,
+} from './components';
 
 function App() {
 	return (
-		<div className="App">
-			<AppBar position="relative" >
-				<Toolbar>
-					<Typography variant="h6" color="inherit" noWrap>
-						Online library
-					</Typography>
-				</Toolbar>
-			</AppBar>
-		</div>
+		<BrowserRouter>
+			<div>
+				<Header />
+				<Route exact path="/" component={Books} />
+				<Route exact path="/genres" component={Genres} />
+				<Route exact path="/authors" component={Authors} />
+			</div>
+		</BrowserRouter>
 	);
 }
 
