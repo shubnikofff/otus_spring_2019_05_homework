@@ -54,10 +54,10 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 									</Typography>
 								</CardContent>
 								<CardActions>
-									<Button color="primary" to={`/books/${book.id}`} component={Link}>
+									<Button color="primary" to={`/book/${book.id}`} component={Link}>
 										View
 									</Button>
-									<Button color="primary" to={`/books/${book.id}/edit`} component={Link}>
+									<Button color="primary" to={`/book/${book.id}/edit`} component={Link}>
 										Edit
 									</Button>
 								</CardActions>
@@ -70,7 +70,7 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 						justify="flex-end"
 						alignItems="center"
 					>
-						<Fab color="primary" component={Link} to='/books/create'>
+						<Fab color="primary" component={Link} to='/book/create'>
 							<Add />
 						</Fab>
 					</Grid>
