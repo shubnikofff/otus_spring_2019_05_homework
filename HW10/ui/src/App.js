@@ -1,9 +1,10 @@
 // @flow
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { Container } from '@material-ui/core';
 import {
 	Authors,
-	Books,
+	BookList,
 	Genres,
 	Header,
 } from './components';
@@ -13,9 +14,11 @@ function App() {
 		<BrowserRouter>
 			<div>
 				<Header />
-				<Route exact path="/" component={Books} />
-				<Route exact path="/genres" component={Genres} />
-				<Route exact path="/authors" component={Authors} />
+				<Container>
+					<Route exact path="/" component={BookList} />
+					<Route exact path="/genres" component={Genres} />
+					<Route exact path="/authors" component={Authors} />
+				</Container>
 			</div>
 		</BrowserRouter>
 	);
