@@ -3,8 +3,10 @@ import axios from 'axios';
 
 import type { AxiosInstance, AxiosResponse } from 'axios';
 
+const API_URL = 'http://localhost:3000/api';
+
 const axiosInstance: AxiosInstance = axios.create({
-	baseURL: 'http://localhost:3000',
+	baseURL: API_URL,
 });
 
 class RestClient {
