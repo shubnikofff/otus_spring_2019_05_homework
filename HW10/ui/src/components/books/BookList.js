@@ -6,11 +6,9 @@ import {
 	Button,
 	Card, CardActions,
 	CardContent,
-	Fab,
 	Grid,
 	Typography,
 } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
 import { RestClient } from '../../services';
 
 import type { Book, Author } from '../../types';
@@ -38,7 +36,7 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 	render() {
 		return (
 			<Box mt={4}>
-				<Grid container spacing={6}>
+				<Grid container spacing={4}>
 					{this.state.books.map((book: Book) => (
 						<Grid item key={book.id} xs={12} sm={6} md={3}>
 							<Card>
@@ -54,26 +52,16 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 									</Typography>
 								</CardContent>
 								<CardActions>
-									<Button color="primary" to={`/book/${book.id}`} component={Link}>
+									<Button color="primary" to={`/book/${book.id}`} component={Link} size="small">
 										View
 									</Button>
-									<Button color="primary" to={`/book/${book.id}/edit`} component={Link}>
+									<Button color="primary" to={`/book/${book.id}/edit`} component={Link} size="small">
 										Edit
 									</Button>
 								</CardActions>
 							</Card>
 						</Grid>
 					))}
-					<Grid
-						container
-						direction="row"
-						justify="flex-end"
-						alignItems="center"
-					>
-						<Fab color="primary" component={Link} to='/book/create'>
-							<Add />
-						</Fab>
-					</Grid>
 				</Grid>
 			</Box>
 		);
