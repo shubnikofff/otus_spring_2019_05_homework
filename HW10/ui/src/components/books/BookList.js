@@ -3,12 +3,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
 	Box,
-	Button,
-	Card, CardActions,
+	IconButton,
+	Card,
+	CardActions,
+	CardActionArea,
 	CardContent,
 	Grid,
 	Typography,
 } from '@material-ui/core';
+import {
+	Delete as DeleteIcon,
+	Edit as EditIcon,
+} from '@material-ui/icons';
 import { RestClient } from '../../services';
 
 import type { Book, Author } from '../../types';
@@ -40,24 +46,28 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 					{this.state.books.map((book: Book) => (
 						<Grid item key={book.id} xs={12} sm={6} md={3}>
 							<Card>
-								<CardContent>
-									<Typography variant="h5" gutterBottom>
-										{book.title}
-									</Typography>
-									<Typography variant="body2" color="textSecondary">
-										{book.genre.name}
-									</Typography>
-									<Typography variant="body1">
-										{book.authors.map((author: Author) => author.name).join(', ')}
-									</Typography>
-								</CardContent>
+								<CardActionArea component={Link} to={`/book/${book.id}`}>
+									<CardContent>
+										<Typography variant="h5" gutterBottom>
+											{book.title}
+										</Typography>
+										<Typography variant="body2" color="textSecondary">
+											{book.genre.name}
+										</Typography>
+										<Typography variant="body1">
+											{book.authors.map((author: Author) => author.name).join(', ')}
+										</Typography>
+									</CardContent>
+								</CardActionArea>
 								<CardActions>
-									<Button color="primary" to={`/book/${book.id}`} component={Link} size="small">
-										View
-									</Button>
-									<Button color="primary" to={`/book/${book.id}/edit`} component={Link} size="small">
-										Edit
-									</Button>
+									<Grid container justify="flex-end" alignItems="center">
+										<IconButton to={`/book/${book.id}/edit`} component={Link}>
+											<EditIcon fontSize="small" />
+										</IconButton>
+										<IconButton to={`/book/${book.id}/delete`} component={Link}>
+											<DeleteIcon fontSize="small" />
+										</IconButton>
+									</Grid>
 								</CardActions>
 							</Card>
 						</Grid>
