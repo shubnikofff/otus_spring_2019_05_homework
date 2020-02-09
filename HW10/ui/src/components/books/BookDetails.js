@@ -6,6 +6,8 @@ import { RestClient } from '../../services';
 
 import {
 	Box,
+	Button,
+	Grid,
 	LinearProgress,
 	Link as MuiLink,
 	List,
@@ -42,12 +44,36 @@ function BookDetails() {
 	return (
 		<>
 			<Box mt={4}>
-				<Typography variant="h4">
-					{book.title}
-				</Typography>
-				<MuiLink component={Link} to={`/genre/${book.genre.name}`} color="inherit">
-					{book.genre.name}
-				</MuiLink>
+				<Grid container justify="space-between">
+					<div>
+						<Typography variant="h4">
+							{book.title}
+						</Typography>
+						<MuiLink component={Link} to={`/genre/${book.genre.name}`} color="inherit">
+							{book.genre.name}
+						</MuiLink>
+					</div>
+					<div>
+						<Button
+							color="primary"
+							component={Link}
+							size="large"
+							to={`/book/${book.id}/edit`}
+							variant="outlined"
+						>
+							Update
+						</Button>
+						<Button
+							color="secondary"
+							component={Link}
+							size="large"
+							to={`/book/${book.id}/delete`}
+						>
+							Delete
+						</Button>
+					</div>
+				</Grid>
+
 			</Box>
 			<Box mt={4}>
 				<Typography variant="h6">
