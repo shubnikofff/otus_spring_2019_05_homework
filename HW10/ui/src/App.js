@@ -4,8 +4,9 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import {
 	Authors,
-	BookList,
+	BookCreate,
 	BookDetails,
+	BookList,
 	Genres,
 	Header,
 } from './components';
@@ -17,6 +18,7 @@ function App() {
 				<Header />
 				<Container>
 					<Route exact path="/" component={BookList} />
+					<Route exact path="/create-book" component={BookCreate} />
 					<Route exact path="/book/:id" component={BookDetails} />
 					<Route exact path="/genres" component={Genres} />
 					<Route exact path="/authors" component={Authors} />

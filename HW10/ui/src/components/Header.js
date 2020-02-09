@@ -31,7 +31,7 @@ function Header() {
 				</Grid>
 				<Grid item>
 					<Toolbar>
-						<Button to="/book/create" color="inherit" component={Link}>
+						<Button to="/create-book" color="inherit" component={Link}>
 							Create book
 						</Button>
 					</Toolbar>
