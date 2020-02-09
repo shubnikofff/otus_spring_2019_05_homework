@@ -4,6 +4,7 @@ export {
 	BookDetails,
 	BookForm,
 	BookList,
+	BookUpdate,
 } from './books';
 export { default as Authors } from './Authors';
 export { default as Genres } from './Genres';
