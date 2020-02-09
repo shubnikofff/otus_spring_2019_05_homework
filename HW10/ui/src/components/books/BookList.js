@@ -3,12 +3,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
 	Box,
-	IconButton,
 	Card,
-	CardActions,
 	CardActionArea,
+	CardActions,
 	CardContent,
 	Grid,
+	IconButton,
+	LinearProgress,
 	Typography,
 } from '@material-ui/core';
 import {
@@ -22,14 +23,14 @@ import type { Book, Author } from '../../types';
 type BookListProps = {||};
 
 type BookListState = {|
-	books: Array<Book>
+	books: Array<Book> | null,
 |};
 
 class BookList extends React.PureComponent<BookListProps, BookListState> {
 	constructor(props: BookListProps, context: any) {
 		super(props, context);
 		this.state = {
-			books: [],
+			books: null,
 		};
 	}
 
@@ -40,6 +41,10 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 	}
 
 	render() {
+		if (this.state.books === null) {
+			return (<LinearProgress />);
+		}
+
 		return (
 			<Box mt={4}>
 				<Grid container spacing={4}>
