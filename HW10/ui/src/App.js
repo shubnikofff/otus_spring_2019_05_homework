@@ -5,6 +5,7 @@ import { Container } from '@material-ui/core';
 import {
 	Authors,
 	BookCreate,
+	BookDelete,
 	BookDetails,
 	BookList,
 	BookUpdate,
@@ -21,6 +22,7 @@ function App() {
 					<Route exact path="/" component={BookList} />
 					<Route exact path="/authors" component={Authors} />
 					<Route exact path="/book/:id" component={BookDetails} />
+					<Route exact path="/book/:id/delete" component={BookDelete} />
 					<Route exact path="/book/:id/edit" component={BookUpdate} />
 					<Route exact path="/create-book" component={BookCreate} />
 					<Route exact path="/genres" component={Genres} />

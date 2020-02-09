@@ -1,6 +1,7 @@
 // @flow
 export {
 	BookCreate,
+	BookDelete,
 	BookDetails,
 	BookForm,
 	BookList,
