@@ -15,6 +15,7 @@ import {
 	makeStyles,
 	Typography,
 } from '@material-ui/core';
+import { CommentList } from '../../components';
 
 import type { Book } from '../../types';
 
@@ -91,6 +92,12 @@ function BookDetails() {
 						</ListItem>
 					))}
 				</List>
+			</Box>
+			<Box mt={4}>
+				<Typography variant="h6">
+					Comments
+				</Typography>
+				<CommentList bookId={id} />
 			</Box>
 		</>
 	);

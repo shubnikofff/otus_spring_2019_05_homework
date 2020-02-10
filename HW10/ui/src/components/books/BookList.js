@@ -64,7 +64,7 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 										</Typography>
 									</CardContent>
 								</CardActionArea>
-								<CardActions>
+								<CardActions disableSpacing>
 									<Grid container justify="flex-end" alignItems="center">
 										<IconButton to={`/book/${book.id}/edit`} component={Link}>
 											<EditIcon fontSize="small" />
