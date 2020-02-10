@@ -1,4 +1,5 @@
 // @flow
+export { AuthorList } from './authors';
 export {
 	BookCreate,
 	BookDelete,
@@ -7,9 +8,6 @@ export {
 	BookList,
 	BookUpdate,
 } from './books';
-export {
-	CommentList,
-} from './comments';
-export { default as Authors } from './Authors';
+export { CommentList } from './comments';
 export { default as Genres } from './Genres';
 export { default as Header } from './Header';
