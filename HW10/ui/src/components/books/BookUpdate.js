@@ -14,7 +14,6 @@ import { Alert } from '@material-ui/lab';
 
 import { default as BookForm } from './BookForm';
 
-import type { FormikBag } from 'formik';
 import type { Book, BookFormValues } from '../../types';
 import type { AxiosError } from 'axios';
 
@@ -26,10 +25,10 @@ function BookUpdate() {
 	const [operationError, setOperationError] = useState<?string>(null);
 	const [successMsgOpen, setSuccessMsgOpen] = useState<boolean>(false);
 
-	const handleSubmit = (values: BookFormValues, { resetForm }: FormikBag) =>
+	const handleSubmit = (values: BookFormValues) =>
 		RestClient.put(`/books/${id}`, values)
 			.then(() => {
-				resetForm();
+				setInitialValues(values);
 				setSuccessMsgOpen(true);
 			})
 			.catch((error: AxiosError) => {
