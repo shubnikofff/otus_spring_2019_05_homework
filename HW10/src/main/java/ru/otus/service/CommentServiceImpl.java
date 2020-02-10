@@ -11,6 +11,7 @@ import ru.otus.repository.CommentRepository;
 import ru.otus.request.CreateCommentRequest;
 import ru.otus.request.UpdateCommentRequest;
 import ru.otus.response.CommentResponse;
+import ru.otus.response.CreateCommentResponse;
 
 import java.util.List;
 
@@ -36,10 +37,11 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public void create(CreateCommentRequest request) {
+	public CreateCommentResponse create(CreateCommentRequest request) {
 		final Book book = bookRepository.findById(request.getBookId()).orElseThrow(BookNotFound::new);
 		final Comment comment = new Comment(request.getUser(), request.getText(), book);
 		commentRepository.save(comment);
+		return new CreateCommentResponse(comment.getId());
 	}
 
 	@Override

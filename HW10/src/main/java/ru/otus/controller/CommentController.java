@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.otus.request.CreateCommentRequest;
 import ru.otus.request.UpdateCommentRequest;
 import ru.otus.response.CommentResponse;
+import ru.otus.response.CreateCommentResponse;
 import ru.otus.service.CommentService;
 
 import java.util.List;
@@ -24,9 +25,9 @@ public class CommentController {
 	}
 
 	@PostMapping("/comments")
-	ResponseEntity<HttpStatus> create(@RequestBody CreateCommentRequest request) {
-		service.create(request);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+	ResponseEntity<CreateCommentResponse> create(@RequestBody CreateCommentRequest request) {
+		final CreateCommentResponse response = service.create(request);
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/comments/{id}")
