@@ -1,6 +1,7 @@
 // @flow
 import React, { useState, useEffect } from 'react';
 import { RestClient } from '../../services';
+import { Formik } from 'formik';
 import {
 	Box,
 	Card,
@@ -10,10 +11,15 @@ import {
 	LinearProgress,
 	Typography,
 } from '@material-ui/core';
-import {
-	Delete as DeleteIcon,
-} from '@material-ui/icons';
-import type { Comment } from '../../types';
+import { Delete as DeleteIcon } from '@material-ui/icons';
+import CommentForm from './CommentForm';
+
+import type { Comment, CommentFormValues } from '../../types';
+import type { FormikBag } from 'formik';
+
+type CreateCommentResponse = {|
+	id: string,
+|}
 
 type CommentListProps = {|
 	bookId: string,
@@ -43,16 +49,32 @@ function CommentList({ bookId }: CommentListProps) {
 		return (<LinearProgress />);
 	}
 
-	if (comments.length === 0) {
-		return (
-			<Typography>
-				No comments yet
-			</Typography>
-		);
-	}
+	const initialValues: CommentFormValues = {
+		bookId,
+		text: '',
+		user: '',
+	};
+
+	const handleSubmit = (values: CommentFormValues, { resetForm }: FormikBag) =>
+		RestClient.post<CreateCommentResponse>(`/comments`, values)
+			.then(({ id }: CreateCommentResponse) => {
+				resetForm();
+				setComments([{ id, ...values }, ...comments]);
+			});
 
 	return (
 		<>
+			<Box my={2}>
+				<Card>
+					<CardContent>
+						<Formik
+							component={CommentForm}
+							initialValues={initialValues}
+							onSubmit={handleSubmit}
+						/>
+					</CardContent>
+				</Card>
+			</Box>
 			{comments.map(comment => (
 				<Box mb={2} key={comment.id}>
 					<Card>
