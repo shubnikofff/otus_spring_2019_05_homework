@@ -20,9 +20,9 @@ import type { Book } from '../../types';
 
 const useStyles = makeStyles(theme => ({
 	authors: {
-		width: '100%',
-		maxWidth: 360,
 		backgroundColor: theme.palette.background.paper,
+		maxWidth: 360,
+		width: '100%',
 	},
 }));
 
@@ -81,7 +81,12 @@ function BookDetails() {
 				</Typography>
 				<List className={classes.authors}>
 					{book.authors.map(author => (
-						<ListItem component={Link} to={`/author/${author.name}`} button>
+						<ListItem
+							button
+							component={Link}
+							key={author.name}
+							to={`/author/${author.name}`}
+						>
 							{author.name}
 						</ListItem>
 					))}
