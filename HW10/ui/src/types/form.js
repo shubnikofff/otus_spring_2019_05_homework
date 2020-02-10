@@ -16,4 +16,5 @@ export type GenreFormValues = {|
 export type CommentFormValues = {|
 	user: string,
 	text: string,
+	bookId: string,
 |}
