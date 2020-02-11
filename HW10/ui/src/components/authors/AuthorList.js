@@ -1,20 +1,37 @@
 // @flow
 import React, { useState, useEffect } from 'react';
-import { RestClient} from 'services';
+import { RestClient } from 'services';
 
 import {
 	Box,
-	Typography,
+	LinearProgress,
+	List,
 } from '@material-ui/core';
+import { default as AuthorListItem } from './AuthorListItem';
+
+import type { Author } from 'types';
 
 function AuthorList() {
-	useEffect(() => {
+	const [authors, setAuthors] = useState<Array<Author> | null>(null);
 
-	});
+	useEffect(() => {
+		RestClient.get('authors').then(setAuthors);
+	}, []);
+
+	if (authors === null) {
+		return (<LinearProgress />);
+	}
 
 	return (
 		<Box mt={4}>
-			Authors
+			<List>
+				{authors.map(author => (
+					<AuthorListItem
+						author={author}
+						key={author.name}
+					/>
+				))}
+			</List>
 		</Box>
 	);
 }
