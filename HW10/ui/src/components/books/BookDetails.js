@@ -9,28 +9,18 @@ import {
 	Button,
 	Grid,
 	LinearProgress,
-	Link as MuiLink,
 	List,
 	ListItem,
-	makeStyles,
+	ListItemText,
 	Typography,
 } from '@material-ui/core';
 import { CommentList } from 'components';
 
 import type { Book } from 'types';
 
-const useStyles = makeStyles(theme => ({
-	authors: {
-		backgroundColor: theme.palette.background.paper,
-		maxWidth: 360,
-		width: '100%',
-	},
-}));
-
 function BookDetails() {
 	const { id } = useParams();
 	const [book, setBook] = useState<?Book>(null);
-	const classes = useStyles();
 
 	function fetchBook() {
 		RestClient.get(`/books/${id}`).then(setBook);
@@ -50,9 +40,6 @@ function BookDetails() {
 						<Typography variant="h4">
 							{book.title}
 						</Typography>
-						<MuiLink component={Link} to={`/genre/${book.genre.name}`} color="inherit">
-							{book.genre.name}
-						</MuiLink>
 					</div>
 					<div>
 						<Button
@@ -74,21 +61,21 @@ function BookDetails() {
 						</Button>
 					</div>
 				</Grid>
-
+				<Typography variant="body1" color="textPrimary">
+					{book.genre.name}
+				</Typography>
 			</Box>
 			<Box mt={4}>
 				<Typography variant="h6">
 					Authors
 				</Typography>
-				<List className={classes.authors}>
+				<List>
 					{book.authors.map(author => (
-						<ListItem
-							button
-							component={Link}
-							key={author.name}
-							to={`/author/${author.name}`}
-						>
-							{author.name}
+						<ListItem key={author.name}>
+							<ListItemText
+								primary={author.name}
+								color="textPrimary"
+							/>
 						</ListItem>
 					))}
 				</List>
