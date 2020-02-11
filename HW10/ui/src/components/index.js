@@ -9,5 +9,5 @@ export {
 	BookUpdate,
 } from './books';
 export { CommentList } from './comments';
-export { default as Genres } from './Genres';
+export { GenreList } from './genres';
 export { default as Header } from './Header';

@@ -9,7 +9,7 @@ import {
 	BookDetails,
 	BookList,
 	BookUpdate,
-	Genres,
+	GenreList,
 	Header,
 } from 'components';
 
@@ -25,7 +25,7 @@ function App() {
 					<Route exact path="/book/:id/delete" component={BookDelete} />
 					<Route exact path="/book/:id/edit" component={BookUpdate} />
 					<Route exact path="/create-book" component={BookCreate} />
-					<Route exact path="/genres" component={Genres} />
+					<Route exact path="/genres" component={GenreList} />
 				</Container>
 			</div>
 		</BrowserRouter>
