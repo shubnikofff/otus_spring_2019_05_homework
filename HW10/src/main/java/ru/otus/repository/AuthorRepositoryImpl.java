@@ -46,9 +46,9 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 	@Override
 	public Optional<Author> findByName(String name) {
 		final Aggregation aggregation = newAggregation(
-				match(where("authors.name").is(name)),
 				unwind("authors"),
 				group("authors.name"),
+				match(where("_id").is(name)),
 				project().and("_id").as("name").andExclude("_id")
 		);
 
