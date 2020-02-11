@@ -14,13 +14,13 @@ import {
 import { TextField } from 'formik-material-ui';
 
 import type { FormikProps, ArrayHelpers } from 'formik';
-import type { BookFormValues } from '../../types';
+import type { BookFormValues } from 'types';
 
 import {
 	FIELD_AUTHORS,
 	FIELD_GENRE,
 	FIELD_TITLE,
-} from '../../constants';
+} from 'constants/fields';
 
 function BookForm({ values, isSubmitting }: FormikProps<BookFormValues>) {
 	return (

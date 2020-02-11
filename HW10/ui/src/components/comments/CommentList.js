@@ -1,6 +1,6 @@
 // @flow
 import React, { useState, useEffect } from 'react';
-import { RestClient } from '../../services';
+import { RestClient } from 'services';
 import { Formik } from 'formik';
 import {
 	Box,
@@ -14,7 +14,7 @@ import {
 import { Delete as DeleteIcon } from '@material-ui/icons';
 import CommentForm from './CommentForm';
 
-import type { Comment, CommentFormValues } from '../../types';
+import type { Comment, CommentFormValues } from 'types';
 import type { FormikBag } from 'formik';
 
 type CreateCommentResponse = {|

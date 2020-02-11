@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { RestClient } from 'services';
 import {
 	Box,
 	Card,
@@ -16,7 +17,6 @@ import {
 	Delete as DeleteIcon,
 	Edit as EditIcon,
 } from '@material-ui/icons';
-import { RestClient } from '../../services';
 
 import type { Book, Author } from '../../types';
 

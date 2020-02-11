@@ -7,6 +7,9 @@
 [lints]
 
 [options]
-esproposal.export_star_as=enable
+module.name_mapper='^components' -> '<PROJECT_ROOT>/src/components'
+module.name_mapper='^types' -> '<PROJECT_ROOT>/src/types'
+module.name_mapper='^services' -> '<PROJECT_ROOT>/src/services'
+module.name_mapper='^constants' -> '<PROJECT_ROOT>/src/constants'
 
 [strict]

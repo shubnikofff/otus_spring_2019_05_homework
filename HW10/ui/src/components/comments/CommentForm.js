@@ -8,12 +8,12 @@ import { Form } from 'formik';
 import { TextField } from 'formik-material-ui';
 
 import type { FormikProps } from 'formik';
-import type { CommentFormValues } from '../../types';
+import type { CommentFormValues } from 'types';
 
 import {
 	FIELD_TEXT,
 	FIELD_USER,
-} from '../../constants';
+} from 'constants/fields';
 
 function CommentForm({ isSubmitting }: FormikProps<CommentFormValues>) {
 	return (

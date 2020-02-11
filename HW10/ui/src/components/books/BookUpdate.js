@@ -1,7 +1,7 @@
 // @flow
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
-import { RestClient } from '../../services';
+import { RestClient } from 'services';
 import { Formik } from 'formik';
 import {
 	Box,
@@ -14,8 +14,8 @@ import { Alert } from '@material-ui/lab';
 
 import { default as BookForm } from './BookForm';
 
-import type { Book, BookFormValues } from '../../types';
 import type { AxiosError } from 'axios';
+import type { Book, BookFormValues } from 'types';
 
 const MESSAGE_DELAY_TIME = 6000;
 

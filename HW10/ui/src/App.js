@@ -11,7 +11,7 @@ import {
 	BookUpdate,
 	Genres,
 	Header,
-} from './components';
+} from 'components';
 
 function App() {
 	return (

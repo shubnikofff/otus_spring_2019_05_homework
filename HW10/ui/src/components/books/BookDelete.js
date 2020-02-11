@@ -1,6 +1,6 @@
 // @flow
 import React, { useState } from 'react';
-import { RestClient } from '../../services';
+import { RestClient } from 'services';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import {
 	Box,

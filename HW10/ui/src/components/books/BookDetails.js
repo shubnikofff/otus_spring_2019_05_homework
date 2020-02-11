@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
-import { RestClient } from '../../services';
+import { RestClient } from 'services';
 
 import {
 	Box,
@@ -15,9 +15,9 @@ import {
 	makeStyles,
 	Typography,
 } from '@material-ui/core';
-import { CommentList } from '../../components';
+import { CommentList } from 'components';
 
-import type { Book } from '../../types';
+import type { Book } from 'types';
 
 const useStyles = makeStyles(theme => ({
 	authors: {
