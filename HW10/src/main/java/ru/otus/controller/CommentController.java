@@ -19,25 +19,25 @@ public class CommentController {
 	private final CommentService service;
 
 	@GetMapping("/comments")
-	ResponseEntity<List<CommentResponse>> getAll(@RequestParam("bookId") String bookId) {
+	ResponseEntity<List<CommentResponse>> getAllComments(@RequestParam("bookId") String bookId) {
 		final List<CommentResponse> comments = service.getAll(bookId);
 		return new ResponseEntity<>(comments, HttpStatus.OK);
 	}
 
 	@PostMapping("/comments")
-	ResponseEntity<CreateCommentResponse> create(@RequestBody CreateCommentRequest request) {
+	ResponseEntity<CreateCommentResponse> createComment(@RequestBody CreateCommentRequest request) {
 		final CreateCommentResponse response = service.create(request);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/comments/{id}")
-	ResponseEntity<HttpStatus> update(@PathVariable("id") String id, @RequestBody UpdateCommentRequest request) {
+	ResponseEntity<HttpStatus> updateComment(@PathVariable("id") String id, @RequestBody UpdateCommentRequest request) {
 		service.update(id, request);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 	@DeleteMapping("/comments/{id}")
-	ResponseEntity<HttpStatus> delete(@PathVariable("id") String id) {
+	ResponseEntity<HttpStatus> deleteComment(@PathVariable("id") String id) {
 		service.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

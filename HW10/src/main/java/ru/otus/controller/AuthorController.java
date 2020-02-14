@@ -23,7 +23,7 @@ public class AuthorController {
 	}
 
 	@PutMapping("/authors/{name}")
-	ResponseEntity<HttpStatus> update(@PathVariable("name") String name, @RequestBody UpdateAuthorRequest request) {
+	ResponseEntity<HttpStatus> updateAuthor(@PathVariable("name") String name, @RequestBody UpdateAuthorRequest request) {
 		service.update(name, request);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

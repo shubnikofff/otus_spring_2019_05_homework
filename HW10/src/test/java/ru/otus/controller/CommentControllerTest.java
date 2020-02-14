@@ -36,7 +36,7 @@ class CommentControllerTest extends AbstractControllerTest {
 
 	@Test
 	@DisplayName("GET /comments")
-	void getAll() throws Exception {
+	void getAllComments() throws Exception {
 		val bookId = "bookId";
 		val bookIdCaptor = ArgumentCaptor.forClass(String.class);
 		val commentResponse = new CommentResponse("id", "User", "Text", bookId);
@@ -59,7 +59,7 @@ class CommentControllerTest extends AbstractControllerTest {
 
 	@Test
 	@DisplayName("POST /comments")
-	void create() throws Exception {
+	void createComment() throws Exception {
 		val request = new CreateCommentRequest("User", "Text", "bookId");
 		val requestCaptor = ArgumentCaptor.forClass(CreateCommentRequest.class);
 
@@ -76,7 +76,7 @@ class CommentControllerTest extends AbstractControllerTest {
 
 	@Test
 	@DisplayName("PUT /comments/{id}")
-	void update() throws Exception {
+	void updateComment() throws Exception {
 		val id = "id";
 		val request = new UpdateCommentRequest("User", "Text");
 		val idCaptor = ArgumentCaptor.forClass(String.class);
@@ -95,7 +95,7 @@ class CommentControllerTest extends AbstractControllerTest {
 
 	@Test
 	@DisplayName("DELETE /comments/{id}")
-	void testDelete() throws Exception {
+	void deleteComment() throws Exception {
 		val id = "id";
 		val idCaptor = ArgumentCaptor.forClass(String.class);
 

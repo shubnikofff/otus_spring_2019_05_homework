@@ -50,7 +50,7 @@ class AuthorControllerTest extends AbstractControllerTest {
 
 	@Test
 	@DisplayName("PUT /authors/{name}")
-	void update() throws Exception {
+	void updateAuthor() throws Exception {
 		val name = "name";
 		val request = new UpdateAuthorRequest("new name");
 		val nameCaptor = ArgumentCaptor.forClass(String.class);

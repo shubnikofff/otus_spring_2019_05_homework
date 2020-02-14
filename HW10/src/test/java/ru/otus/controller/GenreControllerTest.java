@@ -50,7 +50,7 @@ class GenreControllerTest extends AbstractControllerTest {
 
 	@Test
 	@DisplayName("PUT /genres/{name}")
-	void update() throws Exception {
+	void updateGenre() throws Exception {
 		val name = "Name";
 		val request = new UpdateGenreRequest("New name");
 		val nameCaptor = ArgumentCaptor.forClass(String.class);

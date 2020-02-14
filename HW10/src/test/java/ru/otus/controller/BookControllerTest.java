@@ -37,7 +37,7 @@ class BookControllerTest extends AbstractControllerTest {
 
 	@Test
 	@DisplayName("GET /books")
-	void getBooks() throws Exception {
+	void getAllBooks() throws Exception {
 		val book = new Book("id", "Title", new Genre("Genre"), singletonList(new Author("Author")));
 		val books = singletonList(book);
 
@@ -55,7 +55,7 @@ class BookControllerTest extends AbstractControllerTest {
 
 	@Test
 	@DisplayName("GET /books/{id}")
-	void getBook() throws Exception {
+	void getBookById() throws Exception {
 		val id = "id";
 		val book = new Book(id, "Title", new Genre("Genre"), singletonList(new Author("Author")));
 
@@ -72,7 +72,7 @@ class BookControllerTest extends AbstractControllerTest {
 
 	@Test
 	@DisplayName("POST /books")
-	void create() throws Exception {
+	void createBook() throws Exception {
 		val request = new SaveBookRequest("Title", "Genre", singletonList("Author"));
 		val requestCaptor = ArgumentCaptor.forClass(SaveBookRequest.class);
 
@@ -89,7 +89,7 @@ class BookControllerTest extends AbstractControllerTest {
 
 	@Test
 	@DisplayName("PUT /books/{id}")
-	void update() throws Exception {
+	void updateBook() throws Exception {
 		val id = "id";
 		val request = new SaveBookRequest("Title", "Genre", singletonList("Author"));
 		val idCaptor = ArgumentCaptor.forClass(String.class);
@@ -109,7 +109,7 @@ class BookControllerTest extends AbstractControllerTest {
 
 	@Test
 	@DisplayName("DELETE /books/{id}")
-	void testDelete() throws Exception {
+	void deleteBook() throws Exception {
 		val id = "id";
 		val idCaptor = ArgumentCaptor.forClass(String.class);
 

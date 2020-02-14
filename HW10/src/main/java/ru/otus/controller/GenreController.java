@@ -23,7 +23,7 @@ public class GenreController {
 	}
 
 	@PutMapping("/genres/{name}")
-	ResponseEntity<HttpStatus> update(@PathVariable("name") String name, @RequestBody UpdateGenreRequest request) {
+	ResponseEntity<HttpStatus> updateGenre(@PathVariable("name") String name, @RequestBody UpdateGenreRequest request) {
 		service.update(name, request);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
