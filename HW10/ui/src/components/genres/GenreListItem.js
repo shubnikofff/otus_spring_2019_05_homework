@@ -1,6 +1,6 @@
 // @flow
 import React, { useState } from 'react';
-import { RestClient } from 'services';
+import { GenreService } from 'services';
 
 import { Formik, Form } from 'formik';
 import { TextField } from 'formik-material-ui';
@@ -26,13 +26,13 @@ type GenreListItemProps = {|
 
 function GenreListItem({ genre }: GenreListItemProps) {
 	const [editMode, setEditMode] = useState<boolean>(false);
-	const [value, setValue] = useState<string>(genre.name);
-	const initialValues: GenreFormValues = { name: value };
+	const [genreName, setGenreName] = useState<string>(genre.name);
+	const initialValues: GenreFormValues = { name: genreName };
 
 	function handleSubmit(values: GenreFormValues) {
-		return RestClient.put(`/genres/${value}`, values)
+		return GenreService.updateGenre(genreName, values)
 			.then(() => {
-				setValue(values.name);
+				setGenreName(values.name);
 			})
 			.finally(() => {
 				setEditMode(false);
@@ -69,7 +69,7 @@ function GenreListItem({ genre }: GenreListItemProps) {
 
 	return (
 		<ListItem>
-			<ListItemText primary={value} />
+			<ListItemText primary={genreName} />
 			<ListItemSecondaryAction>
 				<IconButton onClick={() => {
 					setEditMode(true);

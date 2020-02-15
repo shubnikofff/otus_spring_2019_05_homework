@@ -1,6 +1,6 @@
 // @flow
 import React, { useState, useEffect } from 'react';
-import { RestClient } from 'services';
+import { GenreService } from 'services';
 
 import {
 	Box,
@@ -15,7 +15,7 @@ function GenreList() {
 	const [genres, setGenres] = useState<Array<Genre> | null>(null);
 
 	useEffect(() => {
-		RestClient.get('genres').then(setGenres);
+		GenreService.fetchAllGenres().then(setGenres);
 	}, []);
 
 	if (genres === null) {
