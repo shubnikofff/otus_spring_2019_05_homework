@@ -1,6 +1,6 @@
 // @flow
 import React, { useState, useEffect } from 'react';
-import { RestClient } from 'services';
+import { AuthorService } from 'services';
 
 import {
 	Box,
@@ -15,7 +15,7 @@ function AuthorList() {
 	const [authors, setAuthors] = useState<Array<Author> | null>(null);
 
 	useEffect(() => {
-		RestClient.get('authors').then(setAuthors);
+		AuthorService.fetchAllAuthors().then(setAuthors);
 	}, []);
 
 	if (authors === null) {

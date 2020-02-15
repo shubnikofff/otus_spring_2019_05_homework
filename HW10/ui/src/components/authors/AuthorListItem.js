@@ -1,6 +1,6 @@
 // @flow
 import React, { useState } from 'react';
-import { RestClient } from 'services';
+import { AuthorService } from 'services';
 
 import { Formik, Form } from 'formik';
 import { TextField } from 'formik-material-ui';
@@ -26,13 +26,13 @@ type AuthorListItemProps = {|
 
 function AuthorListItem({ author }: AuthorListItemProps) {
 	const [editMode, setEditMode] = useState<boolean>(false);
-	const [value, setValue] = useState<string>(author.name);
-	const initialValues: AuthorFormValues = { name: value };
+	const [authorName, setAuthorName] = useState<string>(author.name);
+	const initialValues: AuthorFormValues = { name: authorName };
 
 	function handleSubmit(values: AuthorFormValues) {
-		return RestClient.put(`/authors/${value}`, values)
+		return AuthorService.updateAuthor(authorName, values)
 			.then(() => {
-				setValue(values.name);
+				setAuthorName(values.name);
 			})
 			.finally(() => {
 				setEditMode(false);
@@ -69,7 +69,7 @@ function AuthorListItem({ author }: AuthorListItemProps) {
 
 	return (
 		<ListItem>
-			<ListItemText primary={value} />
+			<ListItemText primary={authorName} />
 			<ListItemSecondaryAction>
 				<IconButton onClick={() => {
 					setEditMode(true);
