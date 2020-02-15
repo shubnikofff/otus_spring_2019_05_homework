@@ -1,6 +1,6 @@
 // @flow
 import React, { useState } from 'react';
-import { RestClient } from 'services';
+import { BookService } from 'services';
 import { Formik } from 'formik';
 
 import {
@@ -28,7 +28,7 @@ function BookCreate() {
 	const [operationError, setOperationError] = useState<?string>(null);
 
 	const handleSubmit = (values: BookFormValues, { resetForm }: FormikBag) =>
-		RestClient.post('/books', values)
+		BookService.createBook(values)
 			.then(() => {
 				resetForm();
 				setSuccessMsgOpen(true);

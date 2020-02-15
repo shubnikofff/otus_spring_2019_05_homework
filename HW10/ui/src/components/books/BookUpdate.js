@@ -1,7 +1,7 @@
 // @flow
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
-import { RestClient } from 'services';
+import { BookService } from 'services';
 import { Formik } from 'formik';
 import {
 	Box,
@@ -26,7 +26,7 @@ function BookUpdate() {
 	const [successMsgOpen, setSuccessMsgOpen] = useState<boolean>(false);
 
 	const handleSubmit = (values: BookFormValues) =>
-		RestClient.put(`/books/${id}`, values)
+		BookService.updateBook(id, values)
 			.then(() => {
 				setInitialValues(values);
 				setSuccessMsgOpen(true);
@@ -36,7 +36,7 @@ function BookUpdate() {
 			});
 
 	useEffect(() => {
-		RestClient.get(`/books/${id}`)
+		BookService.fetchBook(id)
 			.then((book: Book) => {
 				setInitialValues({
 					title: book.title,

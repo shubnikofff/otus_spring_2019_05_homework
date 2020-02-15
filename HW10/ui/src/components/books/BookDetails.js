@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
-import { RestClient } from 'services';
+import { BookService } from 'services';
 
 import {
 	Box,
@@ -22,11 +22,9 @@ function BookDetails() {
 	const { id } = useParams();
 	const [book, setBook] = useState<?Book>(null);
 
-	function fetchBook() {
-		RestClient.get(`/books/${id}`).then(setBook);
-	}
-
-	useEffect(fetchBook, []);
+	useEffect(() => {
+		BookService.fetchBook(id).then(setBook);
+	}, []);
 
 	if (!book) {
 		return (<LinearProgress variant="query" />);

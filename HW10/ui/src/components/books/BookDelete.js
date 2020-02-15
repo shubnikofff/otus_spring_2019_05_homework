@@ -1,6 +1,6 @@
 // @flow
 import React, { useState } from 'react';
-import { RestClient } from 'services';
+import { BookService } from 'services';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import {
 	Box,
@@ -21,7 +21,7 @@ function BookDelete() {
 	const [operationError, setOperationError] = useState<?string>(null);
 
 	const handleYesButtonClick = () => {
-		RestClient.del(`/books/${id}`)
+		BookService.deleteBook(id)
 			.then(() => {
 				history.push('/');
 			})

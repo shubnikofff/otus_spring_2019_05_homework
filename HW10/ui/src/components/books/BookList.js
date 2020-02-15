@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { RestClient } from 'services';
+import { BookService } from 'services';
 import {
 	Box,
 	Card,
@@ -18,7 +18,7 @@ import {
 	Edit as EditIcon,
 } from '@material-ui/icons';
 
-import type { Book, Author } from '../../types';
+import type { Book, Author } from 'types';
 
 type BookListProps = {||};
 
@@ -35,9 +35,10 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 	}
 
 	componentDidMount() {
-		RestClient.get('/books').then((response: Array<Book>) => {
-			this.setState({ books: response });
-		});
+		BookService.fetchAllBooks()
+			.then((response: Array<Book>) => {
+				this.setState({ books: response });
+			});
 	}
 
 	render() {
