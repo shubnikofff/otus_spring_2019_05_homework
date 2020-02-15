@@ -12,3 +12,7 @@ export {
 	CommentFormValues,
 	GenreFormValues,
 } from './form';
+
+export {
+	CreateCommentResponse,
+} from './response';

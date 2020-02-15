@@ -1,6 +1,6 @@
 // @flow
 import React, { useState, useEffect } from 'react';
-import { RestClient } from 'services';
+import { CommentService } from 'services';
 import { Formik } from 'formik';
 import {
 	Box,
@@ -11,12 +11,12 @@ import {
 import CommentForm from './CommentForm';
 import CommentListItem from './CommentListItem';
 
-import type { Comment, CommentFormValues } from 'types';
+import type {
+	Comment,
+	CommentFormValues,
+	CreateCommentResponse,
+} from 'types';
 import type { FormikBag } from 'formik';
-
-type CreateCommentResponse = {|
-	id: string,
-|}
 
 type CommentListProps = {|
 	bookId: string,
@@ -26,7 +26,7 @@ function CommentList({ bookId }: CommentListProps) {
 	const [comments, setComments] = useState<Array<Comment> | null>(null);
 
 	function fetchComments() {
-		RestClient.get(`/comments?bookId=${bookId}`).then(setComments);
+		CommentService.fetchAllComments(bookId).then(setComments);
 	}
 
 	useEffect(fetchComments, [bookId]);
@@ -42,7 +42,7 @@ function CommentList({ bookId }: CommentListProps) {
 	};
 
 	const handleSubmit = (values: CommentFormValues, { resetForm }: FormikBag) =>
-		RestClient.post<CreateCommentResponse>(`/comments`, values)
+		CommentService.createComment(values)
 			.then(({ id }: CreateCommentResponse) => {
 				resetForm();
 				setComments([{ id, ...values }, ...comments]);
@@ -64,7 +64,7 @@ function CommentList({ bookId }: CommentListProps) {
 			{comments.map(comment => {
 				const { id } = comment;
 				const handleDeleteButtonClick = () => {
-					RestClient.del(`/comments/${id}`)
+					CommentService.deleteComment(id)
 						.then(setComments(comments.filter(comment => comment.id !== id)));
 				};
 
