@@ -8,10 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
-import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
 @Configuration
-@EnableReactiveMongoRepositories
 public class ApplicationConfiguration extends AbstractReactiveMongoConfiguration {
 	private static final String CHANGE_LOGS_SCAN_PACKAGE = "ru.otus.changelogs";
 	private static final String DB_NAME = "library";
