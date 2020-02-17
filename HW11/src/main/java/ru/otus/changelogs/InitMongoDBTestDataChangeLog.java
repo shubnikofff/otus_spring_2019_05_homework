@@ -32,8 +32,8 @@ public class InitMongoDBTestDataChangeLog {
 
 	@ChangeSet(order = "002", id = "initComments", author = "shubnikofff", runAlways = true)
 	public void initComments(MongoTemplate template) {
-		template.save(new Comment("User #1", "Comment #1", books.get(0)));
-		template.save(new Comment("User #2", "Comment #1", books.get(0)));
-		template.save(new Comment("User #3", "Comment #2", books.get(1)));
+		template.save(new Comment("User #1", "Comment #1", books.get(0).getId()));
+		template.save(new Comment("User #2", "Comment #1", books.get(0).getId()));
+		template.save(new Comment("User #3", "Comment #2", books.get(1).getId()));
 	}
 }

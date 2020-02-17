@@ -35,11 +35,11 @@ public class InitMongoDBDataChangeLog {
 
 	@ChangeSet(order = "002", id = "initComments", author = "shubnikofff", runAlways = true)
 	public void initComments(MongoTemplate template) {
-		template.save(new Comment("Vladimir V", "Very good", books.get(0)));
-		template.save(new Comment("Alexey Petrov", "Interesting book", books.get(0)));
-		template.save(new Comment("Ivan 666", "Almost fell asleep", books.get(0)));
-		template.save(new Comment("Vladimir V", "I recommend reading", books.get(1)));
-		template.save(new Comment("Alexey Petrov", "Boring", books.get(1)));
-		template.save(new Comment("Anonymous", "Not yet read but I think it will be interesting", books.get(3)));
+		template.save(new Comment("Vladimir V", "Very good", books.get(0).getId()));
+		template.save(new Comment("Alexey Petrov", "Interesting book", books.get(0).getId()));
+		template.save(new Comment("Ivan 666", "Almost fell asleep", books.get(0).getId()));
+		template.save(new Comment("Vladimir V", "I recommend reading", books.get(1).getId()));
+		template.save(new Comment("Alexey Petrov", "Boring", books.get(1).getId()));
+		template.save(new Comment("Anonymous", "Not yet read but I think it will be interesting", books.get(3).getId()));
 	}
 }

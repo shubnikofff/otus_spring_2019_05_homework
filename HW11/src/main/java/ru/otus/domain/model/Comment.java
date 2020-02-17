@@ -3,7 +3,6 @@ package ru.otus.domain.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -17,12 +16,11 @@ public class Comment {
 
 	private String text;
 
-	@DBRef
-	private Book book;
+	private String bookId;
 
-	public Comment(String user, String text, Book book) {
+	public Comment(String user, String text, String bookId) {
 		this.user = user;
 		this.text = text;
-		this.book = book;
+		this.bookId = bookId;
 	}
 }

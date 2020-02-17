@@ -4,32 +4,30 @@ import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.context.annotation.ComponentScan;
 import reactor.test.StepVerifier;
-import ru.otus.domain.model.Book;
 import ru.otus.domain.model.Comment;
 
-import java.util.Collections;
-import java.util.Objects;
-
 @DataMongoTest
+@EnableConfigurationProperties
+@ComponentScan({"ru.otus.configuration", "ru.otus.repository"})
+@DisplayName("Comment repository")
 class CommentRepositoryTest {
 
 	@Autowired
-	private BookRepository bookRepository;
-
-	@Autowired
-	private CommentRepository commentRepository;
+	private CommentRepository repository;
 
 	@Test
 	@DisplayName("should find comments by book id")
 	void findByBookId() {
-		val book = bookRepository.save(new Book("Title", null, Collections.emptyList())).block();
-		val expectedComment = commentRepository.save(new Comment("user", "title", book)).block();
+		val bookId = "bookId";
+		repository.save(new Comment("user", "title", bookId)).subscribe();
 
 		StepVerifier
-				.create(commentRepository.findByBookId(Objects.requireNonNull(book).getId()))
-				.expectNext(Objects.requireNonNull(expectedComment))
+				.create(repository.findByBookId(bookId))
+				.expectNextCount(1)
 				.expectComplete()
 				.verify();
 	}
