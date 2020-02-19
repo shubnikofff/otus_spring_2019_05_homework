@@ -97,6 +97,11 @@ class BookRepositoryTest {
 		commentRepository.save(new Comment("User", "Text", book.getId())).block();
 		bookRepository.delete(book).block();
 
+		StepVerifier.create(bookRepository.findById(book.getId()))
+				.expectNextCount(0)
+				.expectComplete()
+				.verify();
+
 		StepVerifier.create(commentRepository.findByBookId(book.getId()))
 				.expectNextCount(0)
 				.expectComplete()
