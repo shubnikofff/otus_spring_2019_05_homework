@@ -34,15 +34,6 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 	}
 
 	@Override
-	public Mono<Void> updateName(Author author, String newName) {
-		final Update update = new Update()
-				.filterArray(where("element.name").is(author.getName()))
-				.set( "authors.$[element].name", newName);
-
-		return mongoOperations.updateMulti(new Query(), update, Book.class).then();
-	}
-
-	@Override
 	public Mono<Author> findByName(String name) {
 		final Aggregation aggregation = newAggregation(
 				unwind("authors"),
@@ -52,5 +43,14 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 		);
 
 		return mongoOperations.aggregate(aggregation, Book.class, Author.class).single();
+	}
+
+	@Override
+	public Mono<Void> updateName(Author author, String newName) {
+		final Update update = new Update()
+				.filterArray(where("element.name").is(author.getName()))
+				.set( "authors.$[element].name", newName);
+
+		return mongoOperations.updateMulti(new Query(), update, Book.class).then();
 	}
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import org.springframework.test.annotation.DirtiesContext;
 import reactor.test.StepVerifier;
 import ru.otus.domain.model.Author;
@@ -25,22 +26,22 @@ class AuthorRepositoryTest {
 	private static final String SECOND_AUTHOR_NAME = "Author #2";
 
 	@Autowired
-	private AuthorRepository authorRepository;
+	private ReactiveMongoOperations mongoOperations;
 
 	@Autowired
-	private BookRepository bookRepository;
+	private AuthorRepository repository;
 
 	private Author firstAuthor;
 
 	private Author secondAuthor;
 
 	@BeforeEach
-	void setBook() {
+	void setupDB() {
 		firstAuthor = new Author(FIRST_AUTHOR_NAME);
 		secondAuthor = new Author(SECOND_AUTHOR_NAME);
-		bookRepository
+		mongoOperations
 				.save(new Book("Title", new Genre("Genre"), Arrays.asList(firstAuthor, secondAuthor)))
-				.subscribe();
+				.block();
 	}
 
 	@Test
@@ -48,7 +49,7 @@ class AuthorRepositoryTest {
 	@DirtiesContext
 	void findAll() {
 		StepVerifier
-				.create(authorRepository.findAll())
+				.create(repository.findAll())
 				.expectNext(firstAuthor)
 				.expectNext(secondAuthor)
 				.expectComplete()
@@ -60,7 +61,7 @@ class AuthorRepositoryTest {
 	@DirtiesContext
 	void findByName() {
 		StepVerifier
-				.create(authorRepository.findByName(SECOND_AUTHOR_NAME))
+				.create(repository.findByName(SECOND_AUTHOR_NAME))
 				.expectNext(secondAuthor)
 				.expectComplete()
 				.verify();

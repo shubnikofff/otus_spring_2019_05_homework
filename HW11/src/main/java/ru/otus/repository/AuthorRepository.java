@@ -8,7 +8,7 @@ public interface AuthorRepository {
 
 	Flux<Author> findAll();
 
-	Mono<Void> updateName(Author author, String newName);
-
 	Mono<Author> findByName(String name);
+
+	Mono<Void> updateName(Author author, String newName);
 }
