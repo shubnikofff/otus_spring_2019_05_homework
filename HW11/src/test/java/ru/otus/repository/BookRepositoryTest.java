@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import org.springframework.test.annotation.DirtiesContext;
 import reactor.test.StepVerifier;
 import ru.otus.domain.model.Author;
@@ -29,7 +30,10 @@ class BookRepositoryTest {
 	private static final String AUTHOR_NAME = "Author";
 
 	@Autowired
-	private BookRepository bookRepository;
+	private ReactiveMongoOperations mongoOperations;
+
+	@Autowired
+	private BookRepository repository;
 
 	@Autowired
 	private CommentRepository commentRepository;
@@ -39,16 +43,15 @@ class BookRepositoryTest {
 	@BeforeEach
 	void setBook() {
 		book = new Book(TITLE, new Genre(GENRE_NAME), Collections.singletonList(new Author(AUTHOR_NAME)));
+		repository.save(book).block();
 	}
 
 	@Test
 	@DisplayName("should find book by title")
 	@DirtiesContext
 	void findByTitle() {
-		bookRepository.save(book).subscribe();
-
 		StepVerifier
-				.create(bookRepository.findByTitle(TITLE))
+				.create(repository.findByTitle(TITLE))
 				.expectNextCount(1)
 				.expectComplete()
 				.verify();
@@ -58,9 +61,7 @@ class BookRepositoryTest {
 	@DisplayName("should find book by genre name")
 	@DirtiesContext
 	void findByGenreName() {
-		bookRepository.save(book).subscribe();
-
-		StepVerifier.create(bookRepository.findByGenreName(GENRE_NAME))
+		StepVerifier.create(repository.findByGenreName(GENRE_NAME))
 				.expectNextCount(1)
 				.expectComplete()
 				.verify();
@@ -70,10 +71,8 @@ class BookRepositoryTest {
 	@DisplayName("should find book by author name")
 	@DirtiesContext
 	void findByAuthorName() {
-		bookRepository.save(book).subscribe();
-
 		StepVerifier
-				.create(bookRepository.findByAuthorName(AUTHOR_NAME))
+				.create(repository.findByAuthorName(AUTHOR_NAME))
 				.expectNextCount(1)
 				.expectComplete()
 				.verify();
@@ -83,24 +82,26 @@ class BookRepositoryTest {
 	@DisplayName("should set id on save")
 	@DirtiesContext
 	void save() {
-		StepVerifier.create(bookRepository.save(book))
+		StepVerifier.create(repository.save(book))
 				.assertNext(book -> assertThat(book.getId()).isNotEmpty())
 				.expectComplete()
 				.verify();
 	}
 
 	@Test
-	@DisplayName("should delete all comments on delete book")
+	@DisplayName("should delete book with comments")
 	@DirtiesContext
-	void delete() {
-		bookRepository.save(book).block();
-		commentRepository.save(new Comment("User", "Text", book.getId())).block();
-		bookRepository.delete(book).block();
+	void delete() throws InterruptedException {
+		mongoOperations.save(new Comment("User", "Text", book.getId())).block();
+		mongoOperations.remove(book).block();
 
-		StepVerifier.create(bookRepository.findById(book.getId()))
+		StepVerifier.create(repository.findById(book.getId()))
 				.expectNextCount(0)
 				.expectComplete()
 				.verify();
+
+		// TODO find another solution to wait listener when it finish delete comments
+		Thread.sleep(500);
 
 		StepVerifier.create(commentRepository.findByBookId(book.getId()))
 				.expectNextCount(0)
