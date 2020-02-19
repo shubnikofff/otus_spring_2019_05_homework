@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.annotation.DirtiesContext;
 import reactor.test.StepVerifier;
 import ru.otus.domain.model.Comment;
 
@@ -21,6 +22,7 @@ class CommentRepositoryTest {
 
 	@Test
 	@DisplayName("should find comments by book id")
+	@DirtiesContext
 	void findByBookId() {
 		val bookId = "bookId";
 		repository.save(new Comment("user", "title", bookId)).subscribe();
