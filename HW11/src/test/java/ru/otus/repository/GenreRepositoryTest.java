@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 
 @DataMongoTest
 @EnableConfigurationProperties
-@ComponentScan({"ru.otus.configuration", "ru.otus.repository"})
+@ComponentScan({"ru.otus.repository"})
 @DisplayName("Genre repository")
 class GenreRepositoryTest {
 

@@ -14,7 +14,7 @@ import ru.otus.domain.model.Comment;
 
 @DataMongoTest
 @EnableConfigurationProperties
-@ComponentScan({"ru.otus.configuration", "ru.otus.repository"})
+@ComponentScan({"ru.otus.repository"})
 @DisplayName("Comment repository")
 class CommentRepositoryTest {
 

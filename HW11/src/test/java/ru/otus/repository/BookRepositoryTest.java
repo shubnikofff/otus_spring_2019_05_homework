@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest
 @EnableConfigurationProperties
-@ComponentScan({"ru.otus.configuration", "ru.otus.repository"})
+@ComponentScan({"ru.otus.repository"})
 @DisplayName("Book repository")
 class BookRepositoryTest {
 
