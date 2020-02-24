@@ -19,11 +19,11 @@ public class Router {
 	@Bean
 	public RouterFunction<ServerResponse> bookRouterFunction(BookHandler handler) {
 		return route()
-				.GET(BASE_URL + "/books", accept(APPLICATION_JSON), handler::getAll)
-				.GET(BASE_URL + "/books/{id}", accept(APPLICATION_JSON), handler::getOne)
-				.POST(BASE_URL + "/books", accept(APPLICATION_JSON), handler::create)
-				.PUT(BASE_URL + "/books/{id}", accept(APPLICATION_JSON), handler::update)
-				.DELETE(BASE_URL + "/books/{id}", handler::delete)
+				.GET(BASE_URL + "/books", accept(APPLICATION_JSON), handler::getAllBooks)
+				.GET(BASE_URL + "/books/{id}", accept(APPLICATION_JSON), handler::getBook)
+				.POST(BASE_URL + "/books", accept(APPLICATION_JSON), handler::createBook)
+				.PUT(BASE_URL + "/books/{id}", accept(APPLICATION_JSON), handler::updateBook)
+				.DELETE(BASE_URL + "/books/{id}", handler::deleteBook)
 				.build();
 	}
 

@@ -22,19 +22,19 @@ public class BookHandlerImpl implements BookHandler {
 	private final BookRepository repository;
 
 	@Override
-	public Mono<ServerResponse> getAll(ServerRequest request) {
+	public Mono<ServerResponse> getAllBooks(ServerRequest request) {
 		return ok().contentType(APPLICATION_JSON).body(repository.findAll(), Book.class);
 	}
 
 	@Override
-	public Mono<ServerResponse> getOne(ServerRequest request) {
+	public Mono<ServerResponse> getBook(ServerRequest request) {
 		return repository.findById(request.pathVariable("id"))
 				.flatMap(book -> ok().contentType(APPLICATION_JSON).bodyValue(book))
 				.switchIfEmpty(ServerResponse.notFound().build());
 	}
 
 	@Override
-	public Mono<ServerResponse> create(ServerRequest request) {
+	public Mono<ServerResponse> createBook(ServerRequest request) {
 		final Mono<Void> mono = request.bodyToMono(SaveBookRequest.class)
 				.map(requestBody -> new Book(
 						requestBody.getTitle(),
@@ -48,7 +48,7 @@ public class BookHandlerImpl implements BookHandler {
 	}
 
 	@Override
-	public Mono<ServerResponse> update(ServerRequest request) {
+	public Mono<ServerResponse> updateBook(ServerRequest request) {
 		return repository
 				.findById(request.pathVariable("id"))
 				.flatMap(book -> {
@@ -68,7 +68,7 @@ public class BookHandlerImpl implements BookHandler {
 	}
 
 	@Override
-	public Mono<ServerResponse> delete(ServerRequest request) {
+	public Mono<ServerResponse> deleteBook(ServerRequest request) {
 		return repository
 				.findById(request.pathVariable("id"))
 				.flatMap(book -> noContent().build(repository.delete(book)))

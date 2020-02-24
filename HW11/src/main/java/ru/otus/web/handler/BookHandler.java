@@ -6,13 +6,13 @@ import reactor.core.publisher.Mono;
 
 public interface BookHandler {
 
-	Mono<ServerResponse> getAll(ServerRequest request);
+	Mono<ServerResponse> getAllBooks(ServerRequest request);
 
-	Mono<ServerResponse> getOne(ServerRequest request);
+	Mono<ServerResponse> getBook(ServerRequest request);
 
-	Mono<ServerResponse> create(ServerRequest request);
+	Mono<ServerResponse> createBook(ServerRequest request);
 
-	Mono<ServerResponse> update(ServerRequest request);
+	Mono<ServerResponse> updateBook(ServerRequest request);
 
-	Mono<ServerResponse> delete(ServerRequest request);
+	Mono<ServerResponse> deleteBook(ServerRequest request);
 }
