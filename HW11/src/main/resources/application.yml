@@ -6,6 +6,3 @@ spring:
       database: library
   profiles:
     active: prod
-server:
-  servlet:
-    context-path: /api
