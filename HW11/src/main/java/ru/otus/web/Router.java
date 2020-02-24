@@ -6,6 +6,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import ru.otus.web.handler.AuthorHandler;
 import ru.otus.web.handler.BookHandler;
+import ru.otus.web.handler.GenreHandler;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
@@ -32,6 +33,14 @@ public class Router {
 		return route()
 				.GET(BASE_URL + "/authors", accept(APPLICATION_JSON), handler::getAllAuthors)
 				.PUT(BASE_URL + "/authors/{name}", handler::updateAuthor)
+				.build();
+	}
+
+	@Bean
+	public RouterFunction<ServerResponse> genreRouterFunction(GenreHandler handler) {
+		return route()
+				.GET(BASE_URL + "/genres", accept(APPLICATION_JSON), handler::getAllGenres)
+				.PUT(BASE_URL + "/genres/{name}", accept(APPLICATION_JSON), handler::updateGenre)
 				.build();
 	}
 }
