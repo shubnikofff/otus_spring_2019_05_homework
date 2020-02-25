@@ -30,7 +30,7 @@ public class BookHandlerImpl implements BookHandler {
 	public Mono<ServerResponse> getBook(ServerRequest request) {
 		return repository.findById(request.pathVariable("id"))
 				.flatMap(book -> ok().contentType(APPLICATION_JSON).bodyValue(book))
-				.switchIfEmpty(ServerResponse.notFound().build());
+				.switchIfEmpty(notFound().build());
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class BookHandlerImpl implements BookHandler {
 
 					return noContent().build(mono);
 				})
-				.switchIfEmpty(ServerResponse.notFound().build());
+				.switchIfEmpty(notFound().build());
 	}
 
 	@Override
@@ -72,6 +72,6 @@ public class BookHandlerImpl implements BookHandler {
 		return repository
 				.findById(request.pathVariable("id"))
 				.flatMap(book -> noContent().build(repository.delete(book)))
-				.switchIfEmpty(ServerResponse.notFound().build());
+				.switchIfEmpty(notFound().build());
 	}
 }

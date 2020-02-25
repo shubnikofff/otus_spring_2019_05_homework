@@ -10,8 +10,7 @@ import ru.otus.repository.AuthorRepository;
 import ru.otus.web.request.UpdateAuthorRequest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.web.reactive.function.server.ServerResponse.noContent;
-import static org.springframework.web.reactive.function.server.ServerResponse.ok;
+import static org.springframework.web.reactive.function.server.ServerResponse.*;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +35,6 @@ public class AuthorHandlerImpl implements AuthorHandler {
 
 					return noContent().build(mono);
 				})
-				.switchIfEmpty(ServerResponse.notFound().build());
+				.switchIfEmpty(notFound().build());
 	}
 }

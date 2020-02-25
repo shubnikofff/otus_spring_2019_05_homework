@@ -10,8 +10,7 @@ import ru.otus.repository.GenreRepository;
 import ru.otus.web.request.UpdateGenreRequest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.web.reactive.function.server.ServerResponse.noContent;
-import static org.springframework.web.reactive.function.server.ServerResponse.ok;
+import static org.springframework.web.reactive.function.server.ServerResponse.*;
 
 @RequiredArgsConstructor
 @Service
@@ -36,6 +35,6 @@ public class GenreHandlerImpl implements GenreHandler {
 
 					return noContent().build(mono);
 				})
-				.switchIfEmpty(ServerResponse.notFound().build());
+				.switchIfEmpty(notFound().build());
 	}
 }
