@@ -10,6 +10,7 @@ import ru.otus.domain.model.Comment;
 import ru.otus.repository.CommentRepository;
 import ru.otus.web.request.CreateCommentRequest;
 import ru.otus.web.request.UpdateCommentRequest;
+import ru.otus.web.response.CreateCommentResponse;
 
 import static org.springframework.web.reactive.function.server.ServerResponse.*;
 
@@ -29,16 +30,16 @@ public class CommentHandlerImpl implements CommentHandler {
 
 	@Override
 	public Mono<ServerResponse> createComment(ServerRequest request) {
-		final Mono<Void> mono = request.bodyToMono(CreateCommentRequest.class)
+		final Mono<CreateCommentResponse> responseMono = request.bodyToMono(CreateCommentRequest.class)
 				.map(requestBody -> new Comment(
 						requestBody.getUser(),
 						requestBody.getText(),
 						requestBody.getBookId()
 				))
 				.flatMap(repository::save)
-				.then();
+				.map(comment -> new CreateCommentResponse(comment.getId()));
 
-		return created(request.uri()).build(mono);
+		return created(request.uri()).body(responseMono, CreateCommentResponse.class);
 	}
 
 	@Override
