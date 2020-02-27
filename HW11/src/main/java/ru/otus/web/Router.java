@@ -35,34 +35,34 @@ public class Router {
 
 	private static RouterFunction<ServerResponse> authorsRouterFunction(AuthorHandler handler, String baseUrl) {
 		return route()
-				.GET(baseUrl + "/authors", accept(APPLICATION_JSON), handler::getAllAuthors)
-				.PUT(baseUrl + "/authors/{name}", handler::updateAuthor)
+				.GET(baseUrl.concat( "/authors"), accept(APPLICATION_JSON), handler::getAllAuthors)
+				.PUT(baseUrl.concat("/authors/{name}"), handler::updateAuthor)
 				.build();
 	}
 
 	private static RouterFunction<ServerResponse> booksRouterFunction(BookHandler handler, String baseUrl) {
 		return route()
-				.GET(baseUrl + "/books", accept(APPLICATION_JSON), handler::getAllBooks)
-				.GET(baseUrl + "/books/{id}", accept(APPLICATION_JSON), handler::getBook)
-				.POST(baseUrl + "/books", accept(APPLICATION_JSON), handler::createBook)
-				.PUT(baseUrl + "/books/{id}", accept(APPLICATION_JSON), handler::updateBook)
-				.DELETE(baseUrl + "/books/{id}", handler::deleteBook)
+				.GET(baseUrl.concat("/books"), accept(APPLICATION_JSON), handler::getAllBooks)
+				.GET(baseUrl.concat("/books/{id}"), accept(APPLICATION_JSON), handler::getBook)
+				.POST(baseUrl.concat("/books"), accept(APPLICATION_JSON), handler::createBook)
+				.PUT(baseUrl.concat("/books/{id}"), accept(APPLICATION_JSON), handler::updateBook)
+				.DELETE(baseUrl.concat("/books/{id}"), handler::deleteBook)
 				.build();
 	}
 
 	private static RouterFunction<ServerResponse> commentsRouterFunction(CommentHandler handler, String baseUrl) {
 		return route()
-				.GET(baseUrl + "/comments", accept(APPLICATION_JSON), handler::getAllComments)
-				.POST(baseUrl + "/comments", accept(APPLICATION_JSON), handler::createComment)
-				.PUT(baseUrl + "/comments/{id}", accept(APPLICATION_JSON), handler::updateComment)
-				.DELETE(baseUrl + "/comments/{id}", handler::deleteComment)
+				.GET(baseUrl.concat("/comments"), accept(APPLICATION_JSON), handler::getAllComments)
+				.POST(baseUrl.concat("/comments"), accept(APPLICATION_JSON), handler::createComment)
+				.PUT(baseUrl.concat("/comments/{id}"), accept(APPLICATION_JSON), handler::updateComment)
+				.DELETE(baseUrl.concat("/comments/{id}"), handler::deleteComment)
 				.build();
 	}
 
 	private static RouterFunction<ServerResponse> genresRouterFunction(GenreHandler handler, String baseUrl) {
 		return route()
-				.GET(baseUrl + "/genres", accept(APPLICATION_JSON), handler::getAllGenres)
-				.PUT(baseUrl + "/genres/{name}", accept(APPLICATION_JSON), handler::updateGenre)
+				.GET(baseUrl.concat("/genres"), accept(APPLICATION_JSON), handler::getAllGenres)
+				.PUT(baseUrl.concat("/genres/{name}"), accept(APPLICATION_JSON), handler::updateGenre)
 				.build();
 	}
 }
