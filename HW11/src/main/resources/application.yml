@@ -6,3 +6,5 @@ spring:
       database: library
   profiles:
     active: prod
+api:
+  base-url: /api
