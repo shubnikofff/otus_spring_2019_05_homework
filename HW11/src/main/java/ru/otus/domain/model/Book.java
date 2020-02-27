@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Document(collection = "books")
 public class Book {
+
 	@Id
 	private String id;
 
