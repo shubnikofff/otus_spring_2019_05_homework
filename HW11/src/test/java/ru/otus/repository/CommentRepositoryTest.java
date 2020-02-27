@@ -1,6 +1,6 @@
 package ru.otus.repository;
 
-import lombok.val;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
-import org.springframework.test.annotation.DirtiesContext;
 import reactor.test.StepVerifier;
 import ru.otus.domain.model.Comment;
 
@@ -18,21 +17,29 @@ import ru.otus.domain.model.Comment;
 @DisplayName("Comment repository")
 class CommentRepositoryTest {
 
+	private final static String BOOK_ID = "bookId";
+
 	@Autowired
 	private ReactiveMongoOperations mongoOperations;
 
 	@Autowired
 	private CommentRepository repository;
 
+	@BeforeEach
+	public void setUp() {
+		repository
+				.deleteAll()
+				.thenReturn( new Comment("user", "title", BOOK_ID))
+				.flatMap(repository::save)
+				.doOnNext(comment -> System.out.println("Inserted comment: " + comment))
+				.block();
+	}
+
 	@Test
 	@DisplayName("should find comments by book id")
-	@DirtiesContext
 	void findByBookId() {
-		val bookId = "bookId";
-		mongoOperations.save(new Comment("user", "title", bookId)).block();
-
 		StepVerifier
-				.create(repository.findByBookId(bookId))
+				.create(repository.findByBookId(BOOK_ID))
 				.expectNextCount(1)
 				.expectComplete()
 				.verify();

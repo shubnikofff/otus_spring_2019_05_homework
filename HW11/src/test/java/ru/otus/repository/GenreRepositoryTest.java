@@ -1,5 +1,6 @@
 package ru.otus.repository;
 
+import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,13 +9,15 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
-import org.springframework.test.annotation.DirtiesContext;
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 import ru.otus.domain.model.Book;
 import ru.otus.domain.model.Genre;
 
 import java.util.Collections;
 import java.util.NoSuchElementException;
+
+import static java.util.Arrays.asList;
 
 @DataMongoTest
 @EnableConfigurationProperties
@@ -40,14 +43,22 @@ class GenreRepositoryTest {
 		firstGenre = new Genre(FIRST_GENRE_NAME);
 		secondGenre = new Genre(SECOND_GENRE_NAME);
 
-		mongoOperations.save(new Book("Book#1", firstGenre, Collections.emptyList())).block();
-		mongoOperations.save(new Book("Book#2", firstGenre, Collections.emptyList())).block();
-		mongoOperations.save(new Book("Book#3", secondGenre, Collections.emptyList())).block();
+		val bookList = asList(
+				new Book("Book#1", firstGenre, Collections.emptyList()),
+				new Book("Book#2", firstGenre, Collections.emptyList()),
+				new Book("Book#3", secondGenre, Collections.emptyList())
+		);
+
+		mongoOperations
+				.dropCollection(Book.class)
+				.thenMany(Flux.fromIterable(bookList))
+				.flatMap(mongoOperations::insert)
+				.doOnNext(book -> System.out.println("Inserted book: " + book))
+				.blockLast();
 	}
 
 	@Test
 	@DisplayName("should find all genres")
-	@DirtiesContext
 	void findAll() {
 		StepVerifier
 				.create(repository.findAll())
@@ -58,7 +69,6 @@ class GenreRepositoryTest {
 	}
 
 	@Test
-	@DirtiesContext
 	@DisplayName("should find genre by name")
 	void findByName() {
 		StepVerifier
@@ -74,7 +84,6 @@ class GenreRepositoryTest {
 	}
 
 	@Test
-	@DirtiesContext
 	@DisplayName("should update name of given genre")
 	void updateName() {
 		repository.updateName(firstGenre, "New Genre").block();

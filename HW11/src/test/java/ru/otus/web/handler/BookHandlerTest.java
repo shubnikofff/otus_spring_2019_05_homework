@@ -26,6 +26,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @SpringBootTest
 @AutoConfigureWebTestClient
+@DisplayName("Book handler")
 class BookHandlerTest {
 
 	@Autowired

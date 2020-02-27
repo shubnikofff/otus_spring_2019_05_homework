@@ -8,7 +8,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
-import org.springframework.test.annotation.DirtiesContext;
 import reactor.test.StepVerifier;
 import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
@@ -39,14 +38,16 @@ class AuthorRepositoryTest {
 	void setupDB() {
 		firstAuthor = new Author(FIRST_AUTHOR_NAME);
 		secondAuthor = new Author(SECOND_AUTHOR_NAME);
-		mongoOperations
-				.save(new Book("Title", new Genre("Genre"), Arrays.asList(firstAuthor, secondAuthor)))
+
+		mongoOperations.dropCollection(Book.class)
+				.thenReturn(new Book("Title", new Genre("Genre"), Arrays.asList(firstAuthor, secondAuthor)))
+				.flatMap(mongoOperations::insert)
+				.doOnNext(book -> System.out.println("Inserted book: " + book))
 				.block();
 	}
 
 	@Test
 	@DisplayName("should find all authors")
-	@DirtiesContext
 	void findAll() {
 		StepVerifier
 				.create(repository.findAll())
@@ -58,7 +59,6 @@ class AuthorRepositoryTest {
 
 	@Test
 	@DisplayName("should find author by name")
-	@DirtiesContext
 	void findByName() {
 		StepVerifier
 				.create(repository.findByName(SECOND_AUTHOR_NAME))

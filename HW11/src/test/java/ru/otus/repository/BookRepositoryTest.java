@@ -8,7 +8,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
-import org.springframework.test.annotation.DirtiesContext;
 import reactor.test.StepVerifier;
 import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
@@ -43,12 +42,17 @@ class BookRepositoryTest {
 	@BeforeEach
 	void setBook() {
 		book = new Book(TITLE, new Genre(GENRE_NAME), Collections.singletonList(new Author(AUTHOR_NAME)));
-		repository.save(book).block();
+
+		repository
+				.deleteAll()
+				.thenReturn(book)
+				.flatMap(repository::save)
+				.doOnNext(book -> System.out.println("Inserted book: " + book))
+				.block();
 	}
 
 	@Test
 	@DisplayName("should find book by title")
-	@DirtiesContext
 	void findByTitle() {
 		StepVerifier
 				.create(repository.findByTitle(TITLE))
@@ -59,7 +63,6 @@ class BookRepositoryTest {
 
 	@Test
 	@DisplayName("should find book by genre name")
-	@DirtiesContext
 	void findByGenreName() {
 		StepVerifier.create(repository.findByGenreName(GENRE_NAME))
 				.expectNextCount(1)
@@ -69,7 +72,6 @@ class BookRepositoryTest {
 
 	@Test
 	@DisplayName("should find book by author name")
-	@DirtiesContext
 	void findByAuthorName() {
 		StepVerifier
 				.create(repository.findByAuthorName(AUTHOR_NAME))
@@ -80,7 +82,6 @@ class BookRepositoryTest {
 
 	@Test
 	@DisplayName("should set id on save")
-	@DirtiesContext
 	void save() {
 		StepVerifier.create(repository.save(book))
 				.assertNext(book -> assertThat(book.getId()).isNotEmpty())
@@ -90,8 +91,7 @@ class BookRepositoryTest {
 
 	@Test
 	@DisplayName("should delete book with comments")
-	@DirtiesContext
-	void delete() throws InterruptedException {
+	void delete() {
 		mongoOperations.save(new Comment("User", "Text", book.getId())).block();
 		mongoOperations.remove(book).block();
 
@@ -99,9 +99,6 @@ class BookRepositoryTest {
 				.expectNextCount(0)
 				.expectComplete()
 				.verify();
-
-		// TODO find another solution to wait listener when it finish delete comments
-		Thread.sleep(500);
 
 		StepVerifier.create(commentRepository.findByBookId(book.getId()))
 				.expectNextCount(0)
