@@ -15,6 +15,7 @@ import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
 import ru.otus.domain.model.Genre;
 import ru.otus.repository.BookRepository;
+import ru.otus.web.request.SaveBookRequest;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ import static java.util.Collections.singletonList;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @SpringBootTest
-@AutoConfigureWebTestClient(timeout = "100000")
+@AutoConfigureWebTestClient
 class BookHandlerTest {
 
 	@Autowired
@@ -78,29 +79,64 @@ class BookHandlerTest {
 
 	@Test
 	@DisplayName("GET /books/{id} - NotFound")
-	void getBook_notFound() {
+	void getBook_NotFound() {
 		webTestClient.get().uri(apiProperties.getBaseUrl().concat("/books/{id}"), "undefined")
 				.exchange()
 				.expectStatus().isNotFound();
 	}
 
 	@Test
+	@DisplayName("POST /books")
 	void createBook() {
-		val book = new Book("Book", new Genre("Genre"), emptyList());
+		val request = new SaveBookRequest("Title", "Genre", emptyList());
 
 		webTestClient.post().uri(apiProperties.getBaseUrl().concat("/books"))
 				.contentType(APPLICATION_JSON)
-				.body(Mono.just(book), Book.class)
+				.body(Mono.just(request), SaveBookRequest.class)
 				.exchange()
-				.expectStatus().isCreated();
+				.expectStatus().isCreated()
+				.expectBody(Void.class);
 	}
 
 	@Test
+	@DisplayName("PUT /books/{id}")
 	void updateBook() {
+		val request = new SaveBookRequest("Title", "Genre", emptyList());
 
+		webTestClient.put().uri(apiProperties.getBaseUrl().concat("/books/{id}"), bookList.get(0).getId())
+				.contentType(APPLICATION_JSON)
+				.body(Mono.just(request), SaveBookRequest.class)
+				.exchange()
+				.expectStatus().isNoContent();
 	}
 
 	@Test
+	@DisplayName("PUT /books/{id} - NotFound")
+	void updateBook_NotFound() {
+		val request = new SaveBookRequest("Title", "Genre", emptyList());
+
+		webTestClient.put().uri(apiProperties.getBaseUrl().concat("/books/{id}"),"undefined")
+				.contentType(APPLICATION_JSON)
+				.body(Mono.just(request), SaveBookRequest.class)
+				.exchange()
+				.expectStatus().isNotFound();
+	}
+
+	@Test
+	@DisplayName("DELETE /books/{id}")
 	void deleteBook() {
+		webTestClient.delete().uri(apiProperties.getBaseUrl().concat("/books/{id}"), bookList.get(0).getId())
+				.accept(APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isNoContent();
+	}
+
+	@Test
+	@DisplayName("DELETE /books/{id} - NotFound")
+	void deleteBook_NotFound() {
+		webTestClient.delete().uri(apiProperties.getBaseUrl().concat("/books/{id}"), "undefined")
+				.accept(APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isNotFound();
 	}
 }
