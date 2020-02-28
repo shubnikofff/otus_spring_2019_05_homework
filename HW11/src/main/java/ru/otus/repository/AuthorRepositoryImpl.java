@@ -42,7 +42,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 				project().and("_id").as("name").andExclude("_id")
 		);
 
-		return mongoOperations.aggregate(aggregation, Book.class, Author.class).single();
+		return mongoOperations.aggregate(aggregation, Book.class, Author.class).singleOrEmpty();
 	}
 
 	@Override
