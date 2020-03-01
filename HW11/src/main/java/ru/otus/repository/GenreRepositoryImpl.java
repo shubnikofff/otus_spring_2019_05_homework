@@ -34,7 +34,7 @@ public class GenreRepositoryImpl implements GenreRepository {
 				project().and("_id").as("name").andExclude("_id")
 		);
 
-		return mongoOperations.aggregate(aggregation, Book.class, Genre.class).single();
+		return mongoOperations.aggregate(aggregation, Book.class, Genre.class).singleOrEmpty();
 	}
 
 	@Override

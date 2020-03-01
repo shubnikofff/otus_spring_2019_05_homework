@@ -15,7 +15,6 @@ import ru.otus.domain.model.Book;
 import ru.otus.domain.model.Genre;
 
 import java.util.Collections;
-import java.util.NoSuchElementException;
 
 import static java.util.Arrays.asList;
 
@@ -76,10 +75,14 @@ class GenreRepositoryTest {
 				.expectNext(firstGenre)
 				.expectComplete()
 				.verify();
+	}
 
+	@Test
+	@DisplayName("should complete if not found")
+	void findByName_NotFound() {
 		StepVerifier
-				.create(repository.findByName("No existing genre"))
-				.expectError(NoSuchElementException.class)
+				.create(repository.findByName("undefined"))
+				.expectComplete()
 				.verify();
 	}
 
@@ -96,7 +99,7 @@ class GenreRepositoryTest {
 
 		StepVerifier
 				.create(repository.findByName(FIRST_GENRE_NAME))
-				.expectError(NoSuchElementException.class)
+				.expectComplete()
 				.verify();
 	}
 }
