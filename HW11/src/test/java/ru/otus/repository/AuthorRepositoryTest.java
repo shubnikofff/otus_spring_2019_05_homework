@@ -66,4 +66,13 @@ class AuthorRepositoryTest {
 				.expectComplete()
 				.verify();
 	}
+
+	@Test
+	@DisplayName("should complete when author not found")
+	void findByName_NotFound() {
+		StepVerifier
+				.create(repository.findByName("undefined"))
+				.expectComplete()
+				.verify();
+	}
 }

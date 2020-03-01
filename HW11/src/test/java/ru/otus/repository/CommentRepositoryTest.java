@@ -27,10 +27,10 @@ class CommentRepositoryTest {
 
 	@BeforeEach
 	public void setUp() {
-		repository
-				.deleteAll()
+		mongoOperations
+				.dropCollection(Comment.class)
 				.thenReturn( new Comment("user", "title", BOOK_ID))
-				.flatMap(repository::save)
+				.flatMap(mongoOperations::insert)
 				.doOnNext(comment -> System.out.println("Inserted comment: " + comment))
 				.block();
 	}

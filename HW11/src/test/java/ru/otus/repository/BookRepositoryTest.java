@@ -41,12 +41,9 @@ class BookRepositoryTest {
 
 	@BeforeEach
 	void setBook() {
-		book = new Book(TITLE, new Genre(GENRE_NAME), Collections.singletonList(new Author(AUTHOR_NAME)));
-
-		repository
-				.deleteAll()
-				.thenReturn(book)
-				.flatMap(repository::save)
+		book = mongoOperations.dropCollection(Book.class)
+				.thenReturn(new Book(TITLE, new Genre(GENRE_NAME), Collections.singletonList(new Author(AUTHOR_NAME))))
+				.flatMap(mongoOperations::insert)
 				.doOnNext(book -> System.out.println("Inserted book: " + book))
 				.block();
 	}
@@ -92,8 +89,9 @@ class BookRepositoryTest {
 	@Test
 	@DisplayName("should delete book with comments")
 	void delete() {
-		mongoOperations.save(new Comment("User", "Text", book.getId())).block();
-		mongoOperations.remove(book).block();
+		mongoOperations.save(new Comment("User", "Text", book.getId()))
+				.flatMap(comment -> mongoOperations.remove(book))
+				.block();
 
 		StepVerifier.create(repository.findById(book.getId()))
 				.expectNextCount(0)

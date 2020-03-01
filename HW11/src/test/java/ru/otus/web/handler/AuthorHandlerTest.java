@@ -71,7 +71,8 @@ class AuthorHandlerTest {
 				.contentType(APPLICATION_JSON)
 				.body(Mono.just(request), UpdateAuthorRequest.class)
 				.exchange()
-				.expectStatus().isNoContent();
+				.expectStatus().isNoContent()
+				.expectBody(Void.class);
 	}
 
 	@Test
