@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{layout::main-fragment(~{::title},~{::#header},~{::#content})}"
+>
+	<head>
+		<meta charset="UTF-8">
+		<title>Book form</title>
+	</head>
+	<body>
+		<h2 id="header">Book form</h2>
+		<form id="content" method="post"
+			  th:action="@{(${id} ? @{/book/{id}/update(id=${id})} : '/book/create')}"
+		>
+			<div class="form-group">
+				<label for="title">Title</label>
+				<input class="form-control" id="title" name="title" required th:value="${book?.title}" />
+			</div>
+			<div class="form-group">
+				<label for="genre">Genre</label>
+				<input class="form-control" id="genre" name="genre" required th:value="${book?.genre}" />
+			</div>
+			<div class="form-group">
+				<label for="authors">Authors</label>
+				<input class="form-control" id="authors" name="authors" aria-describedby="authorsHelp" required
+					   th:value="${book?.authors}" />
+				<small id="authorsHelp" class="form-text text-muted">Enter author names separated by commas.</small>
+			</div>
+			<button type="submit" class="btn btn-primary">Save</button>
+		</form>
+	</body>
+</html>
