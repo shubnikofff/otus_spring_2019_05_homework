@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      port: 0
+      database: test
+  profiles:
+    active: test
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+
+api:
+  base-url: /api
