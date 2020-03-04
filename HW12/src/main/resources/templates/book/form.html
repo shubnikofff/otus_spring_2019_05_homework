@@ -14,16 +14,16 @@
 		>
 			<div class="form-group">
 				<label for="title">Title</label>
-				<input class="form-control" id="title" name="title" required th:value="${book?.title}" />
+				<input class="form-control" id="title" name="title" required th:value="${bookTitle}" />
 			</div>
 			<div class="form-group">
 				<label for="genre">Genre</label>
-				<input class="form-control" id="genre" name="genre" required th:value="${book?.genre}" />
+				<input class="form-control" id="genre" name="genre" required th:value="${genre}" />
 			</div>
 			<div class="form-group">
 				<label for="authors">Authors</label>
 				<input class="form-control" id="authors" name="authors" aria-describedby="authorsHelp" required
-					   th:value="${book?.authors}" />
+					   th:value="${authors}" />
 				<small id="authorsHelp" class="form-text text-muted">Enter author names separated by commas.</small>
 			</div>
 			<button type="submit" class="btn btn-primary">Save</button>
