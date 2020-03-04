@@ -29,7 +29,8 @@ public class BookController {
 	ModelAndView getBook(@PathVariable("id") String id) {
 		return bookService.getBook(id)
 				.map(book -> new ModelAndView("book/details")
-						.addObject("book", book))
+						.addObject("book", book)
+						.addObject("comments", bookService.getBookComments(book)))
 				.orElseThrow(BookNotFound::new);
 	}
 

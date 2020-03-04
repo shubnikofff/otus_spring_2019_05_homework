@@ -1,6 +1,7 @@
 package ru.otus.web.service;
 
 import ru.otus.domain.model.Book;
+import ru.otus.domain.model.Comment;
 import ru.otus.web.request.SaveBookRequest;
 
 import java.util.List;
@@ -11,6 +12,8 @@ public interface BookService {
 	List<Book> getAllBooks();
 
 	Optional<Book> getBook(String id);
+
+	List<Comment> getBookComments(Book book);
 
 	Book createBook(SaveBookRequest request);
 

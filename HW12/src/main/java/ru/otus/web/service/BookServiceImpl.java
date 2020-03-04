@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
+import ru.otus.domain.model.Comment;
 import ru.otus.domain.model.Genre;
 import ru.otus.repository.BookRepository;
+import ru.otus.repository.CommentRepository;
 import ru.otus.web.request.SaveBookRequest;
 
 import java.util.Arrays;
@@ -18,16 +20,23 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
-	private final BookRepository repository;
+	private final BookRepository bookRepository;
+
+	private final CommentRepository commentRepository;
 
 	@Override
 	public List<Book> getAllBooks() {
-		return repository.findAll();
+		return bookRepository.findAll();
 	}
 
 	@Override
 	public Optional<Book> getBook(String id) {
-		return repository.findById(id);
+		return bookRepository.findById(id);
+	}
+
+	@Override
+	public List<Comment> getBookComments(Book book) {
+		return commentRepository.findByBookId(book.getId());
 	}
 
 	@Override
@@ -38,7 +47,7 @@ public class BookServiceImpl implements BookService {
 				mapStringToAuthorList(request.getAuthors())
 		);
 
-		return repository.save(book);
+		return bookRepository.save(book);
 	}
 
 	@Override
@@ -47,12 +56,12 @@ public class BookServiceImpl implements BookService {
 		book.setGenre(new Genre(request.getGenre()));
 		book.setAuthors(mapStringToAuthorList(request.getAuthors()));
 
-		return repository.save(book);
+		return bookRepository.save(book);
 	}
 
 	@Override
 	public void deleteBook(Book book) {
-		repository.delete(book);
+		bookRepository.delete(book);
 	}
 
 	private static List<Author> mapStringToAuthorList(String string) {
