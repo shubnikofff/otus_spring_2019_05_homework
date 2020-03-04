@@ -11,7 +11,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.core.MongoOperations;
 import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
-import ru.otus.domain.model.Comment;
 import ru.otus.domain.model.Genre;
 
 import static java.util.Collections.singletonList;
@@ -91,16 +90,5 @@ class BookRepositoryTest {
 		val result = repository.findByAuthorName(UNDEFINED);
 
 		assertThat(result).isEmpty();
-	}
-
-	@Test
-	@DisplayName("should delete all comments after book deleting")
-	void onAfterDelete() {
-		mongoOperations.dropCollection(Comment.class);
-		val comment = mongoOperations.insert(new Comment("User", "Text", book));
-		repository.delete(book);
-		val result = mongoOperations.findById(comment.getId(), Comment.class);
-
-		assertThat(result).isNull();
 	}
 }
