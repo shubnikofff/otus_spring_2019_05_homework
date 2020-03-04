@@ -11,5 +11,5 @@ public interface AuthorRepository {
 
 	Optional<Author> findByName(String name);
 
-	void updateName(Author author, String newName);
+	Author updateName(Author author, String newName);
 }

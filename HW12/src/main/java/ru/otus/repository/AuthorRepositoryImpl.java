@@ -47,11 +47,13 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 	}
 
 	@Override
-	public void updateName(Author author, String newName) {
+	public Author updateName(Author author, String newName) {
 		final Update update = new Update()
 				.filterArray(where("element.name").is(author.getName()))
-				.set( "authors.$[element].name", newName);
+				.set("authors.$[element].name", newName);
 
 		mongoOperations.updateMulti(new Query(), update, Book.class);
+		author.setName(newName);
+		return author;
 	}
 }
