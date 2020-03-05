@@ -11,5 +11,5 @@ public interface GenreRepository {
 
 	Optional<Genre> findByName(String name);
 
-	void updateName(Genre genre, String newName);
+	Genre updateName(Genre genre, String newName);
 }

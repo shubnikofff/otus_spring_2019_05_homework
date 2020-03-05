@@ -38,11 +38,14 @@ public class GenreRepositoryImpl implements GenreRepository {
 	}
 
 	@Override
-	public void updateName(Genre genre, String newName) {
+	public Genre updateName(Genre genre, String newName) {
 		mongoOperations.updateMulti(
 				query(where("genre.name").is(genre.getName())),
 				update("genre", new Genre(newName)),
 				Book.class
 		);
+
+		genre.setName(newName);
+		return genre;
 	}
 }
