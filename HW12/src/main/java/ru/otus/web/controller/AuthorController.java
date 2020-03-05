@@ -43,9 +43,4 @@ public class AuthorController {
 				})
 				.orElseThrow(AuthorNotFound::new);
 	}
-
-	@ExceptionHandler(AuthorNotFound.class)
-	ModelAndView handleNotFound() {
-		return new ModelAndView("author/not-found", HttpStatus.NOT_FOUND);
-	}
 }
