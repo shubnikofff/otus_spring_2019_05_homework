@@ -19,6 +19,7 @@ import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(AuthorController.class)
@@ -37,6 +38,7 @@ class AuthorControllerTest {
 		when(authorService.getAllAuthors()).thenReturn(authors);
 
 		mockMvc.perform(get("/author/list"))
+				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(view().name("author/list"))
 				.andExpect(model().size(1))
@@ -54,6 +56,7 @@ class AuthorControllerTest {
 		when(authorService.getAuthorBooks(author)).thenReturn(books);
 
 		mockMvc.perform(get("/author/{name}/details", name))
+				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(view().name("author/details"))
 				.andExpect(model().size(2))
@@ -69,6 +72,7 @@ class AuthorControllerTest {
 		when(authorService.getAuthor(name)).thenReturn(Optional.empty());
 
 		mockMvc.perform(get("/author/{name}/details", name))
+				.andDo(print())
 				.andExpect(status().isNotFound())
 				.andExpect(view().name("author/not-found"))
 				.andExpect(model().size(0));
@@ -88,6 +92,7 @@ class AuthorControllerTest {
 		mockMvc.perform(post("/author/{name}", name)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("name", request.getName()))
+				.andDo(print())
 				.andExpect(status().isFound())
 				.andExpect(view().name(String.format("redirect:/author/%s/details", updatedAuthor.getName())))
 				.andExpect(model().size(0));
@@ -101,6 +106,7 @@ class AuthorControllerTest {
 		when(authorService.getAuthor(name)).thenReturn(Optional.empty());
 
 		mockMvc.perform(post("/author/{name}", name))
+				.andDo(print())
 				.andExpect(status().isNotFound())
 				.andExpect(view().name("author/not-found"))
 				.andExpect(model().size(0));
