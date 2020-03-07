@@ -20,7 +20,7 @@ public class BookController {
 
 	private final BookService bookService;
 
-	@GetMapping("/")
+	@GetMapping("/book/list")
 	ModelAndView getAllBooks() {
 		return new ModelAndView("book/list")
 				.addObject("books", bookService.getAllBooks());
