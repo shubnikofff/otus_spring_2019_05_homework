@@ -8,9 +8,11 @@
 		<title>Home</title>
 	</head>
 	<body>
-		<h2 id="header">Book list</h2>
+		<div id="header" class="d-flex justify-content-between align-items-center">
+			<h2>Book list</h2>
+			<a href="/book/create" class="btn btn-success">New book</a>
+		</div>
 		<ul id="content" class="list-group list-group-flush">
-			<!--/*@thymesVar id="books" type="java.util.List<ru.otus.domain.model.Book>"*/-->
 			<li th:each="book :${books}" class="list-group-item">
 				<a th:text="${book.title}" href="/book/details.html" th:href="@{/book/{id}/details(id=${book.id})}">
 					Book title

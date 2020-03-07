@@ -11,15 +11,15 @@
 	<body>
 		<header>
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<span class="navbar-brand">Online library</span>
+				<a class="navbar-brand" href="/">Online library</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
 						aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav mr-auto">
-						<li class="nav-item active">
-							<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+						<li class="nav-item">
+							<a class="nav-link" href="/book/list">Books</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/genre/list">Genres</a>
@@ -28,7 +28,13 @@
 							<a class="nav-link" href="/author/list">Authors</a>
 						</li>
 					</ul>
-					<a href="/book/create" class="btn btn-success">New book</a>
+					<div sec:authorize="isAuthenticated()">
+						<span class="pr-3">Welcome, <strong sec:authentication="name"></strong></span>
+						<a class="btn btn-outline-secondary" href="/logout">Exit</a>
+					</div>
+					<div sec:authorize="!isAuthenticated()">
+						<a class="btn btn-outline-secondary" href="/login">Login</a>
+					</div>
 				</div>
 			</nav>
 		</header>
