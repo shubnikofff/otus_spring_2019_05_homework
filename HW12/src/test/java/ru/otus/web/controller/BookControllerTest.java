@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
@@ -34,13 +35,14 @@ class BookControllerTest {
 	private BookService bookService;
 
 	@Test
-	@DisplayName("GET /")
+	@DisplayName("GET /book/list")
+	@WithMockUser("admin")
 	void getAllBooks() throws Exception {
 		val books = singletonList(new Book("Book", new Genre("Genre"), new Author("Author")));
 
 		when(bookService.getAllBooks()).thenReturn(books);
 
-		mockMvc.perform(get("/"))
+		mockMvc.perform(get("/book/list"))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(view().name("book/list"))
@@ -50,6 +52,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("GET /book/{id}/details")
+	@WithMockUser("admin")
 	void getBook() throws Exception {
 		val bookId = "id";
 		val book = new Book("Book", new Genre("Genre"), new Author("Author"));
@@ -69,6 +72,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("GET /book/{id}/details - NotFound")
+	@WithMockUser("admin")
 	void getBook_NotFound() throws Exception {
 		val bookId = "id";
 
@@ -83,6 +87,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("GET /book/create")
+	@WithMockUser("admin")
 	void getCreateBookView() throws Exception {
 		mockMvc.perform(get("/book/create"))
 				.andDo(print())
@@ -93,6 +98,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("POST /book/create")
+	@WithMockUser("admin")
 	void createBook() throws Exception {
 		val book = new Book("id","Book", new Genre("Genre"), singletonList(new Author("Author")));
 		val request = new SaveBookRequest("Book", "Genre", "Author");
@@ -113,6 +119,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("GET /book/{id}/update")
+	@WithMockUser("admin")
 	void getUpdateBookView() throws Exception {
 		val bookId = "id";
 		val book = new Book(bookId,"Book", new Genre("Genre"), singletonList(new Author("Author")));
@@ -132,6 +139,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("GET /book/{id}/update - NotFound")
+	@WithMockUser("admin")
 	void getUpdateBookView_NotFound() throws Exception {
 		val bookId = "id";
 
@@ -146,6 +154,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("POST /book/{id}/update")
+	@WithMockUser("admin")
 	void updateBook() throws Exception {
 		val bookId = "id";
 		val book = new Book(bookId,"Book", new Genre("Genre"), singletonList(new Author("Author")));
@@ -168,6 +177,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("POST /book/{id}/update - NotFound")
+	@WithMockUser("admin")
 	void updateBook_NotFound() throws Exception {
 		val bookId = "id";
 		val request = new SaveBookRequest("Update", "Novel", "Pushkin");
@@ -187,6 +197,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("GET /book/{id}/delete")
+	@WithMockUser("admin")
 	void getDeleteBookView() throws Exception {
 		val bookId = "id";
 		val book = new Book(bookId,"Book", new Genre("Genre"), singletonList(new Author("Author")));
@@ -203,6 +214,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("GET /book/{id}/delete - NotFound")
+	@WithMockUser("admin")
 	void getDeleteBookView_NotFound() throws Exception {
 		val bookId = "id";
 
@@ -217,6 +229,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("POST /book/{id}/delete")
+	@WithMockUser("admin")
 	void deleteBook() throws Exception {
 		val bookId = "id";
 		val book = new Book(bookId,"Book", new Genre("Genre"), singletonList(new Author("Author")));
@@ -232,6 +245,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("POST /book/{id}/delete - NotFound")
+	@WithMockUser("admin")
 	void deleteBook_NotFound() throws Exception {
 		val bookId = "id";
 

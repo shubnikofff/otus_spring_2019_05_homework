@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.domain.model.Author;
 import ru.otus.domain.model.Book;
@@ -34,6 +35,7 @@ class AuthorControllerTest {
 
 	@Test
 	@DisplayName("GET /author/list")
+	@WithMockUser("admin")
 	void getAllAuthors() throws Exception {
 		val authors = singletonList(new Author("Author name"));
 		when(authorService.getAllAuthors()).thenReturn(authors);
@@ -48,6 +50,7 @@ class AuthorControllerTest {
 
 	@Test
 	@DisplayName("GET /author/{name}/details")
+	@WithMockUser("admin")
 	void getAuthor() throws Exception {
 		val name = "name";
 		val author = new Author(name);
@@ -67,6 +70,7 @@ class AuthorControllerTest {
 
 	@Test
 	@DisplayName("GET /author/{name}/details - NotFound")
+	@WithMockUser("admin")
 	void getAuthor_NotFound() throws Exception {
 		val name = "name";
 
@@ -81,6 +85,7 @@ class AuthorControllerTest {
 
 	@Test
 	@DisplayName("POST /author/{name}")
+	@WithMockUser("admin")
 	void updateAuthor() throws Exception {
 		val name = "Lermontov";
 		val request = new UpdateAuthorRequest("Pushkin");
@@ -101,6 +106,7 @@ class AuthorControllerTest {
 
 	@Test
 	@DisplayName("POST /author/{name} - NotFound")
+	@WithMockUser("admin")
 	void updateAuthor_NotFound() throws Exception {
 		val name = "name";
 

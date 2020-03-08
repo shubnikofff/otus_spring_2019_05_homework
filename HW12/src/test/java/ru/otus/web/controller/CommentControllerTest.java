@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.domain.model.Book;
 import ru.otus.domain.model.Genre;
@@ -33,6 +34,7 @@ class CommentControllerTest {
 
 	@Test
 	@DisplayName("POST /comment")
+	@WithMockUser("admin")
 	void createComment() throws Exception {
 		val bookId = "id";
 
@@ -51,6 +53,7 @@ class CommentControllerTest {
 
 	@Test
 	@DisplayName("POST /comment - NotFound")
+	@WithMockUser("admin")
 	void createComment_NotFound() throws Exception {
 		val bookId = "id";
 

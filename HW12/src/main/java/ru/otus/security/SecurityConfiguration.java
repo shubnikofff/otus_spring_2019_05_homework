@@ -13,7 +13,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
-				.authorizeRequests().antMatchers("/author/**", "/book/**", "/genre/**").authenticated()
+				.authorizeRequests().antMatchers("/author/**", "/book/**", "/comment/**", "/genre/**").authenticated()
 				.antMatchers("/login*").permitAll()
 				.and()
 				.formLogin()

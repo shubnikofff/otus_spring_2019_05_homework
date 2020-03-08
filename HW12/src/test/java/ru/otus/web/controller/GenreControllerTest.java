@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.domain.model.Book;
 import ru.otus.domain.model.Genre;
@@ -34,6 +35,7 @@ class GenreControllerTest {
 
 	@Test
 	@DisplayName("GET /genre/list")
+	@WithMockUser("admin")
 	void getAllGenres() throws Exception {
 		val genres = singletonList(new Genre("genre"));
 		when(genreService.getAllGenres()).thenReturn(genres);
@@ -48,6 +50,7 @@ class GenreControllerTest {
 
 	@Test
 	@DisplayName("GET /genre/{name}/details")
+	@WithMockUser("admin")
 	void getGenre() throws Exception {
 		val name = "name";
 		val genre = new Genre(name);
@@ -67,6 +70,7 @@ class GenreControllerTest {
 
 	@Test
 	@DisplayName("GET /genre/{name}/details - NotFound")
+	@WithMockUser("admin")
 	void getGenre_NotFound() throws Exception {
 		val name = "name";
 
@@ -81,6 +85,7 @@ class GenreControllerTest {
 
 	@Test
 	@DisplayName("POST /genre/{name}")
+	@WithMockUser("admin")
 	void updateGenre() throws Exception {
 		val name = "name";
 		val request = new UpdateGenreRequest("new name");
@@ -101,6 +106,7 @@ class GenreControllerTest {
 
 	@Test
 	@DisplayName("POST /genre/{name} - NotFound")
+	@WithMockUser("admin")
 	void updateGenre_NotFound() throws Exception {
 		val name = "name";
 
