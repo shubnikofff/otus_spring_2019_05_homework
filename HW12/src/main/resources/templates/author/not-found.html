@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{layout::main-fragment(
+			~{::title},
+			~{::#header},
+			~{::#content}
+		)}"
+>
+	<head>
+		<meta charset="UTF-8">
+		<title>Author not found</title>
+	</head>
+	<body>
+		<h1 id="header">404</h1>
+		<p id="content">Author not found</p>
+	</body>
+</html>

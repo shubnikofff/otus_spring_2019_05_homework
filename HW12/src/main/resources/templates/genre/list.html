@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{layout::main-fragment(~{::title},~{::#header},~{::#content})}"
+>
+	<head>
+		<meta charset="UTF-8">
+		<title>Genres</title>
+	</head>
+	<body>
+		<h2 id="header">Genre list</h2>
+		<ul id="content" class="list-group list-group-flush">
+			<li th:each="genre :${genres}" class="list-group-item">
+				<a href="/genre/details.html" th:text="${genre.name}"
+				   th:href="@{/genre/{name}/details(name=${genre.name})}">
+					Genre name
+				</a>
+			</li>
+		</ul>
+	</body>
+</html>
