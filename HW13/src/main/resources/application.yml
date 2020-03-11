@@ -5,7 +5,7 @@ spring:
       port: 27017
       database: library
   datasource:
-    url: jdbc:h2:mem:security
+    url: jdbc:h2:mem:library
   jpa:
     hibernate:
       ddl-auto: none
