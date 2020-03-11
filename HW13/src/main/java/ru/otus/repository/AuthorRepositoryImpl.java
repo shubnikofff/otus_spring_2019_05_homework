@@ -6,8 +6,8 @@ import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
-import ru.otus.domain.model.Author;
-import ru.otus.domain.model.Book;
+import ru.otus.domain.Author;
+import ru.otus.domain.Book;
 
 import java.util.List;
 import java.util.Optional;

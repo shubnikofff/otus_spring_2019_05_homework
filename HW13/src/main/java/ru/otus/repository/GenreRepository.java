@@ -1,6 +1,6 @@
 package ru.otus.repository;
 
-import ru.otus.domain.model.Genre;
+import ru.otus.domain.Genre;
 
 import java.util.List;
 import java.util.Optional;

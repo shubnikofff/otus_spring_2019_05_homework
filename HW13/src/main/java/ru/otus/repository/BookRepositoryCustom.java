@@ -1,6 +1,6 @@
 package ru.otus.repository;
 
-import ru.otus.domain.model.Book;
+import ru.otus.domain.Book;
 
 import java.util.List;
 

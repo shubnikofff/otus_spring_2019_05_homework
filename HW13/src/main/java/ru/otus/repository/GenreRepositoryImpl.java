@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.stereotype.Repository;
-import ru.otus.domain.model.Book;
-import ru.otus.domain.model.Genre;
+import ru.otus.domain.Book;
+import ru.otus.domain.Genre;
 
 import java.util.List;
 import java.util.Optional;
