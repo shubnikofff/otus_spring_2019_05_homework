@@ -7,42 +7,45 @@ CREATE TABLE users
 );
 
 DROP TABLE IF EXISTS acl_sid;
-CREATE TABLE IF NOT EXISTS acl_sid
+CREATE TABLE acl_sid
 (
     id        BIGINT PRIMARY KEY AUTO_INCREMENT,
-    principal TINYINT(1)    NOT NULL UNIQUE,
-    sid       VARCHAR2(100) NOT NULL UNIQUE
+    principal TINYINT(1)    NOT NULL,
+    sid       VARCHAR2(100) NOT NULL,
+    CONSTRAINT unique_principal_sid UNIQUE (principal, sid)
 );
 
 DROP TABLE IF EXISTS acl_class;
-CREATE TABLE IF NOT EXISTS acl_class
+CREATE TABLE acl_class
 (
     id    BIGINT PRIMARY KEY AUTO_INCREMENT,
     class VARCHAR2(255) NOT NULL UNIQUE
 );
 
+DROP TABLE IF EXISTS acl_object_identity;
+CREATE TABLE acl_object_identity
+(
+    id                 BIGINT PRIMARY KEY AUTO_INCREMENT,
+    object_id_class    BIGINT       NOT NULL,
+    object_id_identity VARCHAR2(20) NOT NULL,
+    parent_object      BIGINT(20) DEFAULT NULL,
+    owner_sid          BIGINT(20) DEFAULT NULL,
+    entries_inheriting TINYINT(1)   NOT NULL,
+    CONSTRAINT unique_object_id_class_object_id_identity UNIQUE (object_id_class, object_id_identity)
+);
+
 DROP TABLE IF EXISTS acl_entry;
-CREATE TABLE IF NOT EXISTS acl_entry
+CREATE TABLE acl_entry
 (
     id                  BIGINT PRIMARY KEY AUTO_INCREMENT,
-    acl_object_identity BIGINT     NOT NULL UNIQUE,
-    ace_order           INT        NOT NULL UNIQUE,
+    acl_object_identity BIGINT     NOT NULL,
+    ace_order           INT        NOT NULL,
     sid                 BIGINT     NOT NULL,
     mask                INT(11)    NOT NULL,
     granting            TINYINT(1) NOT NULL,
     audit_success       TINYINT(1) NOT NULL,
-    audit_failure       TINYINT(1) NOT NULL
-);
-
-DROP TABLE IF EXISTS acl_object_identity;
-CREATE TABLE IF NOT EXISTS acl_object_identity
-(
-    id                 BIGINT PRIMARY KEY AUTO_INCREMENT,
-    object_id_class    BIGINT     NOT NULL UNIQUE,
-    object_id_identity BIGINT     NOT NULL UNIQUE,
-    parent_object      BIGINT(20) DEFAULT NULL,
-    owner_sid          BIGINT(20) DEFAULT NULL,
-    entries_inheriting TINYINT(1) NOT NULL
+    audit_failure       TINYINT(1) NOT NULL,
+    CONSTRAINT unique_acl_object_identity_ace_order UNIQUE (acl_object_identity, ace_order)
 );
 
 ALTER TABLE acl_entry
