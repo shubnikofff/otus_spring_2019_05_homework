@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
-	public void configure(WebSecurity web) throws Exception {
+	public void configure(WebSecurity web) {
 		web.ignoring().antMatchers("/h2-console/**");
 	}
 
@@ -22,7 +22,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers("/author/**", "/book/**", "/comment/**", "/genre/**")
 				.authenticated()
-				.antMatchers("/login*").permitAll()
+				.antMatchers("/", "/login*").permitAll()
+				.anyRequest().denyAll()
 				.and()
 				.formLogin()
 				.loginProcessingUrl("/perform_login")
