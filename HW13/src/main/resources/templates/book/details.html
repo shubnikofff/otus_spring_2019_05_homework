@@ -35,12 +35,11 @@
 				</dd>
 			</dl>
 			<ul class="list-unstyled mt-5">
-				<!--/*@thymesVar id="comments" type="List<ru.otus.domain.model.Comment>"*/-->
 				<li th:each="comment : ${comments}" class="card mb-3">
 					<div class="card-body">
 						<blockquote>
 							<p th:text="${comment.text}">Comment text</p>
-							<footer class="blockquote-footer" th:text="${comment.user}">User name</footer>
+							<footer class="blockquote-footer" th:text="${comment.username}">User name</footer>
 						</blockquote>
 					</div>
 				</li>
