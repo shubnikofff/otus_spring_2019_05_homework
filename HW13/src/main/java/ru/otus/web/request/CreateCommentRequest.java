@@ -9,7 +9,5 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class CreateCommentRequest {
 
-	private String user;
-
 	private String text;
 }

@@ -9,7 +9,6 @@
 	</head>
 	<body>
 		<div id="header" class="d-flex justify-content-between">
-			<!--/*@thymesVar id="book" type="ru.otus.domain.model.Book"*/-->
 			<h2 th:text="${book.title}">Book title</h2>
 			<div>
 				<a class="btn btn-outline-primary" href="form.html" th:href="@{/book/{id}/update(id=${book.id})}">
@@ -21,7 +20,6 @@
 			</div>
 		</div>
 		<div id="content">
-			<!--/*@thymesVar id="book" type="ru.otus.domain.model.Book"*/-->
 			<dl class="col" th:object="${book}">
 				<dt>Genre</dt>
 				<dd th:text="*{genre.name}">Genre name</dd>
@@ -44,18 +42,9 @@
 					</div>
 				</li>
 			</ul>
-			<form class="card mb-5" method="post" name="comment-form" th:action="@{/comment(bookId=${book.id})}">
-				<div class="card-body">
-					<div class="form-group">
-						<label for="user">User</label>
-						<input class="form-control" id="user" name="user" required />
-					</div>
-					<div class="form-group">
-						<label for="text">Text</label>
-						<textarea class="form-control" id="text" name="text" required></textarea>
-					</div>
-					<button type="submit" class="btn btn-outline-secondary">Add comment</button>
-				</div>
+			<form class="mb-5" method="post" name="comment-form" th:action="@{/comment(bookId=${book.id})}">
+				<textarea class="form-control mb-3" id="text" name="text" required></textarea>
+				<button type="submit" class="btn btn-outline-secondary">Add comment</button>
 			</form>
 		</div>
 	</body>
