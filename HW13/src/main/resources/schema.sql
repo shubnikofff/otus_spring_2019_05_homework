@@ -61,8 +61,8 @@ CREATE TABLE acl_object_identity
 (
     id                 BIGINT PRIMARY KEY AUTO_INCREMENT,
     object_id_class    BIGINT       NOT NULL,
-    object_id_identity VARCHAR2(20) NOT NULL,
-    parent_object      BIGINT(20) DEFAULT NULL,
+    object_id_identity VARCHAR2(24) NOT NULL,
+    parent_object      BIGINT DEFAULT NULL,
     owner_sid          BIGINT(20) DEFAULT NULL,
     entries_inheriting TINYINT(1)   NOT NULL,
     CONSTRAINT unique_object_id_class_object_id_identity UNIQUE (object_id_class, object_id_identity)
