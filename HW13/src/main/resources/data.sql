@@ -1,7 +1,7 @@
-INSERT INTO USERS(ID, USERNAME, PASSWORD)
-VALUES (1, 'admin', 'password'),
-       (2, 'fowler', 'password'),
-       (3, 'tolkien', 'password');
+INSERT INTO USERS(ID, USERNAME, PASSWORD, FULL_NAME)
+VALUES (1, 'admin', 'password', 'System administrator'),
+       (2, 'fowler', 'password', 'Martin Fowler'),
+       (3, 'tolkien', 'password', 'John R. R. Tolkien');
 
 INSERT INTO ROLES(ID, NAME)
 VALUES (1, 'ADMIN'),

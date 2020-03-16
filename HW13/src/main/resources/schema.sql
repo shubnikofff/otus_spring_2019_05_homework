@@ -3,9 +3,10 @@
 DROP TABLE IF EXISTS users;
 CREATE TABLE users
 (
-    id       BIGINT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR2(20) NOT NULL UNIQUE,
-    password VARCHAR2(50) NOT NULL
+    id        BIGINT PRIMARY KEY AUTO_INCREMENT,
+    username  VARCHAR2(20)  NOT NULL UNIQUE,
+    password  VARCHAR2(50)  NOT NULL,
+    full_name VARCHAR2(100) NOT NULL
 );
 
 -- roles
