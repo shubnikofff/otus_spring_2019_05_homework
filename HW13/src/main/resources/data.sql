@@ -1,7 +1,16 @@
-INSERT INTO USERS(USERNAME, PASSWORD)
-VALUES ('admin', 'password'),
-       ('fowler', 'password'),
-       ('tolkien', 'password');
+INSERT INTO USERS(ID, USERNAME, PASSWORD)
+VALUES (1, 'admin', 'password'),
+       (2, 'fowler', 'password'),
+       (3, 'tolkien', 'password');
+
+INSERT INTO ROLES(ID, NAME)
+VALUES (1, 'ADMIN'),
+       (2, 'USER');
+
+INSERT INTO USERS_ROLES(USER_ID, ROLE_ID)
+VALUES (1, 1),
+       (2, 2),
+       (3, 2);
 
 INSERT INTO ACL_SID(ID, PRINCIPAL, SID)
 VALUES (1, 1, 'admin'),
