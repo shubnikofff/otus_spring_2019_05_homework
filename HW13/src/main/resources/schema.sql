@@ -88,8 +88,8 @@ CREATE TABLE acl_entry
     sid                 BIGINT     NOT NULL,
     mask                INT(11)    NOT NULL,
     granting            TINYINT(1) NOT NULL,
-    audit_success       TINYINT(1) NOT NULL,
-    audit_failure       TINYINT(1) NOT NULL,
+    audit_success       TINYINT(1) NOT NULL DEFAULT 1,
+    audit_failure       TINYINT(1) NOT NULL DEFAULT 1,
     CONSTRAINT unique_acl_object_identity_ace_order UNIQUE (acl_object_identity, ace_order)
 );
 
