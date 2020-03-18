@@ -7,14 +7,19 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Transient;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "comments")
 public class Comment {
 
+	@Transient
+	public static final String SEQUENCE_NAME = "comments";
+
 	@Id
-	private String id;
+	private Long id;
 
 	private String username;
 

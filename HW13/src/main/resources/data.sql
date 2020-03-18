@@ -23,17 +23,17 @@ INSERT INTO ACL_CLASS(ID, CLASS)
 VALUES (1, 'ru.otus.domain.Comment');
 
 INSERT INTO ACL_OBJECT_IDENTITY(ID, OBJECT_ID_CLASS, OBJECT_ID_IDENTITY, PARENT_OBJECT, OWNER_SID, ENTRIES_INHERITING)
-VALUES (1, 1, '1', NULL, 2, 0),
-       (2, 1, '2', NULL, 3, 0),
-       (3, 1, '3', NULL, 3, 0),
-       (4, 1, '4', NULL, 2, 0);
+VALUES (1, 1, 1, NULL, 2, 0),
+       (2, 1, 2, NULL, 3, 0),
+       (3, 1, 3, NULL, 3, 0),
+       (4, 1, 4, NULL, 2, 0);
 
 INSERT INTO ACL_ENTRY(ACL_OBJECT_IDENTITY, ACE_ORDER, SID, MASK, GRANTING, AUDIT_SUCCESS, AUDIT_FAILURE)
-VALUES (1, 1, 2, 3, 1, 1, 1),
+VALUES (1, 1, 2, 2, 1, 1, 1),
        (1, 2, 3, 0, 1, 1, 1),
        (2, 1, 2, 0, 1, 1, 1),
-       (2, 2, 3, 3, 1, 1, 1),
+       (2, 2, 3, 2, 1, 1, 1),
        (3, 1, 2, 0, 1, 1, 1),
-       (3, 2, 3, 3, 1, 1, 1),
-       (4, 1, 2, 3, 1, 1, 1),
+       (3, 2, 3, 2, 1, 1, 1),
+       (4, 1, 2, 2, 1, 1, 1),
        (4, 2, 3, 0, 1, 1, 1);
