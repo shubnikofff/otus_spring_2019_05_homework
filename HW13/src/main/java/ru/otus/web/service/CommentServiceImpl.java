@@ -3,6 +3,7 @@ package ru.otus.web.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.acls.domain.BasePermission;
+import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.model.MutableAcl;
@@ -50,10 +51,9 @@ public class CommentServiceImpl implements CommentService {
 						book
 				)))
 				.map(comment -> {
-					final PrincipalSid owner = new PrincipalSid(authentication);
 					final MutableAcl acl = aclService.createAcl(new ObjectIdentityImpl(Comment.class, comment.getId()));
-					acl.setOwner(owner);
-					acl.insertAce(acl.getEntries().size(), BasePermission.WRITE, owner, true);
+					acl.insertAce(acl.getEntries().size(), BasePermission.READ, new GrantedAuthoritySid("ROLE_USER"), true);
+					acl.insertAce(acl.getEntries().size(), BasePermission.WRITE, new PrincipalSid(authentication), true);
 					aclService.updateAcl(acl);
 					return comment;
 				})
