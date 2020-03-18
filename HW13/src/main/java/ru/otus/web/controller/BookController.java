@@ -21,13 +21,13 @@ public class BookController {
 	private final BookService bookService;
 
 	@GetMapping("/book/list")
-	ModelAndView getAllBooks() {
+	public ModelAndView getAllBooks() {
 		return new ModelAndView("book/list")
 				.addObject("books", bookService.getAllBooks());
 	}
 
 	@GetMapping("/book/{id}/details")
-	ModelAndView getBook(@PathVariable("id") String id) {
+	public ModelAndView getBook(@PathVariable("id") String id) {
 		return bookService.getBook(id)
 				.map(book -> new ModelAndView("book/details")
 						.addObject("book", book)
@@ -36,19 +36,19 @@ public class BookController {
 	}
 
 	@GetMapping("/book/create")
-	ModelAndView getCreateBookView() {
+	public ModelAndView getCreateBookView() {
 		return new ModelAndView("book/form");
 	}
 
 	@PostMapping("/book/create")
-	ModelAndView createBook(SaveBookRequest request) {
+	public ModelAndView createBook(SaveBookRequest request) {
 		final Book book = bookService.createBook(request);
 		return new ModelAndView(String.format("redirect:/book/%s/details", book.getId()))
 				.addObject("book", book);
 	}
 
 	@GetMapping("/book/{id}/update")
-	ModelAndView getUpdateBookView(@PathVariable("id") String id) {
+	public ModelAndView getUpdateBookView(@PathVariable("id") String id) {
 		return bookService.getBook(id)
 				.map(book -> new ModelAndView("book/form")
 						.addObject("id", book.getId())
@@ -60,7 +60,7 @@ public class BookController {
 	}
 
 	@PostMapping("/book/{id}/update")
-	ModelAndView updateBook(@PathVariable("id") String id, SaveBookRequest request) {
+	public ModelAndView updateBook(@PathVariable("id") String id, SaveBookRequest request) {
 		return bookService.getBook(id)
 				.map(book -> {
 					final Book result = bookService.updateBook(book, request);
@@ -70,7 +70,7 @@ public class BookController {
 	}
 
 	@GetMapping("/book/{id}/delete")
-	ModelAndView getDeleteBookView(@PathVariable("id") String id) {
+	public ModelAndView getDeleteBookView(@PathVariable("id") String id) {
 		return bookService.getBook(id)
 				.map(book -> new ModelAndView("book/delete")
 						.addObject("book", book))
@@ -78,7 +78,7 @@ public class BookController {
 	}
 
 	@PostMapping("/book/{id}/delete")
-	ModelAndView deleteBook(@PathVariable("id") String id) {
+	public ModelAndView deleteBook(@PathVariable("id") String id) {
 		return bookService.getBook(id)
 				.map(book -> {
 					bookService.deleteBook(book);

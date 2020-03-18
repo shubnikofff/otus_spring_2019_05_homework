@@ -18,13 +18,13 @@ public class AuthorController {
 	private final AuthorService authorService;
 
 	@GetMapping("/author/list")
-	ModelAndView getAllAuthors() {
+	public ModelAndView getAllAuthors() {
 		return new ModelAndView("author/list")
 				.addObject("authors", authorService.getAllAuthors());
 	}
 
 	@GetMapping("/author/{name}/details")
-	ModelAndView getAuthor(@PathVariable("name") String name) {
+	public ModelAndView getAuthor(@PathVariable("name") String name) {
 		return authorService.getAuthor(name)
 				.map(author -> new ModelAndView("author/details")
 						.addObject("name", author.getName())
@@ -33,7 +33,7 @@ public class AuthorController {
 	}
 
 	@PostMapping("/author/{name}")
-	ModelAndView updateAuthor(@PathVariable("name") String name, UpdateAuthorRequest request) {
+	public ModelAndView updateAuthor(@PathVariable("name") String name, UpdateAuthorRequest request) {
 		return authorService.getAuthor(name)
 				.map(author -> {
 					final Author result = authorService.updateAuthor(author, request);

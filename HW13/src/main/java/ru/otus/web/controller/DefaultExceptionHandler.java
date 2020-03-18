@@ -12,17 +12,17 @@ import ru.otus.web.exception.GenreNotFound;
 public class DefaultExceptionHandler {
 
 	@ExceptionHandler(AuthorNotFound.class)
-	ModelAndView handleAuthorNotFound() {
+	public ModelAndView handleAuthorNotFound() {
 		return new ModelAndView("author/not-found", HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(BookNotFound.class)
-	ModelAndView handleBookNotFound() {
+	public ModelAndView handleBookNotFound() {
 		return new ModelAndView("book/not-found", HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(GenreNotFound.class)
-	ModelAndView handleGenreNotFound() {
+	public ModelAndView handleGenreNotFound() {
 		return new ModelAndView("genre/not-found", HttpStatus.NOT_FOUND);
 	}
 }

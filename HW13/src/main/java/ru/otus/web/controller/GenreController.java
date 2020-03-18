@@ -18,13 +18,13 @@ public class GenreController {
 	private final GenreService genreService;
 
 	@GetMapping("/genre/list")
-	ModelAndView getAllGenres() {
+	public ModelAndView getAllGenres() {
 		return new ModelAndView("genre/list")
 				.addObject("genres", genreService.getAllGenres());
 	}
 
 	@GetMapping("/genre/{name}/details")
-	ModelAndView getGenre(@PathVariable("name") String name) {
+	public ModelAndView getGenre(@PathVariable("name") String name) {
 		return genreService.getGenre(name)
 				.map(genre -> new ModelAndView("genre/details")
 						.addObject("name", genre.getName())
@@ -33,7 +33,7 @@ public class GenreController {
 	}
 
 	@PostMapping("/genre/{name}")
-	ModelAndView updateGenre(@PathVariable("name") String name, UpdateGenreRequest request) {
+	public ModelAndView updateGenre(@PathVariable("name") String name, UpdateGenreRequest request) {
 		return genreService.getGenre(name)
 				.map(genre -> {
 					final Genre result = genreService.updateGenre(genre, request);
