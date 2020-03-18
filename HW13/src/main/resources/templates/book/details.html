@@ -36,7 +36,12 @@
 				<li th:each="comment : ${comments}" class="card mb-3">
 					<div class="card-body">
 						<blockquote>
-							<p th:text="${comment.text}">Comment text</p>
+							<div class="d-flex justify-content-between">
+								<p th:text="${comment.text}">Comment text</p>
+								<a class="text-secondary" th:href="@{/comment/{id}/update(id=${comment.id})}">
+									<i class="fas fa-edit"></i>
+								</a>
+							</div>
 							<footer class="blockquote-footer" th:text="${comment.username}">User name</footer>
 						</blockquote>
 					</div>
