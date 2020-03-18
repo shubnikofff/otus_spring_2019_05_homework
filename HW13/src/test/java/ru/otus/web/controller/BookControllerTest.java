@@ -13,7 +13,6 @@ import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Comment;
 import ru.otus.domain.Genre;
-import ru.otus.web.controller.BookController;
 import ru.otus.web.request.SaveBookRequest;
 import ru.otus.web.service.BookService;
 

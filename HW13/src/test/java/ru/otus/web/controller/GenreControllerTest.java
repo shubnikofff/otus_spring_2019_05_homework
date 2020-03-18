@@ -11,7 +11,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
-import ru.otus.web.controller.GenreController;
 import ru.otus.web.request.UpdateGenreRequest;
 import ru.otus.web.service.GenreService;
 
