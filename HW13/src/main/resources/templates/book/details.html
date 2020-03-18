@@ -47,8 +47,8 @@
 					</div>
 				</li>
 			</ul>
-			<form class="mb-5" method="post" name="comment-form" th:action="@{/comment(bookId=${book.id})}">
-				<textarea class="form-control mb-3" id="text" name="text" required></textarea>
+			<form class="mb-5" method="post" name="comment-form" th:action="@{/comment/create(bookId=${book.id})}">
+				<textarea class="form-control mb-3" name="text" required></textarea>
 				<button type="submit" class="btn btn-outline-secondary">Add comment</button>
 			</form>
 		</div>
