@@ -8,6 +8,7 @@ import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Comment;
 import ru.otus.domain.Genre;
+import ru.otus.repository.id.generator.DatabaseSequence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +34,14 @@ public class InitMongoDBDataChangeLog {
 
 	@ChangeSet(order = "002", id = "initComments", author = "shubnikofff", runAlways = true)
 	public void initComments(MongoTemplate template) {
-		template.save(new Comment("1", "Martin Fowler", "I'd rather read something about computer science than that.", books.get(0)));
-		template.save(new Comment("2", "John R. R. Tolkien", "Excellent book! I recommend everyone to read.", books.get(0)));
-		template.save(new Comment("3", "John R. R. Tolkien", "Almost fell asleep", books.get(1)));
-		template.save(new Comment("4", "Martin Fowler", "This book is a classic, you should read through it and it should sit on your bookshelf.", books.get(1)));
+		template.save(new Comment(1L, "Martin Fowler", "I'd rather read something about computer science than that.", books.get(0)));
+		template.save(new Comment(2L, "John R. R. Tolkien", "Excellent book! I recommend everyone to read.", books.get(0)));
+		template.save(new Comment(3L, "John R. R. Tolkien", "Almost fell asleep", books.get(1)));
+		template.save(new Comment(4L, "Martin Fowler", "This book is a classic, you should read through it and it should sit on your bookshelf.", books.get(1)));
+	}
+
+	@ChangeSet(order = "003", id = "initDatabaseSequences", author = "shubnikofff", runAlways = true)
+	public void initDatabaseSequences(MongoTemplate template) {
+		template.save(new DatabaseSequence(Comment.SEQUENCE_NAME, 4L));
 	}
 }
