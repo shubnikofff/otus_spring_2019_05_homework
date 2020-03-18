@@ -2,6 +2,7 @@ package ru.otus.web.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
@@ -17,7 +18,8 @@ import ru.otus.domain.Comment;
 import ru.otus.repository.BookRepository;
 import ru.otus.repository.CommentRepository;
 import ru.otus.repository.UserRepository;
-import ru.otus.web.request.CreateCommentRequest;
+import ru.otus.web.exception.CommentNotFound;
+import ru.otus.web.request.SaveCommentRequest;
 
 import java.util.Optional;
 
@@ -25,7 +27,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
-	private final MutableAclService  aclService;
+	private final MutableAclService aclService;
 
 	private final BookRepository bookRepository;
 
@@ -39,8 +41,14 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
+	@PostAuthorize("hasPermission(returnObject, 'WRITE')")
+	public Comment getComment(Long id) {
+		return Optional.ofNullable(commentRepository.findCommentById(id)).orElseThrow(CommentNotFound::new);
+	}
+
+	@Override
 	@Secured("ROLE_USER")
-	public Comment createComment(Book book, CreateCommentRequest request) {
+	public Comment createComment(Book book, SaveCommentRequest request) {
 		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		final UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
@@ -58,5 +66,15 @@ public class CommentServiceImpl implements CommentService {
 					return comment;
 				})
 				.orElseThrow(RuntimeException::new);
+	}
+
+	@Override
+	public Comment updateComment(Long id, SaveCommentRequest request) {
+		return Optional.ofNullable(commentRepository.findCommentById(id))
+				.map(comment -> {
+					comment.setText(request.getText());
+					return commentRepository.save(comment);
+				})
+				.orElseThrow(CommentNotFound::new);
 	}
 }
