@@ -33,14 +33,14 @@ class CommentControllerTest {
 	private CommentService commentService;
 
 	@Test
-	@DisplayName("POST /comment")
+	@DisplayName("POST /comment/create")
 	@WithMockUser("admin")
 	void createComment() throws Exception {
 		val bookId = "id";
 
 		when(commentService.getBook(bookId)).thenReturn(Optional.of(new Book(bookId, "Title", new Genre("Genre"), emptyList())));
 
-		mockMvc.perform(post("/comment")
+		mockMvc.perform(post("/comment/create")
 				.queryParam("bookId", bookId)
 				.param("user", "User")
 				.param("text", "Text")
@@ -52,14 +52,14 @@ class CommentControllerTest {
 	}
 
 	@Test
-	@DisplayName("POST /comment - NotFound")
+	@DisplayName("POST /comment/create - NotFound")
 	@WithMockUser("admin")
 	void createComment_NotFound() throws Exception {
 		val bookId = "id";
 
 		when(commentService.getBook(bookId)).thenReturn(Optional.empty());
 
-		mockMvc.perform(post("/comment")
+		mockMvc.perform(post("/comment/create")
 				.queryParam("bookId", bookId)
 				.param("user", "User")
 				.param("text", "Text")
