@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
-public class CreateCommentRequest {
+public class SaveCommentRequest {
 
 	private String text;
 }
