@@ -1,8 +1,6 @@
 package ru.otus.web.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
@@ -41,13 +39,11 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	@PostAuthorize("hasPermission(returnObject, 'WRITE')")
 	public Comment getComment(Long id) {
 		return Optional.ofNullable(commentRepository.findCommentById(id)).orElseThrow(CommentNotFound::new);
 	}
 
 	@Override
-	@Secured("ROLE_USER")
 	public Comment createComment(Book book, SaveCommentRequest request) {
 		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		final UserDetails userDetails = (UserDetails) authentication.getPrincipal();
