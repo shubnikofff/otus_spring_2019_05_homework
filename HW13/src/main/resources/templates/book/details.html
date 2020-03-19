@@ -10,7 +10,7 @@
 	<body>
 		<div id="header" class="d-flex justify-content-between">
 			<h2 th:text="${book.title}">Book title</h2>
-			<div>
+			<div sec:authorize="hasRole('ADMIN')">
 				<a class="btn btn-outline-primary" href="form.html" th:href="@{/book/{id}/update(id=${book.id})}">
 					Update
 				</a>
