@@ -34,7 +34,7 @@ public class AuthorController {
 	}
 
 	@PostMapping("/author/{name}")
-	@Secured("ADMIN")
+	@Secured("ROLE_ADMIN")
 	public ModelAndView updateAuthor(@PathVariable("name") String name, UpdateAuthorRequest request) {
 		return authorService.getAuthor(name)
 				.map(author -> {

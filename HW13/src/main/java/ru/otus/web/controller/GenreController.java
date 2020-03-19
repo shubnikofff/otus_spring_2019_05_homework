@@ -34,7 +34,7 @@ public class GenreController {
 	}
 
 	@PostMapping("/genre/{name}")
-	@Secured("ADMIN")
+	@Secured("ROLE_ADMIN")
 	public ModelAndView updateGenre(@PathVariable("name") String name, UpdateGenreRequest request) {
 		return genreService.getGenre(name)
 				.map(genre -> {

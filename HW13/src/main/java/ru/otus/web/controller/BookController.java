@@ -37,13 +37,13 @@ public class BookController {
 	}
 
 	@GetMapping("/book/create")
-	@Secured("ADMIN")
+	@Secured("ROLE_ADMIN")
 	public ModelAndView getCreateBookView() {
 		return new ModelAndView("book/form");
 	}
 
 	@PostMapping("/book/create")
-	@Secured("ADMIN")
+	@Secured("ROLE_ADMIN")
 	public ModelAndView createBook(SaveBookRequest request) {
 		final Book book = bookService.createBook(request);
 		return new ModelAndView(String.format("redirect:/book/%s/details", book.getId()))
@@ -51,7 +51,7 @@ public class BookController {
 	}
 
 	@GetMapping("/book/{id}/update")
-	@Secured("ADMIN")
+	@Secured("ROLE_ADMIN")
 	public ModelAndView getUpdateBookView(@PathVariable("id") String id) {
 		return bookService.getBook(id)
 				.map(book -> new ModelAndView("book/form")
@@ -64,7 +64,7 @@ public class BookController {
 	}
 
 	@PostMapping("/book/{id}/update")
-	@Secured("ADMIN")
+	@Secured("ROLE_ADMIN")
 	public ModelAndView updateBook(@PathVariable("id") String id, SaveBookRequest request) {
 		return bookService.getBook(id)
 				.map(book -> {
@@ -75,7 +75,7 @@ public class BookController {
 	}
 
 	@GetMapping("/book/{id}/delete")
-	@Secured("ADMIN")
+	@Secured("ROLE_ADMIN")
 	public ModelAndView getDeleteBookView(@PathVariable("id") String id) {
 		return bookService.getBook(id)
 				.map(book -> new ModelAndView("book/delete")
@@ -84,7 +84,7 @@ public class BookController {
 	}
 
 	@PostMapping("/book/{id}/delete")
-	@Secured("ADMIN")
+	@Secured("ROLE_ADMIN")
 	public ModelAndView deleteBook(@PathVariable("id") String id) {
 		return bookService.getBook(id)
 				.map(book -> {
