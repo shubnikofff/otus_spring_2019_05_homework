@@ -1,7 +1,8 @@
 INSERT INTO USERS(ID, USERNAME, PASSWORD, FULL_NAME)
 VALUES (1, 'admin', 'password', 'System administrator'),
        (2, 'fowler', 'password', 'Martin Fowler'),
-       (3, 'tolkien', 'password', 'John R. R. Tolkien');
+       (3, 'tolkien', 'password', 'John R. R. Tolkien'),
+       (4, 'guest', 'password', 'Guest');
 
 INSERT INTO ROLES(ID, NAME)
 VALUES (1, 'ADMIN'),
@@ -18,7 +19,8 @@ VALUES (1, 1, 'admin'),
        (2, 1, 'fowler'),
        (3, 1, 'tolkien'),
        (4, 0, 'ROLE_ADMIN'),
-       (5, 0, 'ROLE_USER');
+       (5, 0, 'ROLE_USER'),
+       (6, 1, 'guest');
 
 INSERT INTO ACL_CLASS(ID, CLASS)
 VALUES (1, 'ru.otus.domain.Comment');
