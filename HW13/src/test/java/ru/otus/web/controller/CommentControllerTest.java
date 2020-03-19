@@ -3,6 +3,8 @@ package ru.otus.web.controller;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -18,6 +20,7 @@ import java.util.Optional;
 import static java.util.Collections.emptyList;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -33,7 +36,7 @@ class CommentControllerTest {
 
 	@Test
 	@DisplayName("POST /comment/create")
-	@WithMockUser("admin")
+	@WithMockUser
 	void createComment() throws Exception {
 		val bookId = "id";
 
@@ -52,7 +55,7 @@ class CommentControllerTest {
 
 	@Test
 	@DisplayName("POST /comment/create - NotFound")
-	@WithMockUser("admin")
+	@WithMockUser
 	void createComment_NotFound() throws Exception {
 		val bookId = "id";
 
@@ -67,5 +70,34 @@ class CommentControllerTest {
 				.andExpect(status().isNotFound())
 				.andExpect(view().name("book/not-found"))
 				.andExpect(model().size(0));
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {"/comment/create", "/comment/1/update"})
+	@DisplayName("POST Deny unauthorized")
+	void denyUnauthorizedPostRequests(String url) throws Exception {
+		mockMvc.perform(post(url))
+				.andDo(print())
+				.andExpect(status().isFound())
+				.andExpect(redirectedUrl("http://localhost/login"));
+	}
+
+	@Test
+	@DisplayName("GET Deny unauthorized")
+	void denyUnauthorizedGetRequest() throws Exception {
+		mockMvc.perform(get("/comment/1/update"))
+				.andDo(print())
+				.andExpect(status().isFound())
+				.andExpect(redirectedUrl("http://localhost/login"));
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {"/comment/create", "/comment/1/update"})
+	@WithMockUser(roles = {"ADMIN"})
+	@DisplayName("POST Deny without role USER")
+	void denyPostRequestsWithoutRoleUser(String url) throws Exception {
+		mockMvc.perform(post(url))
+				.andDo(print())
+				.andExpect(status().isForbidden());
 	}
 }
