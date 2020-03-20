@@ -1,5 +1,6 @@
 package ru.otus.web.service;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PostAuthorize;
 import ru.otus.domain.Book;
 import ru.otus.domain.Comment;
@@ -14,7 +15,9 @@ public interface CommentService {
 	@PostAuthorize("hasPermission(returnObject, 'WRITE')")
 	Comment getComment(Long id);
 
+	@Secured("ROLE_USER")
 	Comment createComment(Book book, SaveCommentRequest request);
 
+	@Secured("ROLE_USER")
 	Comment updateComment(Long id, SaveCommentRequest request);
 }
