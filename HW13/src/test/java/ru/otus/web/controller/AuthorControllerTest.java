@@ -3,6 +3,8 @@ package ru.otus.web.controller;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -11,7 +13,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
-import ru.otus.web.controller.AuthorController;
 import ru.otus.web.request.UpdateAuthorRequest;
 import ru.otus.web.service.AuthorService;
 
@@ -36,7 +37,7 @@ class AuthorControllerTest {
 
 	@Test
 	@DisplayName("GET /author/list")
-	@WithMockUser("admin")
+	@WithMockUser
 	void getAllAuthors() throws Exception {
 		val authors = singletonList(new Author("Author name"));
 		when(authorService.getAllAuthors()).thenReturn(authors);
@@ -51,7 +52,7 @@ class AuthorControllerTest {
 
 	@Test
 	@DisplayName("GET /author/{name}/details")
-	@WithMockUser("admin")
+	@WithMockUser
 	void getAuthor() throws Exception {
 		val name = "name";
 		val author = new Author(name);
@@ -71,7 +72,7 @@ class AuthorControllerTest {
 
 	@Test
 	@DisplayName("GET /author/{name}/details - NotFound")
-	@WithMockUser("admin")
+	@WithMockUser
 	void getAuthor_NotFound() throws Exception {
 		val name = "name";
 
@@ -86,7 +87,7 @@ class AuthorControllerTest {
 
 	@Test
 	@DisplayName("POST /author/{name}")
-	@WithMockUser("admin")
+	@WithMockUser(value = "admin", roles = {"DOG"})
 	void updateAuthor() throws Exception {
 		val name = "Lermontov";
 		val request = new UpdateAuthorRequest("Pushkin");
@@ -107,7 +108,7 @@ class AuthorControllerTest {
 
 	@Test
 	@DisplayName("POST /author/{name} - NotFound")
-	@WithMockUser("admin")
+	@WithMockUser(roles = {"ADMIN"})
 	void updateAuthor_NotFound() throws Exception {
 		val name = "name";
 
@@ -118,5 +119,33 @@ class AuthorControllerTest {
 				.andExpect(status().isNotFound())
 				.andExpect(view().name("author/not-found"))
 				.andExpect(model().size(0));
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {"/author/list", "/author/name/details"})
+	@DisplayName("Check GET without authenticated user")
+	void checkGetWithoutUser(String url) throws Exception {
+		mockMvc.perform(get(url))
+				.andDo(print())
+				.andExpect(status().isFound())
+				.andExpect(redirectedUrl("http://localhost/login"));
+	}
+
+	@Test
+	@DisplayName("POST /author/{name} without authenticated user")
+	void checkPostAuthorWithoutUser() throws Exception {
+		mockMvc.perform(post("/author/name"))
+				.andDo(print())
+				.andExpect(status().isFound())
+				.andExpect(redirectedUrl("http://localhost/login"));
+	}
+
+	@Test
+	@WithMockUser(roles = {})
+	@DisplayName("POST /author/{name} without role ADMIN")
+	void checkPostAuthorWithoutToleAdmin() throws Exception {
+		mockMvc.perform(post("/author/name"))
+				.andDo(print())
+				.andExpect(status().isForbidden());
 	}
 }
