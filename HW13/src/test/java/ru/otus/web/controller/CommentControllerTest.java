@@ -19,8 +19,8 @@ import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -92,11 +92,20 @@ class CommentControllerTest {
 	}
 
 	@ParameterizedTest
-	@ValueSource(strings = {"/comment/create", "/comment/1/update"})
-	@WithMockUser(roles = {"ADMIN"})
+	@ValueSource(strings = {"/comment/create?bookId=1", "/comment/1/update"})
+	@WithMockUser(roles = {"GUEST"})
 	@DisplayName("POST Deny without role USER")
 	void denyPostRequestsWithoutRoleUser(String url) throws Exception {
 		mockMvc.perform(post(url))
+				.andDo(print())
+				.andExpect(status().isForbidden());
+	}
+
+	@Test
+	@WithMockUser(roles = {})
+	@DisplayName("GET Deny without role USER")
+	void denyGetRequestWithoutRoleUser() throws Exception {
+		mockMvc.perform(get("/comment/1/update"))
 				.andDo(print())
 				.andExpect(status().isForbidden());
 	}
