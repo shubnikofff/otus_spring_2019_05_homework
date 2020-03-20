@@ -1,7 +1,6 @@
 package ru.otus.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +19,6 @@ public class CommentController {
 	private final CommentService commentService;
 
 	@PostMapping(value = "/comment/create", params = "bookId")
-	@Secured("ROLE_USER")
 	public ModelAndView createComment(@RequestParam("bookId") String bookId, SaveCommentRequest request) {
 		return commentService.getBook(bookId)
 				.map(book -> {
@@ -31,14 +29,12 @@ public class CommentController {
 	}
 
 	@GetMapping("/comment/{id}/update")
-	@Secured("ROLE_USER")
 	public ModelAndView getUpdateCommentView(@PathVariable("id") Long id) {
 		return new ModelAndView("comment/form")
 				.addObject("comment", commentService.getComment(id));
 	}
 
 	@PostMapping("/comment/{id}/update")
-	@Secured("ROLE_USER")
 	public ModelAndView updateComment(@PathVariable("id") Long id, SaveCommentRequest request) {
 		final Comment comment = commentService.updateComment(id, request);
 		return new ModelAndView(String.format("redirect:/book/%s/details", comment.getBook().getId()));
