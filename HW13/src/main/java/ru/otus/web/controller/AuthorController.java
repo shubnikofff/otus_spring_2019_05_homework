@@ -1,7 +1,6 @@
 package ru.otus.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,8 +32,7 @@ public class AuthorController {
 				.orElseThrow(AuthorNotFound::new);
 	}
 
-	@PostMapping("/author/{name}")
-	@Secured("ROLE_ADMIN")
+	@PostMapping("/author/{name}/update")
 	public ModelAndView updateAuthor(@PathVariable("name") String name, UpdateAuthorRequest request) {
 		return authorService.getAuthor(name)
 				.map(author -> {

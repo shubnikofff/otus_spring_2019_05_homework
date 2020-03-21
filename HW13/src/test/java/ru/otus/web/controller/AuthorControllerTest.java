@@ -86,8 +86,8 @@ class AuthorControllerTest {
 	}
 
 	@Test
-	@DisplayName("POST /author/{name}")
-	@WithMockUser(value = "admin", roles = {"DOG"})
+	@DisplayName("POST /author/{name}/update")
+	@WithMockUser(roles = {"ADMIN"})
 	void updateAuthor() throws Exception {
 		val name = "Lermontov";
 		val request = new UpdateAuthorRequest("Pushkin");
@@ -97,7 +97,7 @@ class AuthorControllerTest {
 		when(authorService.getAuthor(name)).thenReturn(Optional.of(author));
 		when(authorService.updateAuthor(author, request)).thenReturn(updatedAuthor);
 
-		mockMvc.perform(post("/author/{name}", name)
+		mockMvc.perform(post("/author/{name}/update", name)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("name", request.getName()))
 				.andDo(print())
@@ -107,14 +107,14 @@ class AuthorControllerTest {
 	}
 
 	@Test
-	@DisplayName("POST /author/{name} - NotFound")
+	@DisplayName("POST /author/{name}/update - NotFound")
 	@WithMockUser(roles = {"ADMIN"})
 	void updateAuthor_NotFound() throws Exception {
 		val name = "name";
 
 		when(authorService.getAuthor(name)).thenReturn(Optional.empty());
 
-		mockMvc.perform(post("/author/{name}", name))
+		mockMvc.perform(post("/author/{name}/update", name))
 				.andDo(print())
 				.andExpect(status().isNotFound())
 				.andExpect(view().name("author/not-found"))
@@ -132,9 +132,9 @@ class AuthorControllerTest {
 	}
 
 	@Test
-	@DisplayName("POST /author/{name} without authenticated user")
+	@DisplayName("POST /author/{name}/update without authenticated user")
 	void checkPostAuthorWithoutUser() throws Exception {
-		mockMvc.perform(post("/author/name"))
+		mockMvc.perform(post("/author/name/update"))
 				.andDo(print())
 				.andExpect(status().isFound())
 				.andExpect(redirectedUrl("http://localhost/login"));
@@ -142,9 +142,9 @@ class AuthorControllerTest {
 
 	@Test
 	@WithMockUser(roles = {})
-	@DisplayName("POST /author/{name} without role ADMIN")
+	@DisplayName("POST /author/{name}/update without role ADMIN")
 	void checkPostAuthorWithoutToleAdmin() throws Exception {
-		mockMvc.perform(post("/author/name"))
+		mockMvc.perform(post("/author/name/update"))
 				.andDo(print())
 				.andExpect(status().isForbidden());
 	}

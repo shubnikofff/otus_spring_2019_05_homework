@@ -1,5 +1,6 @@
 package ru.otus.web.service;
 
+import org.springframework.security.access.annotation.Secured;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.web.request.UpdateAuthorRequest;
@@ -15,5 +16,6 @@ public interface AuthorService {
 
 	List<Book> getAuthorBooks(Author author);
 
+	@Secured("ROLE_ADMIN")
 	Author updateAuthor(Author author, UpdateAuthorRequest request);
 }
