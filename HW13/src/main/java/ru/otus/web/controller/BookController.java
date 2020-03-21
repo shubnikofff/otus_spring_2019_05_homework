@@ -1,7 +1,6 @@
 package ru.otus.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,13 +36,11 @@ public class BookController {
 	}
 
 	@GetMapping("/book/create")
-	@Secured("ROLE_ADMIN")
 	public ModelAndView getCreateBookView() {
 		return new ModelAndView("book/form");
 	}
 
 	@PostMapping("/book/create")
-	@Secured("ROLE_ADMIN")
 	public ModelAndView createBook(SaveBookRequest request) {
 		final Book book = bookService.createBook(request);
 		return new ModelAndView(String.format("redirect:/book/%s/details", book.getId()))
@@ -51,7 +48,6 @@ public class BookController {
 	}
 
 	@GetMapping("/book/{id}/update")
-	@Secured("ROLE_ADMIN")
 	public ModelAndView getUpdateBookView(@PathVariable("id") String id) {
 		return bookService.getBook(id)
 				.map(book -> new ModelAndView("book/form")
@@ -64,7 +60,6 @@ public class BookController {
 	}
 
 	@PostMapping("/book/{id}/update")
-	@Secured("ROLE_ADMIN")
 	public ModelAndView updateBook(@PathVariable("id") String id, SaveBookRequest request) {
 		return bookService.getBook(id)
 				.map(book -> {
@@ -75,7 +70,6 @@ public class BookController {
 	}
 
 	@GetMapping("/book/{id}/delete")
-	@Secured("ROLE_ADMIN")
 	public ModelAndView getDeleteBookView(@PathVariable("id") String id) {
 		return bookService.getBook(id)
 				.map(book -> new ModelAndView("book/delete")
@@ -84,7 +78,6 @@ public class BookController {
 	}
 
 	@PostMapping("/book/{id}/delete")
-	@Secured("ROLE_ADMIN")
 	public ModelAndView deleteBook(@PathVariable("id") String id) {
 		return bookService.getBook(id)
 				.map(book -> {

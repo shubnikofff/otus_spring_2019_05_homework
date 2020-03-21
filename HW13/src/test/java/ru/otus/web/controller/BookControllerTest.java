@@ -3,6 +3,8 @@ package ru.otus.web.controller;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -36,7 +38,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("GET /book/list")
-	@WithMockUser("admin")
+	@WithMockUser
 	void getAllBooks() throws Exception {
 		val books = singletonList(new Book("Book", new Genre("Genre"), new Author("Author")));
 
@@ -52,7 +54,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("GET /book/{id}/details")
-	@WithMockUser("admin")
+	@WithMockUser
 	void getBook() throws Exception {
 		val bookId = "id";
 		val book = new Book("Book", new Genre("Genre"), new Author("Author"));
@@ -72,7 +74,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("GET /book/{id}/details - NotFound")
-	@WithMockUser("admin")
+	@WithMockUser
 	void getBook_NotFound() throws Exception {
 		val bookId = "id";
 
@@ -87,7 +89,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("GET /book/create")
-	@WithMockUser("admin")
+	@WithMockUser(roles = "ADMIN")
 	void getCreateBookView() throws Exception {
 		mockMvc.perform(get("/book/create"))
 				.andDo(print())
@@ -98,7 +100,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("POST /book/create")
-	@WithMockUser("admin")
+	@WithMockUser(roles = "ADMIN")
 	void createBook() throws Exception {
 		val book = new Book("id","Book", new Genre("Genre"), singletonList(new Author("Author")));
 		val request = new SaveBookRequest("Book", "Genre", "Author");
@@ -119,7 +121,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("GET /book/{id}/update")
-	@WithMockUser("admin")
+	@WithMockUser(roles = "ADMIN")
 	void getUpdateBookView() throws Exception {
 		val bookId = "id";
 		val book = new Book(bookId,"Book", new Genre("Genre"), singletonList(new Author("Author")));
@@ -139,7 +141,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("GET /book/{id}/update - NotFound")
-	@WithMockUser("admin")
+	@WithMockUser(roles = "ADMIN")
 	void getUpdateBookView_NotFound() throws Exception {
 		val bookId = "id";
 
@@ -154,7 +156,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("POST /book/{id}/update")
-	@WithMockUser("admin")
+	@WithMockUser(roles = "ADMIN")
 	void updateBook() throws Exception {
 		val bookId = "id";
 		val book = new Book(bookId,"Book", new Genre("Genre"), singletonList(new Author("Author")));
@@ -177,7 +179,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("POST /book/{id}/update - NotFound")
-	@WithMockUser("admin")
+	@WithMockUser(roles = "ADMIN")
 	void updateBook_NotFound() throws Exception {
 		val bookId = "id";
 		val request = new SaveBookRequest("Update", "Novel", "Pushkin");
@@ -197,7 +199,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("GET /book/{id}/delete")
-	@WithMockUser("admin")
+	@WithMockUser(roles = "ADMIN")
 	void getDeleteBookView() throws Exception {
 		val bookId = "id";
 		val book = new Book(bookId,"Book", new Genre("Genre"), singletonList(new Author("Author")));
@@ -214,7 +216,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("GET /book/{id}/delete - NotFound")
-	@WithMockUser("admin")
+	@WithMockUser(roles = "ADMIN")
 	void getDeleteBookView_NotFound() throws Exception {
 		val bookId = "id";
 
@@ -229,7 +231,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("POST /book/{id}/delete")
-	@WithMockUser("admin")
+	@WithMockUser(roles = "ADMIN")
 	void deleteBook() throws Exception {
 		val bookId = "id";
 		val book = new Book(bookId,"Book", new Genre("Genre"), singletonList(new Author("Author")));
@@ -245,7 +247,7 @@ class BookControllerTest {
 
 	@Test
 	@DisplayName("POST /book/{id}/delete - NotFound")
-	@WithMockUser("admin")
+	@WithMockUser(roles = "ADMIN")
 	void deleteBook_NotFound() throws Exception {
 		val bookId = "id";
 
@@ -256,5 +258,25 @@ class BookControllerTest {
 				.andExpect(status().isNotFound())
 				.andExpect(view().name("book/not-found"))
 				.andExpect(model().size(0));
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {"/book/create", "/book/1/update", "/book/1/delete"})
+	@WithMockUser(roles = {})
+	@DisplayName("GET Deny access without role ADMIN")
+	void denyGetRequestsWithoutRoleAdmin(String url) throws Exception {
+		mockMvc.perform(get(url))
+				.andDo(print())
+				.andExpect(status().isForbidden());
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {"/book/create", "/book/1/update", "/book/1/delete"})
+	@WithMockUser(roles = {})
+	@DisplayName("POST Deny access without role ADMIN")
+	void denyPostRequestsWithoutRoleAdmin(String url) throws Exception {
+		mockMvc.perform(post(url))
+				.andDo(print())
+				.andExpect(status().isForbidden());
 	}
 }
