@@ -121,25 +121,6 @@ class AuthorControllerTest {
 				.andExpect(model().size(0));
 	}
 
-	@ParameterizedTest
-	@ValueSource(strings = {"/author/list", "/author/name/details"})
-	@DisplayName("Check GET without authenticated user")
-	void checkGetWithoutUser(String url) throws Exception {
-		mockMvc.perform(get(url))
-				.andDo(print())
-				.andExpect(status().isFound())
-				.andExpect(redirectedUrl("http://localhost/login"));
-	}
-
-	@Test
-	@DisplayName("POST /author/{name}/update without authenticated user")
-	void checkPostAuthorWithoutUser() throws Exception {
-		mockMvc.perform(post("/author/name/update"))
-				.andDo(print())
-				.andExpect(status().isFound())
-				.andExpect(redirectedUrl("http://localhost/login"));
-	}
-
 	@Test
 	@WithMockUser(roles = {})
 	@DisplayName("POST /author/{name}/update without role ADMIN")

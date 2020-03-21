@@ -73,27 +73,8 @@ class CommentControllerTest {
 	}
 
 	@ParameterizedTest
-	@ValueSource(strings = {"/comment/create", "/comment/1/update"})
-	@DisplayName("POST Deny unauthorized")
-	void denyUnauthorizedPostRequests(String url) throws Exception {
-		mockMvc.perform(post(url))
-				.andDo(print())
-				.andExpect(status().isFound())
-				.andExpect(redirectedUrl("http://localhost/login"));
-	}
-
-	@Test
-	@DisplayName("GET Deny unauthorized")
-	void denyUnauthorizedGetRequest() throws Exception {
-		mockMvc.perform(get("/comment/1/update"))
-				.andDo(print())
-				.andExpect(status().isFound())
-				.andExpect(redirectedUrl("http://localhost/login"));
-	}
-
-	@ParameterizedTest
 	@ValueSource(strings = {"/comment/create?bookId=1", "/comment/1/update"})
-	@WithMockUser(roles = {"GUEST"})
+	@WithMockUser(roles = {})
 	@DisplayName("POST Deny without role USER")
 	void denyPostRequestsWithoutRoleUser(String url) throws Exception {
 		mockMvc.perform(post(url))
