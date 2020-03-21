@@ -143,7 +143,7 @@ class AuthorControllerTest {
 	@Test
 	@WithMockUser(roles = {})
 	@DisplayName("POST /author/{name}/update without role ADMIN")
-	void checkPostAuthorWithoutToleAdmin() throws Exception {
+	void checkPostAuthorWithoutRoleAdmin() throws Exception {
 		mockMvc.perform(post("/author/name/update"))
 				.andDo(print())
 				.andExpect(status().isForbidden());

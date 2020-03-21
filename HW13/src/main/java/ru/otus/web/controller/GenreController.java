@@ -1,7 +1,6 @@
 package ru.otus.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,8 +32,7 @@ public class GenreController {
 				.orElseThrow(GenreNotFound::new);
 	}
 
-	@PostMapping("/genre/{name}")
-	@Secured("ROLE_ADMIN")
+	@PostMapping("/genre/{name}/update")
 	public ModelAndView updateGenre(@PathVariable("name") String name, UpdateGenreRequest request) {
 		return genreService.getGenre(name)
 				.map(genre -> {
