@@ -1,5 +1,6 @@
 package ru.otus.repository;
 
+import org.springframework.security.access.annotation.Secured;
 import ru.otus.domain.Author;
 
 import java.util.List;
@@ -11,5 +12,6 @@ public interface AuthorRepository {
 
 	Optional<Author> findByName(String name);
 
+	@Secured("ROLE_ADMIN")
 	Author updateName(Author author, String newName);
 }

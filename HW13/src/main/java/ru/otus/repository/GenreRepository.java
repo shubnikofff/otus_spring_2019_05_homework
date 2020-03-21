@@ -1,5 +1,6 @@
 package ru.otus.repository;
 
+import org.springframework.security.access.annotation.Secured;
 import ru.otus.domain.Genre;
 
 import java.util.List;
@@ -11,5 +12,6 @@ public interface GenreRepository {
 
 	Optional<Genre> findByName(String name);
 
+	@Secured("ROLE_ADMIN")
 	Genre updateName(Genre genre, String newName);
 }
