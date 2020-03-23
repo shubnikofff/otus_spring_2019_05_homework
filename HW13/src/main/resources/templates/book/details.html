@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{layout::main-fragment(~{::title},~{::#header},~{::#content})}"
+>
+	<head>
+		<meta charset="UTF-8">
+		<title>Book details</title>
+	</head>
+	<body>
+		<div id="header" class="d-flex justify-content-between">
+			<h2 th:text="${book.title}">Book title</h2>
+			<div sec:authorize="hasRole('ADMIN')">
+				<a class="btn btn-outline-primary" href="form.html" th:href="@{/book/{id}/update(id=${book.id})}">
+					Update
+				</a>
+				<a class="btn btn-danger" th:href="@{/book/{id}/delete(id=${book.id})}">
+					Delete
+				</a>
+			</div>
+		</div>
+		<div id="content">
+			<dl class="col" th:object="${book}">
+				<dt>Genre</dt>
+				<dd th:text="*{genre.name}">Genre name</dd>
+				<dt>Authors</dt>
+				<dd>
+					<ul class="list-inline">
+						<li class="list-inline-item" th:each="author : *{authors}">
+							<span th:text="${author.name}">Author name</span>
+						</li>
+					</ul>
+				</dd>
+			</dl>
+			<ul class="list-unstyled mt-5">
+				<li th:each="comment : ${comments}" class="card mb-3">
+					<div class="card-body">
+						<blockquote>
+							<div class="d-flex justify-content-between">
+								<p th:text="${comment.text}">Comment text</p>
+								<a class="text-secondary" th:href="@{/comment/{id}/update(id=${comment.id})}">
+									<i class="fas fa-edit"></i>
+								</a>
+							</div>
+							<footer class="blockquote-footer" th:text="${comment.username}">User name</footer>
+						</blockquote>
+					</div>
+				</li>
+			</ul>
+			<form class="mb-5" method="post" name="comment-form" th:action="@{/comment/create(bookId=${book.id})}"
+				  sec:authorize="hasRole('USER')">
+				<textarea class="form-control mb-3" name="text" required></textarea>
+				<button type="submit" class="btn btn-outline-secondary">Add comment</button>
+			</form>
+		</div>
+	</body>
+</html>
