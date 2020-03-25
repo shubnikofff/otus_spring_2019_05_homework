@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{layout::main-fragment(~{::title},~{::#header},~{::#content})}"
+>
+	<head>
+		<meta charset="UTF-8">
+		<title>Home</title>
+	</head>
+	<body>
+		<div id="header" class="d-flex justify-content-between align-items-center">
+			<h2>Book list</h2>
+			<a href="/book/create" class="btn btn-success" sec:authorize="hasRole('ADMIN')">New book</a>
+		</div>
+		<ul id="content" class="list-group list-group-flush">
+			<li th:each="book :${books}" class="list-group-item">
+				<a th:text="${book.title}" href="/book/details.html" th:href="@{/book/{id}/details(id=${book.id})}">
+					Book title
+				</a>
+			</li>
+		</ul>
+	</body>
+</html>
