@@ -10,7 +10,7 @@ import java.util.Collection;
 @Data
 @Entity
 @Table(name = "lib_books")
-public class BookEntity {
+public class BookRelationalModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,16 +19,16 @@ public class BookEntity {
 	@Column(name = "title", nullable = false, unique = true)
 	private String title;
 
-	@ManyToOne(targetEntity = GenreEntity.class, fetch = FetchType.EAGER)
+	@ManyToOne(targetEntity = GenreRelationalModel.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "genre_id", nullable = false)
-	private GenreEntity genre;
+	private GenreRelationalModel genre;
 
 	@Fetch(FetchMode.SUBSELECT)
-	@ManyToMany(targetEntity = AuthorEntity.class,  fetch = FetchType.EAGER)
+	@ManyToMany(targetEntity = AuthorRelationalModel.class,  fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "lib_books_authors",
 			joinColumns = @JoinColumn(name = "book_id"),
 			inverseJoinColumns = @JoinColumn(name = "author_id")
 	)
-	private Collection<AuthorEntity> authors;
+	private Collection<AuthorRelationalModel> authors;
 }
