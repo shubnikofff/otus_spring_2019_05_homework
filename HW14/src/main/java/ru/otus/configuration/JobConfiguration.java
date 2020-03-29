@@ -50,7 +50,7 @@ public class JobConfiguration {
 
 	@StepScope
 	@Bean
-	public ItemProcessor<BookRelationalModel, BookDocumentModel> processor() {
+	public ItemProcessor<BookRelationalModel, BookDocumentModel> bookProcessor() {
 		return item -> new BookDocumentModel(
 				null,
 				item.getTitle(),
@@ -69,12 +69,15 @@ public class JobConfiguration {
 	}
 
 	@Bean
-	@StepScope
-	public Step booksMigrateStep(ItemReader<BookRelationalModel> reader, ItemProcessor processor, ItemWriter<BookDocumentModel> writer) {
+	public Step booksMigrateStep(
+			ItemReader<BookRelationalModel> reader,
+			ItemProcessor bookProcessor,
+			ItemWriter<BookDocumentModel> writer
+	) {
 		return stepBuilderFactory.get("books_migrate_step")
 				.chunk(CHUNK_SIZE)
 				.reader(reader)
-				.processor(processor)
+				.processor(bookProcessor)
 				.writer(writer)
 				.build();
 	}
@@ -111,10 +114,25 @@ public class JobConfiguration {
 	}
 
 	@Bean
-	public Job booksMigrateJob(Step migrateBooks) {
+	public Step commentMigrateStep(
+			ItemReader<CommentRelationalModel> reader,
+			ItemProcessor commentProcessor,
+			ItemWriter<CommentDocumentModel> writer
+	) {
+		return stepBuilderFactory.get("comments_migrate_step")
+				.chunk(CHUNK_SIZE)
+				.reader(reader)
+				.processor(commentProcessor)
+				.writer(writer)
+				.build();
+	}
+
+	@Bean
+	public Job booksMigrateJob(Step booksMigrateStep, Step commentMigrateStep) {
 		return jobBuilderFactory.get(BOOKS_MIGRATION_JOB)
 				.incrementer(new RunIdIncrementer())
-				.flow(migrateBooks)
+				.flow(booksMigrateStep)
+				.next(commentMigrateStep)
 				.end()
 				.build();
 	}
