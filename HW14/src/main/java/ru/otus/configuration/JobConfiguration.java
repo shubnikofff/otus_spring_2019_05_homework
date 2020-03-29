@@ -15,12 +15,11 @@ import org.springframework.batch.item.data.builder.RepositoryItemReaderBuilder;
 import org.springframework.batch.item.data.builder.RepositoryItemWriterBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.otus.model.AuthorDocumentModel;
-import ru.otus.model.BookDocumentModel;
-import ru.otus.model.BookRelationalModel;
-import ru.otus.model.GenreDocumentModel;
+import ru.otus.model.*;
 import ru.otus.repository.BookMongoRepository;
 import ru.otus.repository.BookRelationalRepository;
+import ru.otus.repository.CommentMongoRepository;
+import ru.otus.repository.CommentRelationalRepository;
 
 import static java.util.Collections.emptyMap;
 import static java.util.stream.Collectors.toList;
@@ -70,12 +69,44 @@ public class JobConfiguration {
 	}
 
 	@Bean
+	@StepScope
 	public Step booksMigrateStep(ItemReader<BookRelationalModel> reader, ItemProcessor processor, ItemWriter<BookDocumentModel> writer) {
 		return stepBuilderFactory.get("books_migrate_step")
 				.chunk(CHUNK_SIZE)
 				.reader(reader)
 				.processor(processor)
 				.writer(writer)
+				.build();
+	}
+
+	@StepScope
+	@Bean
+	public ItemReader<CommentRelationalModel> commentReader(CommentRelationalRepository repository) {
+		return new RepositoryItemReaderBuilder<CommentRelationalModel>()
+				.name("commentReader")
+				.sorts(emptyMap())
+				.repository(repository)
+				.methodName("findAll")
+				.build();
+	}
+
+	@StepScope
+	@Bean
+	public ItemProcessor<CommentRelationalModel, CommentDocumentModel> commentProcessor(BookMongoRepository repository) {
+		return item -> new CommentDocumentModel(
+				null,
+				item.getUsername(),
+				item.getText(),
+				repository.findByTitle(item.getBook().getTitle())
+		);
+	}
+
+	@StepScope
+	@Bean
+	public ItemWriter<CommentDocumentModel> commentWriter(CommentMongoRepository repository) {
+		return new RepositoryItemWriterBuilder<CommentDocumentModel>()
+				.repository(repository)
+				.methodName("save")
 				.build();
 	}
 
