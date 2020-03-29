@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "comments")
+@Table(name = "lib_comments")
 public class CommentRelationalModel {
 
 	@Id
