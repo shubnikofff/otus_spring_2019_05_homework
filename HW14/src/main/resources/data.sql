@@ -35,3 +35,11 @@ VALUES (1, 1),
        (6, 7),
        (6, 8),
        (6, 9);
+
+INSERT INTO LIB_COMMENTS(USERNAME, TEXT, BOOK_ID)
+VALUES ('Vladimir V', 'Very good', 1),
+       ('Alexey Petrov', 'Interesting book', 1),
+       ('Ivan 666', 'Almost fell asleep', 2),
+       ('Vladimir V', 'I recommend reading', 2),
+       ('Alexey Petrov', 'Boring', 4),
+       ('Anonymous', 'Not yet read but I think it will be interesting', 5);
