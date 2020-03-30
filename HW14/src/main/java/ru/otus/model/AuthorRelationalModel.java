@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @Table(name = "lib_authors")
-public class AuthorEntity {
+public class AuthorRelationalModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

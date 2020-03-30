@@ -1,9 +1,9 @@
 package ru.otus.configuration;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.SessionFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -11,25 +11,25 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.data.MongoItemReader;
-import org.springframework.batch.item.data.builder.MongoItemReaderBuilder;
-import org.springframework.batch.item.database.HibernateItemWriter;
-import org.springframework.batch.item.database.builder.HibernateItemWriterBuilder;
+import org.springframework.batch.item.data.builder.RepositoryItemReaderBuilder;
+import org.springframework.batch.item.data.builder.RepositoryItemWriterBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import ru.otus.domain.Book;
-import ru.otus.domain.Genre;
-import ru.otus.model.BookEntity;
+import ru.otus.model.*;
+import ru.otus.repository.BookMongoRepository;
+import ru.otus.repository.BookRelationalRepository;
+import ru.otus.repository.CommentMongoRepository;
+import ru.otus.repository.CommentRelationalRepository;
 
-import java.util.Collections;
+import static java.util.Collections.emptyMap;
+import static java.util.stream.Collectors.toList;
 
+@EnableBatchProcessing
 @RequiredArgsConstructor
 @Configuration
 public class JobConfiguration {
 
-	public final static String IMPORT_BOOKS_JOB = "importBooksJob";
+	public final static String BOOKS_MIGRATION_JOB = "books_migration_job";
 
 	private final static Integer CHUNK_SIZE = 3;
 
@@ -39,65 +39,100 @@ public class JobConfiguration {
 
 	@StepScope
 	@Bean
-	public MongoItemReader<Book> reader(MongoOperations mongoOperations) {
-		return new MongoItemReaderBuilder<Book>()
-				.name("bookItemReader")
-				.targetType(Book.class)
-				.template(mongoOperations)
-				.jsonQuery("{}")
-				.collection("books")
-				.sorts(Collections.emptyMap())
+	public ItemReader<BookRelationalModel> bookReader(BookRelationalRepository repository) {
+		return new RepositoryItemReaderBuilder<BookRelationalModel>()
+				.name("bookReader")
+				.sorts(emptyMap())
+				.repository(repository)
+				.methodName("findAll")
 				.build();
 	}
 
-//	@StepScope
-//	@Bean
-//	public HibernateCursorItemReader<BookEntity> reader(SessionFactory sessionFactory) {
-//		return new HibernateCursorItemReaderBuilder<BookEntity>()
-//				.sessionFactory(sessionFactory)
-//				.useStatelessSession(true)
-//				.name("bookItemReader")
-//				.build();
-//	}
-
 	@StepScope
 	@Bean
-	public ItemProcessor<BookEntity, Book> processor() {
-		return book -> new Book(book.getTitle(), new Genre(book.getGenre().getName()));
+	public ItemProcessor<BookRelationalModel, BookDocumentModel> bookProcessor() {
+		return item -> new BookDocumentModel(
+				null,
+				item.getTitle(),
+				new GenreDocumentModel(item.getGenre().getName()),
+				item.getAuthors().stream().map(author -> new AuthorDocumentModel(author.getName())).collect(toList())
+		);
 	}
 
-//	@StepScope
-//	@Bean
-//	public MongoItemWriter<Book> writer(MongoOperations mongoOperations) {
-//		return new MongoItemWriterBuilder<Book>()
-//				.collection("books")
-//				.template(mongoOperations)
-//				.build();
-//	}
-
 	@StepScope
 	@Bean
-	public HibernateItemWriter<BookEntity> writer(SessionFactory sessionFactory) {
-		return new HibernateItemWriterBuilder<BookEntity>()
-				.sessionFactory(sessionFactory)
+	public ItemWriter<BookDocumentModel> bookWriter(BookMongoRepository repository) {
+		return new RepositoryItemWriterBuilder<BookDocumentModel>()
+				.repository(repository)
+				.methodName("save")
 				.build();
 	}
 
 	@Bean
-	public Step importBooksFromMongoDBStep(ItemReader<Book> reader, ItemProcessor processor, ItemWriter<BookEntity> writer) {
-		return stepBuilderFactory.get("importBooksFromMongoDBStep")
+	public Step booksMigrateStep(
+			ItemReader<BookRelationalModel> reader,
+			ItemProcessor bookProcessor,
+			ItemWriter<BookDocumentModel> writer
+	) {
+		return stepBuilderFactory.get("books_migrate_step")
 				.chunk(CHUNK_SIZE)
 				.reader(reader)
-				.processor(processor)
+				.processor(bookProcessor)
+				.writer(writer)
+				.build();
+	}
+
+	@StepScope
+	@Bean
+	public ItemReader<CommentRelationalModel> commentReader(CommentRelationalRepository repository) {
+		return new RepositoryItemReaderBuilder<CommentRelationalModel>()
+				.name("commentReader")
+				.sorts(emptyMap())
+				.repository(repository)
+				.methodName("findAll")
+				.build();
+	}
+
+	@StepScope
+	@Bean
+	public ItemProcessor<CommentRelationalModel, CommentDocumentModel> commentProcessor(BookMongoRepository repository) {
+		return item -> new CommentDocumentModel(
+				null,
+				item.getUsername(),
+				item.getText(),
+				repository.findByTitle(item.getBook().getTitle())
+		);
+	}
+
+	@StepScope
+	@Bean
+	public ItemWriter<CommentDocumentModel> commentWriter(CommentMongoRepository repository) {
+		return new RepositoryItemWriterBuilder<CommentDocumentModel>()
+				.repository(repository)
+				.methodName("save")
+				.build();
+	}
+
+	@Bean
+	public Step commentMigrateStep(
+			ItemReader<CommentRelationalModel> reader,
+			ItemProcessor commentProcessor,
+			ItemWriter<CommentDocumentModel> writer
+	) {
+		return stepBuilderFactory.get("comments_migrate_step")
+				.chunk(CHUNK_SIZE)
+				.reader(reader)
+				.processor(commentProcessor)
 				.writer(writer)
 				.build();
 	}
 
 	@Bean
-	public Job importBooksJob(Step importFromMongoDB) {
-		return jobBuilderFactory.get(IMPORT_BOOKS_JOB)
+	public Job booksMigrateJob(Step booksMigrateStep, Step commentMigrateStep) {
+		return jobBuilderFactory.get(BOOKS_MIGRATION_JOB)
 				.incrementer(new RunIdIncrementer())
-				.flow(importFromMongoDB)
+				.flow(booksMigrateStep)
+				.next(commentMigrateStep)
 				.end()
 				.build();
 	}

@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "lib_genres")
-public class GenreEntity {
+public class GenreRelationalModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -36,3 +36,15 @@ ALTER TABLE lib_books_authors
 
 ALTER TABLE lib_books_authors
     ADD FOREIGN KEY (author_id) REFERENCES lib_authors (id);
+
+DROP TABLE IF EXISTS lib_comments;
+CREATE TABLE lib_comments
+(
+    id       BIGINT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR2(255) NOT NULL,
+    text     TEXT          NOT NULL,
+    book_id  BIGINT        NOT NULL
+);
+
+ALTER TABLE lib_comments
+    ADD FOREIGN KEY (book_id) REFERENCES lib_books (id);
