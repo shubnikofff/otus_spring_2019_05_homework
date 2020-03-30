@@ -71,13 +71,13 @@ public class JobConfiguration {
 	@Bean
 	public Step booksMigrateStep(
 			ItemReader<BookRelationalModel> reader,
-			ItemProcessor bookProcessor,
+			ItemProcessor<BookRelationalModel, BookDocumentModel> processor,
 			ItemWriter<BookDocumentModel> writer
 	) {
 		return stepBuilderFactory.get("books_migrate_step")
-				.chunk(CHUNK_SIZE)
+				.<BookRelationalModel, BookDocumentModel>chunk(CHUNK_SIZE)
 				.reader(reader)
-				.processor(bookProcessor)
+				.processor(processor)
 				.writer(writer)
 				.build();
 	}
@@ -116,13 +116,13 @@ public class JobConfiguration {
 	@Bean
 	public Step commentMigrateStep(
 			ItemReader<CommentRelationalModel> reader,
-			ItemProcessor commentProcessor,
+			ItemProcessor<CommentRelationalModel, CommentDocumentModel> processor,
 			ItemWriter<CommentDocumentModel> writer
 	) {
 		return stepBuilderFactory.get("comments_migrate_step")
-				.chunk(CHUNK_SIZE)
+				.<CommentRelationalModel, CommentDocumentModel>chunk(CHUNK_SIZE)
 				.reader(reader)
-				.processor(commentProcessor)
+				.processor(processor)
 				.writer(writer)
 				.build();
 	}
