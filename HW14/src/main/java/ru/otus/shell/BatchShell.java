@@ -6,7 +6,7 @@ import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
-import java.util.Optional;
+import java.util.Date;
 
 import static ru.otus.configuration.JobConfiguration.BOOKS_MIGRATION_JOB;
 
@@ -16,19 +16,15 @@ public class BatchShell {
 
 	private final JobOperator jobOperator;
 
-	private Long jobExecutionId;
-
 	@SneakyThrows
 	@ShellMethod(value = "startMigration", key = "start")
 	public void startMigration() {
-		jobExecutionId = jobOperator.start(BOOKS_MIGRATION_JOB, "");
+		jobOperator.start(BOOKS_MIGRATION_JOB, new Date().toString());
 	}
 
 	@SneakyThrows
 	@ShellMethod(value = "restartMigration", key = "restart")
 	public void restartMigration() {
-		final Long executionId = Optional.ofNullable(jobExecutionId).orElseThrow(() -> new RuntimeException("Start job first"));
-
-		jobOperator.restart(executionId);
+		jobOperator.start(BOOKS_MIGRATION_JOB, new Date().toString());
 	}
 }
