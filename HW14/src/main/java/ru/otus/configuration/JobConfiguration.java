@@ -15,6 +15,8 @@ import org.springframework.batch.item.data.builder.RepositoryItemReaderBuilder;
 import org.springframework.batch.item.data.builder.RepositoryItemWriterBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.otus.batch.BookMigrateExecutionListener;
+import ru.otus.batch.CommentMigrateExecutionListener;
 import ru.otus.model.*;
 import ru.otus.repository.BookMongoRepository;
 import ru.otus.repository.BookRelationalRepository;
@@ -72,13 +74,15 @@ public class JobConfiguration {
 	public Step booksMigrateStep(
 			ItemReader<BookRelationalModel> reader,
 			ItemProcessor<BookRelationalModel, BookDocumentModel> processor,
-			ItemWriter<BookDocumentModel> writer
+			ItemWriter<BookDocumentModel> writer,
+			BookMigrateExecutionListener listener
 	) {
 		return stepBuilderFactory.get("books_migrate_step")
 				.<BookRelationalModel, BookDocumentModel>chunk(CHUNK_SIZE)
 				.reader(reader)
 				.processor(processor)
 				.writer(writer)
+				.listener(listener)
 				.build();
 	}
 
@@ -117,13 +121,15 @@ public class JobConfiguration {
 	public Step commentMigrateStep(
 			ItemReader<CommentRelationalModel> reader,
 			ItemProcessor<CommentRelationalModel, CommentDocumentModel> processor,
-			ItemWriter<CommentDocumentModel> writer
+			ItemWriter<CommentDocumentModel> writer,
+			CommentMigrateExecutionListener listener
 	) {
 		return stepBuilderFactory.get("comments_migrate_step")
 				.<CommentRelationalModel, CommentDocumentModel>chunk(CHUNK_SIZE)
 				.reader(reader)
 				.processor(processor)
 				.writer(writer)
+				.listener(listener)
 				.build();
 	}
 
