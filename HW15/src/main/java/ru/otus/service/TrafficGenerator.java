@@ -4,9 +4,10 @@ import com.github.javafaker.Faker;
 import ru.otus.domain.Country;
 import ru.otus.domain.Tourist;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TrafficGenerator {
 
@@ -15,13 +16,9 @@ public class TrafficGenerator {
 	private final static Random RANDOM = new Random();
 
 	public static Collection<Tourist> generate(int volume)  {
-		final Collection<Tourist> traffic = new ArrayList<>(volume);
-
-		for (int i = 0; i < volume; i++) {
-			traffic.add(new Tourist(FAKER.name().fullName(), getCountry()));
-		}
-
-		return traffic;
+		return Stream.generate(() -> new Tourist(FAKER.name().fullName(), getCountry()))
+				.limit(volume)
+				.collect(Collectors.toList());
 	}
 
 	private static Country getCountry() {
