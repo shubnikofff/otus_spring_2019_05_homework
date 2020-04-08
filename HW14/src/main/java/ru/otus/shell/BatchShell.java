@@ -6,8 +6,6 @@ import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
-import java.util.Date;
-
 import static ru.otus.configuration.JobConfiguration.BOOKS_MIGRATION_JOB;
 
 @RequiredArgsConstructor
@@ -19,12 +17,12 @@ public class BatchShell {
 	@SneakyThrows
 	@ShellMethod(value = "startMigration", key = "start")
 	public void startMigration() {
-		jobOperator.start(BOOKS_MIGRATION_JOB, new Date().toString());
+		jobOperator.start(BOOKS_MIGRATION_JOB, "");
 	}
 
 	@SneakyThrows
 	@ShellMethod(value = "restartMigration", key = "restart")
 	public void restartMigration() {
-		jobOperator.start(BOOKS_MIGRATION_JOB, new Date().toString());
+		jobOperator.startNextInstance(BOOKS_MIGRATION_JOB);
 	}
 }
