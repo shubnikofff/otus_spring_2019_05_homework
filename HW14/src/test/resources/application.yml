@@ -1,0 +1,22 @@
+spring:
+
+  batch:
+    job:
+      enabled: false
+
+  shell:
+    interactive:
+      enabled: false
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  datasource:
+    url: jdbc:h2:mem:test
+
+  data:
+    mongodb:
+      uri: mongodb://localhost
+      port: 0
+      database: test
