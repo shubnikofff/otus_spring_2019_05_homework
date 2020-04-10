@@ -10,4 +10,9 @@ public class Tourist {
 	private final String name;
 
 	private final Country arrivedFrom;
+
+	@Override
+	public String toString() {
+		return name + " arrived from " + arrivedFrom.getName();
+	}
 }

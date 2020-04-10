@@ -11,7 +11,7 @@ public class HospitalRegistry {
 	private final Logger logger = LoggerFactory.getLogger(HospitalRegistry.class.getName());
 
 	public Tourist register(Tourist tourist) {
-		logger.info("Register " + tourist.getName());
+		logger.info("Register " + tourist);
 		return tourist;
 	}
 }
