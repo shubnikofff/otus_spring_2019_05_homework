@@ -1,2 +1,3 @@
 application:
-  thread-count: 2
+  thread-count: 10
+  max-tourist-count: 15
