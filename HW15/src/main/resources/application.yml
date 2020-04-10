@@ -1,1 +1,2 @@
-
+application:
+  thread-count: 2
