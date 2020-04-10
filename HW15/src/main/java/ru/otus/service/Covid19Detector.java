@@ -1,13 +1,22 @@
 package ru.otus.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import ru.otus.domain.InfectedTourist;
 import ru.otus.domain.Tourist;
 
 @Service
 public class Covid19Detector {
 
-	public void check(Tourist tourist) {
+	private final Logger logger = LoggerFactory.getLogger(Covid19Detector.class.getName());
+
+	public Tourist check(Tourist tourist) throws InterruptedException {
+		logger.info("Checking " + tourist.getName() + " arrived from " +  tourist.getArrivedFrom().getName());
+
 		final boolean infected = Math.random() * 100 < tourist.getArrivedFrom().getCovid19Rate();
-		tourist.setInfected(infected);
+		Thread.sleep(2000);
+
+		return infected ? new InfectedTourist(tourist.getName(), tourist.getArrivedFrom()) : tourist;
 	}
 }
