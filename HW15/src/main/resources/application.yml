@@ -1,4 +1,4 @@
 application:
-  thread-quantity: 5
+  thread-quantity: 10
   tourist-min-quantity: 10
   tourist-max-quantity: 10
