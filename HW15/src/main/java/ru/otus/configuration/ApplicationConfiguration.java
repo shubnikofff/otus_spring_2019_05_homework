@@ -15,8 +15,8 @@ import java.util.concurrent.Executors;
 @Configuration
 public class ApplicationConfiguration {
 
-	@Value("${application.thread-count:1}")
-	private int threadCount;
+	@Value("${application.thread-quantity:10}")
+	private int threadQuantity;
 
 	@Bean
 	public QueueChannel entrance() {
@@ -37,7 +37,7 @@ public class ApplicationConfiguration {
 	public IntegrationFlow checkFlow() {
 		return IntegrationFlows.from("entrance")
 				.split()
-				.channel(MessageChannels.executor(Executors.newFixedThreadPool(threadCount)))
+				.channel(MessageChannels.executor(Executors.newFixedThreadPool(threadQuantity)))
 				.handle("covid19Detector", "check")
 				.aggregate()
 				.split()
