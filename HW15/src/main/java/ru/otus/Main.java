@@ -20,7 +20,9 @@ import java.util.Collection;
 @IntegrationComponentScan
 public class Main {
 
-	private final static Logger LOGGER = LoggerFactory.getLogger(Main.class.getName());
+	private static final int SLEEP_TIME_MS = 1000;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class.getName());
 
 	public static void main(String[] args) throws InterruptedException {
 		final ConfigurableApplicationContext context = SpringApplication.run(Main.class, args);
@@ -28,7 +30,7 @@ public class Main {
 		final TrafficGenerator trafficGenerator = context.getBean(TrafficGenerator.class);
 
 		while (true) {
-			Thread.sleep(1000);
+			Thread.sleep(SLEEP_TIME_MS);
 
 			Collection<Tourist> traffic = trafficGenerator.generate();
 			LOGGER.info("Accept " + traffic.size() + " tourists");

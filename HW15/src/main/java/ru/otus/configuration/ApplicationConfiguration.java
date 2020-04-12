@@ -19,6 +19,20 @@ import java.util.concurrent.Executors;
 @RequiredArgsConstructor
 public class ApplicationConfiguration {
 
+	private static final String CHANNEL_ENTRANCE = "entrance";
+
+	private static final String CHANNEL_EXIT = "exit";
+
+	private static final String METHOD_CHECK = "check";
+
+	private static final String METHOD_REGISTER = "register";
+
+	private static final int CHANNEL_ENTRANCE_CAPACITY = 5;
+
+	private static final int POLLER_PERIOD = 100;
+
+	private static final int MAX_MESSAGE_PER_POLL = 2;
+
 	@Value("${application.thread-quantity:10}")
 	private int threadQuantity;
 
@@ -28,7 +42,7 @@ public class ApplicationConfiguration {
 
 	@Bean
 	public QueueChannel entrance() {
-		return MessageChannels.queue(5).get();
+		return MessageChannels.queue(CHANNEL_ENTRANCE_CAPACITY).get();
 	}
 
 	@Bean
@@ -38,15 +52,15 @@ public class ApplicationConfiguration {
 
 	@Bean(name = PollerMetadata.DEFAULT_POLLER)
 	public PollerMetadata poller() {
-		return Pollers.fixedRate(100).maxMessagesPerPoll(2).get();
+		return Pollers.fixedRate(POLLER_PERIOD).maxMessagesPerPoll(MAX_MESSAGE_PER_POLL).get();
 	}
 
 	@Bean
 	public IntegrationFlow checkFlow() {
-		return IntegrationFlows.from("entrance")
+		return IntegrationFlows.from(CHANNEL_ENTRANCE)
 				.split()
 				.channel(MessageChannels.executor(Executors.newFixedThreadPool(threadQuantity)))
-				.handle(covid19Detector, "check")
+				.handle(covid19Detector, METHOD_CHECK)
 				.aggregate()
 				.split()
 				.<Tourist, Boolean>route(tourist -> tourist instanceof InfectedTourist, maping ->
@@ -56,13 +70,13 @@ public class ApplicationConfiguration {
 								.defaultOutputToParentFlow()
 				)
 				.aggregate()
-				.channel("exit")
+				.channel(CHANNEL_EXIT)
 				.get();
 	}
 
 	@Bean
 	IntegrationFlow infectedFlow() {
-		return flow -> flow.handle(hospitalRegistry, "register");
+		return flow -> flow.handle(hospitalRegistry, METHOD_REGISTER);
 	}
 
 	@Bean
