@@ -8,7 +8,7 @@ import ru.otus.domain.Tourist;
 
 import java.util.Random;
 
-@Service("covid19Detector")
+@Service
 public class Covid19DetectorImpl implements Covid19Detector {
 
 	private final static int COVID19_MAX_RATE = 100;
