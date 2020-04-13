@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ru.otus</groupId>
-    <artifactId>demo</artifactId>
+    <artifactId>hw16</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>hw16</name>
     <description>Spring Boot Actuator and Data Rest</description>
