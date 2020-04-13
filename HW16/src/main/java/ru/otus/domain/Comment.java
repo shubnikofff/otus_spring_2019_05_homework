@@ -1,28 +1,25 @@
 package ru.otus.domain;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.*;
 
 @Data
-@NoArgsConstructor
-@Document(collection = "comments")
+@Entity
+@Table(name = "lib_comments")
 public class Comment {
+
 	@Id
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	private String user;
+	@Column(name = "username", nullable = false)
+	private String username;
 
+	@Column(name = "text", nullable = false)
 	private String text;
 
-	@DBRef
+	@ManyToOne(targetEntity = Book.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "book_id", nullable = false)
 	private Book book;
-
-	public Comment(String user, String text, Book book) {
-		this.user = user;
-		this.text = text;
-		this.book = book;
-	}
 }

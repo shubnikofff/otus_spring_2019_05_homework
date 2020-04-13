@@ -1,30 +1,35 @@
 package ru.otus.domain;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springframework.data.rest.core.annotation.RestResource;
 
-import java.util.Arrays;
-import java.util.List;
+import javax.persistence.*;
+import java.util.Collection;
 
 @Data
-@NoArgsConstructor
-@Document(collection = "books")
+@Entity
+@Table(name = "lib_books")
 public class Book {
 
 	@Id
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
+	@Column(name = "title", nullable = false, unique = true)
 	private String title;
 
+	@ManyToOne(targetEntity = Genre.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "genre_id", nullable = false)
 	private Genre genre;
 
-	private List<Author> authors;
-
-	public Book(String title, Genre genre, Author... authors) {
-		this.title = title;
-		this.genre = genre;
-		this.authors = Arrays.asList(authors);
-	}
+	@Fetch(FetchMode.SUBSELECT)
+	@ManyToMany(targetEntity = Author.class,  fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "lib_books_authors",
+			joinColumns = @JoinColumn(name = "book_id"),
+			inverseJoinColumns = @JoinColumn(name = "author_id")
+	)
+	private Collection<Author> authors;
 }
