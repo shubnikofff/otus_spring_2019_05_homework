@@ -16,12 +16,12 @@ import {
 } from '@material-ui/icons';
 
 import type { FormikProps } from 'formik';
-import type { Author, AuthorFormValues } from 'types';
+import type { Author, AuthorFormValues, Linkable } from 'types';
 
 import { FIELD_NAME } from 'constants/fields';
 
 type AuthorListItemProps = {|
-	author: Author
+	author: Linkable<Author>
 |}
 
 function AuthorListItem({ author }: AuthorListItemProps) {
@@ -30,9 +30,9 @@ function AuthorListItem({ author }: AuthorListItemProps) {
 	const initialValues: AuthorFormValues = { name: authorName };
 
 	function handleSubmit(values: AuthorFormValues) {
-		return AuthorService.updateAuthor(authorName, values)
-			.then(() => {
-				setAuthorName(values.name);
+		return AuthorService.updateAuthor(author._links.self.href, values)
+			.then((response: Linkable<Author>) => {
+				setAuthorName(response.name);
 			})
 			.finally(() => {
 				setEditMode(false);

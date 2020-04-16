@@ -31,8 +31,8 @@ function GenreListItem({ genre }: GenreListItemProps) {
 
 	function handleSubmit(values: GenreFormValues) {
 		return GenreService.updateGenre(genre._links.self.href, values)
-			.then(() => {
-				setGenreName(values.name);
+			.then((response: Linkable<Genre>) => {
+				setGenreName(response.name);
 			})
 			.finally(() => {
 				setEditMode(false);

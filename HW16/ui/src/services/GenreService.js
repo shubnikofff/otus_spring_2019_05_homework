@@ -10,7 +10,7 @@ class GenreService {
 			.then(response => response._embedded.genres);
 	}
 
-	static updateGenre(url: string, values: GenreFormValues) {
+	static updateGenre(url: string, values: GenreFormValues): Promise<Linkable<Genre>> {
 		return RestClient.put(new URL(url).pathname, values);
 	}
 }
