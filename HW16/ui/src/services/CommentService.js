@@ -5,12 +5,14 @@ import type {
 	Comment,
 	CommentFormValues,
 	CreateCommentResponse,
+	Linkable,
 } from 'types';
 
 class CommentService {
 
-	static fetchAllComments(bookId: string): Promise<Array<Comment>> {
-		return RestClient.get(`/comments?bookId=${bookId}`);
+	static fetchAllComments(bookId: string): Promise<Array<Linkable<Comment>>> {
+		return RestClient.get(`/api/comment/search/books?bookid=${bookId}`)
+			.then(response => response._embedded.comments);
 	}
 
 	static createComment(values: CommentFormValues): Promise<CreateCommentResponse> {
