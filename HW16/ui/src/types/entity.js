@@ -3,6 +3,10 @@ export type Author = {|
 	name: string
 |}
 
+export type Genre = {|
+	name: string
+|}
+
 export type Book = {|
 	id: string,
 	title: string,
@@ -15,8 +19,4 @@ export type Comment = {|
 	user: string,
 	text: string,
 	bookId: string,
-|}
-
-export type Genre = {|
-	name: string
 |}

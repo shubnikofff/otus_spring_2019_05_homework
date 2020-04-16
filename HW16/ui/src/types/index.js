@@ -16,3 +16,7 @@ export {
 export {
 	CreateCommentResponse,
 } from './response';
+
+export {
+	Linkable,
+} from './link';
