@@ -18,12 +18,12 @@ import {
 	Edit as EditIcon,
 } from '@material-ui/icons';
 
-import type { Book, Author } from 'types';
+import type { Book, Author, Linkable } from 'types';
 
 type BookListProps = {||};
 
 type BookListState = {|
-	books: Array<Book> | null,
+	books: Array<Linkable<Book>> | null,
 |};
 
 class BookList extends React.PureComponent<BookListProps, BookListState> {
@@ -36,7 +36,7 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 
 	componentDidMount() {
 		BookService.fetchAllBooks()
-			.then((response: Array<Book>) => {
+			.then((response: Array<Linkable<Book>>) => {
 				this.setState({ books: response });
 			});
 	}
@@ -49,10 +49,18 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 		return (
 			<Box mt={4}>
 				<Grid container spacing={4}>
-					{this.state.books.map((book: Book) => (
+					{this.state.books.map((book: Linkable<Book>) => (
 						<Grid item key={book.id} xs={12} sm={6} md={3}>
 							<Card>
-								<CardActionArea component={Link} to={`/book/${book.id}`}>
+								<CardActionArea
+									component={Link}
+									to={{
+										pathname: '/book/details',
+										state: {
+											href: book._links.self.href
+										}
+									}}
+								>
 									<CardContent>
 										<Typography variant="h5" gutterBottom>
 											{book.title}
@@ -67,10 +75,26 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 								</CardActionArea>
 								<CardActions disableSpacing>
 									<Grid container justify="flex-end" alignItems="center">
-										<IconButton to={`/book/${book.id}/edit`} component={Link}>
+										<IconButton
+											component={Link}
+											to={{
+												pathname: '/book/update',
+												state: {
+													href: book._links.self.href
+												}
+											}}
+										>
 											<EditIcon fontSize="small" />
 										</IconButton>
-										<IconButton to={`/book/${book.id}/delete`} component={Link}>
+										<IconButton
+											component={Link}
+											to={{
+												pathname: '/book/delete',
+												state: {
+													href: book._links.self.href
+												}
+											}}
+										>
 											<DeleteIcon fontSize="small" />
 										</IconButton>
 									</Grid>

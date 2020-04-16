@@ -1,7 +1,7 @@
 // @flow
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useParams } from 'react-router';
+import { useLocation } from 'react-router';
 import { BookService } from 'services';
 
 import {
@@ -16,15 +16,15 @@ import {
 } from '@material-ui/core';
 import { CommentList } from 'components';
 
-import type { Book } from 'types';
+import type { Book, Linkable } from 'types';
 
 function BookDetails() {
-	const { id } = useParams();
-	const [book, setBook] = useState<?Book>(null);
+	const { state: { href } } = useLocation();
+	const [book, setBook] = useState<Linkable<Book> | null>(null);
 
 	useEffect(() => {
-		BookService.fetchBook(id).then(setBook);
-	}, [id]);
+		BookService.fetchBook(href).then(setBook);
+	}, [href]);
 
 	if (!book) {
 		return (<LinearProgress variant="query" />);
@@ -44,7 +44,12 @@ function BookDetails() {
 							color="primary"
 							component={Link}
 							size="large"
-							to={`/book/${book.id}/edit`}
+							to={{
+								pathname: '/book/update',
+								state: {
+									href: book._links.self.href
+								}
+							}}
 							variant="outlined"
 						>
 							Update
@@ -53,7 +58,12 @@ function BookDetails() {
 							color="secondary"
 							component={Link}
 							size="large"
-							to={`/book/${book.id}/delete`}
+							to={{
+								pathname: '/book/delete',
+								state: {
+									href: book._links.self.href
+								}
+							}}
 						>
 							Delete
 						</Button>
@@ -82,7 +92,7 @@ function BookDetails() {
 				<Typography variant="h6">
 					Comments
 				</Typography>
-				<CommentList bookId={id} />
+				<CommentList bookId={book.id} />
 			</Box>
 		</>
 	);
