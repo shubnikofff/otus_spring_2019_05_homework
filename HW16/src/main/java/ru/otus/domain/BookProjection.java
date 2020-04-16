@@ -7,6 +7,8 @@ import java.util.Collection;
 @Projection(name = "allFields", types = Book.class)
 public interface BookProjection {
 
+	Long getId();
+
 	String getTitle();
 
 	Genre getGenre();
