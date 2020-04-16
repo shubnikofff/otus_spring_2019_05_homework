@@ -16,7 +16,7 @@ class CommentService {
 	}
 
 	static createComment(values: CommentFormValues): Promise<CreateCommentResponse> {
-		return RestClient.post(`/comments`, values);
+		return RestClient.post('/api/comment', values);
 	}
 
 	static deleteComment(id: string): Promise<void> {
