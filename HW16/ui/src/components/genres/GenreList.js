@@ -9,10 +9,10 @@ import {
 } from '@material-ui/core';
 import { default as GenreListItem } from './GenreListItem';
 
-import type { Genre } from 'types';
+import type { Genre, Linkable } from 'types';
 
 function GenreList() {
-	const [genres, setGenres] = useState<Array<Genre> | null>(null);
+	const [genres, setGenres] = useState<Array<Linkable<Genre>> | null>(null);
 
 	useEffect(() => {
 		GenreService.fetchAllGenres().then(setGenres);

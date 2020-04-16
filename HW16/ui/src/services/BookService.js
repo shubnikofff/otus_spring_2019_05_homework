@@ -24,8 +24,7 @@ class BookService {
 	}
 
 	static updateBook(url: string, values: BookFormValues): Promise<void> {
-		const parsedUrl = new URL(url);
-		return RestClient.put(parsedUrl.pathname, values);
+		return RestClient.put(new URL(url).pathname, values);
 	}
 
 	static deleteBook(id: string): Promise<void> {
