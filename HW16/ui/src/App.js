@@ -21,9 +21,9 @@ function App() {
 				<Container>
 					<Route exact path="/" component={BookList} />
 					<Route exact path="/authors" component={AuthorList} />
-					<Route exact path="/book/:id" component={BookDetails} />
-					<Route exact path="/book/:id/delete" component={BookDelete} />
-					<Route exact path="/book/:id/edit" component={BookUpdate} />
+					<Route exact path="/book/details" component={BookDetails} />
+					<Route exact path="/book/delete" component={BookDelete} />
+					<Route exact path="/book/update" component={BookUpdate} />
 					<Route exact path="/create-book" component={BookCreate} />
 					<Route exact path="/genres" component={GenreList} />
 				</Container>

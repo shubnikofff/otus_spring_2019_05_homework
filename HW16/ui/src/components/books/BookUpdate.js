@@ -1,6 +1,6 @@
 // @flow
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router';
+import { useLocation } from 'react-router';
 import { BookService } from 'services';
 import { Formik } from 'formik';
 import {
@@ -15,18 +15,18 @@ import { Alert } from '@material-ui/lab';
 import { default as BookForm } from './BookForm';
 
 import type { AxiosError } from 'axios';
-import type { Book, BookFormValues } from 'types';
+import type { Book, BookFormValues, Linkable } from 'types';
 
 const MESSAGE_DELAY_TIME = 6000;
 
 function BookUpdate() {
-	const { id } = useParams();
 	const [initialValues, setInitialValues] = useState<?BookFormValues>(null);
 	const [operationError, setOperationError] = useState<?string>(null);
 	const [successMsgOpen, setSuccessMsgOpen] = useState<boolean>(false);
+	const { state: { href } } = useLocation();
 
 	const handleSubmit = (values: BookFormValues) =>
-		BookService.updateBook(id, values)
+		BookService.updateBook(href, values)
 			.then(() => {
 				setInitialValues(values);
 				setSuccessMsgOpen(true);
@@ -36,8 +36,8 @@ function BookUpdate() {
 			});
 
 	useEffect(() => {
-		BookService.fetchBook(id)
-			.then((book: Book) => {
+		BookService.fetchBook(href)
+			.then((book: Linkable<Book>) => {
 				setInitialValues({
 					title: book.title,
 					genre: book.genre.name,
@@ -47,7 +47,7 @@ function BookUpdate() {
 			.catch((error: AxiosError) => {
 				setOperationError(error.message);
 			});
-	}, [id]);
+	}, [href]);
 
 	const Form = (
 		<Grid container>
