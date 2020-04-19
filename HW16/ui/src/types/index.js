@@ -14,9 +14,5 @@ export {
 } from './form';
 
 export {
-	CreateCommentResponse,
-} from './response';
-
-export {
 	Linkable,
 } from './link';

@@ -92,7 +92,7 @@ function BookDetails() {
 				<Typography variant="h6">
 					Comments
 				</Typography>
-				<CommentList bookId={book.id} />
+				<CommentList book={book} />
 			</Box>
 		</>
 	);

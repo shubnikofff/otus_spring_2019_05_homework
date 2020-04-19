@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import type { Comment } from 'types';
+import type { Comment, Linkable } from 'types';
 import {
 	Card,
 	CardContent,
@@ -12,7 +12,7 @@ import {
 import { Delete as DeleteIcon } from '@material-ui/icons';
 
 type CommentListItemProps = {|
-	comment: Comment,
+	comment: Linkable<Comment>,
 	onDeleteButtonClick: () => void,
 |}
 

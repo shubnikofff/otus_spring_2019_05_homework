@@ -8,14 +8,13 @@ export type Genre = {|
 |}
 
 export type Book = {|
-	id: string,
+	id: number,
 	title: string,
 	genre: Genre,
 	authors: Array<Author>
 |}
 
 export type Comment = {|
-	id: string,
 	username: string,
 	text: string,
 	bookId: string,

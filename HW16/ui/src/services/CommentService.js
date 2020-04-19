@@ -4,23 +4,22 @@ import RestClient from './RestClient';
 import type {
 	Comment,
 	CommentFormValues,
-	CreateCommentResponse,
 	Linkable,
 } from 'types';
 
 class CommentService {
 
-	static fetchAllComments(bookId: string): Promise<Array<Linkable<Comment>>> {
+	static fetchAllComments(bookId: number): Promise<Array<Linkable<Comment>>> {
 		return RestClient.get(`/api/comment/search/books?bookid=${bookId}`)
 			.then(response => response._embedded.comments);
 	}
 
-	static createComment(values: CommentFormValues): Promise<CreateCommentResponse> {
+	static createComment(values: CommentFormValues): Promise<Linkable<Comment>> {
 		return RestClient.post('/api/comment', values);
 	}
 
-	static deleteComment(id: string): Promise<void> {
-		return RestClient.del(`/comments/${id}`);
+	static deleteComment(url: string): Promise<void> {
+		return RestClient.del(new URL(url).pathname);
 	}
 }
 

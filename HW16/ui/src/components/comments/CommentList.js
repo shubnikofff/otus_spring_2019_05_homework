@@ -12,40 +12,41 @@ import CommentForm from './CommentForm';
 import CommentListItem from './CommentListItem';
 
 import type {
+	Book,
 	Comment,
 	CommentFormValues,
-	CreateCommentResponse,
+	Linkable,
 } from 'types';
 import type { FormikBag } from 'formik';
 
 type CommentListProps = {|
-	bookId: string,
+	book: Linkable<Book>,
 |}
 
-function CommentList({ bookId }: CommentListProps) {
-	const [comments, setComments] = useState<Array<Comment> | null>(null);
+function CommentList({ book }: CommentListProps) {
+	const [comments, setComments] = useState<Array<Linkable<Comment>> | null>(null);
 
 	function fetchComments() {
-		CommentService.fetchAllComments(bookId).then(setComments);
+		CommentService.fetchAllComments(book.id).then(setComments);
 	}
 
-	useEffect(fetchComments, [bookId]);
+	useEffect(fetchComments, [book.id]);
 
 	if (comments === null) {
 		return (<LinearProgress />);
 	}
 
 	const initialValues: CommentFormValues = {
-		bookId,
 		text: '',
-		user: '',
+		username: '',
+		book: book._links.self.href,
 	};
 
 	const handleSubmit = (values: CommentFormValues, { resetForm }: FormikBag) =>
 		CommentService.createComment(values)
-			.then(({ id }: CreateCommentResponse) => {
+			.then((responce: Linkable<Comment>) => {
 				resetForm();
-				setComments([{ id, ...values }, ...comments]);
+				setComments([responce, ...comments]);
 			});
 
 	return (
@@ -62,14 +63,14 @@ function CommentList({ bookId }: CommentListProps) {
 				</Card>
 			</Box>
 			{comments.map(comment => {
-				const { id } = comment;
+				const { href } = comment._links.self;
 				const handleDeleteButtonClick = () => {
-					CommentService.deleteComment(id)
-						.then(setComments(comments.filter(comment => comment.id !== id)));
+					CommentService.deleteComment(href)
+						.then(setComments(comments.filter(comment => comment._links.self.href !== href)));
 				};
 
 				return (
-					<Box mb={2} key={id}>
+					<Box mb={2} key={comment._links.self.href}>
 						<CommentListItem
 							comment={comment}
 							onDeleteButtonClick={handleDeleteButtonClick}
