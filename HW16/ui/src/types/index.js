@@ -12,7 +12,3 @@ export {
 	CommentFormValues,
 	GenreFormValues,
 } from './form';
-
-export {
-	Linkable,
-} from './link';

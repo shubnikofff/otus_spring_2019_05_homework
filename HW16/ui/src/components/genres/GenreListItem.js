@@ -16,12 +16,12 @@ import {
 } from '@material-ui/icons';
 
 import type { FormikProps } from 'formik';
-import type { Genre, GenreFormValues, Linkable } from 'types';
+import type { Genre, GenreFormValues } from 'types';
 
 import { FIELD_NAME } from 'constants/fields';
 
 type GenreListItemProps = {|
-	genre: Linkable<Genre>,
+	genre: Genre,
 |}
 
 function GenreListItem({ genre }: GenreListItemProps) {
@@ -31,7 +31,7 @@ function GenreListItem({ genre }: GenreListItemProps) {
 
 	function handleSubmit(values: GenreFormValues) {
 		return GenreService.updateGenre(genre._links.self.href, values)
-			.then((response: Linkable<Genre>) => {
+			.then((response: Genre) => {
 				setGenreName(response.name);
 			})
 			.finally(() => {

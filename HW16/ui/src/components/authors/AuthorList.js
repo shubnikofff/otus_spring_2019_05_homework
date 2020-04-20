@@ -9,10 +9,10 @@ import {
 } from '@material-ui/core';
 import { default as AuthorListItem } from './AuthorListItem';
 
-import type { Author, Linkable } from 'types';
+import type { Author } from 'types';
 
 function AuthorList() {
-	const [authors, setAuthors] = useState<Array<Linkable<Author>> | null>(null);
+	const [authors, setAuthors] = useState<Array<Author> | null>(null);
 
 	useEffect(() => {
 		AuthorService.fetchAllAuthors().then(setAuthors);
