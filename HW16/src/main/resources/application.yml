@@ -1,4 +1,6 @@
 spring:
+  jmx:
+    enabled: true
   data:
     rest:
       base-path: /api
@@ -10,3 +12,11 @@ spring:
   h2:
     console:
       enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
