@@ -1,7 +1,7 @@
 // @flow
 import React, { useState } from 'react';
 import { BookService } from 'services';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import {
 	Box,
 	Button,
@@ -16,12 +16,12 @@ import type { AxiosError } from 'axios';
 const MESSAGE_DELAY_TIME = 6000;
 
 function BookDelete() {
-	const { id } = useParams();
+	const { state: { href } } = useLocation();
 	const history = useHistory();
 	const [operationError, setOperationError] = useState<?string>(null);
 
 	const handleYesButtonClick = () => {
-		BookService.deleteBook(id)
+		BookService.deleteBook(href)
 			.then(() => {
 				history.push('/');
 			})
