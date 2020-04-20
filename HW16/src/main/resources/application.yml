@@ -12,6 +12,7 @@ spring:
   h2:
     console:
       enabled: true
+
 management:
   endpoints:
     web:
@@ -20,3 +21,9 @@ management:
   endpoint:
     health:
       show-details: always
+    logfile:
+      enabled: true
+
+logging:
+  file:
+    name: library-app.log
