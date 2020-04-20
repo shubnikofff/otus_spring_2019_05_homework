@@ -6,6 +6,7 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity
@@ -31,4 +32,7 @@ public class Book {
 			inverseJoinColumns = @JoinColumn(name = "author_id")
 	)
 	private Collection<Author> authors;
+
+	@OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
+	private List<Comment> comments;
 }
