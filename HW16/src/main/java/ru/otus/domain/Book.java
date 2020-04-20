@@ -25,7 +25,11 @@ public class Book {
 	private Genre genre;
 
 	@Fetch(FetchMode.SUBSELECT)
-	@ManyToMany(targetEntity = Author.class,  fetch = FetchType.EAGER)
+	@ManyToMany(
+			targetEntity = Author.class,
+			fetch = FetchType.EAGER,
+			cascade = CascadeType.MERGE
+	)
 	@JoinTable(
 			name = "lib_books_authors",
 			joinColumns = @JoinColumn(name = "book_id"),
