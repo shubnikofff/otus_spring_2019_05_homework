@@ -1,7 +1,12 @@
 // @flow
 import RestClient from './RestClient';
 
-import type { Book, BookFormValues } from 'types';
+import type {
+	Author,
+	Book,
+	BookFormValues,
+	Genre,
+} from 'types';
 
 const BASE_URL: string = '/api/book';
 
@@ -22,6 +27,15 @@ class BookService {
 			? withAllFieldsProjection(parsedUrl.pathname + parsedUrl.search)
 			: parsedUrl.pathname,
 		);
+	}
+
+	static fetchGenre(url: string): Promise<Genre> {
+		return RestClient.get(new URL(url).pathname)
+	}
+
+	static fetchAuthors(url: string): Promise<Array<Author>> {
+		return RestClient.get(new URL(url).pathname)
+			.then(response => response._embedded.authors);
 	}
 
 	static createBook(values: BookFormValues): Promise<void> {

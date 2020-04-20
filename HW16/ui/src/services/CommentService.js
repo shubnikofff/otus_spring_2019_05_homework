@@ -8,7 +8,6 @@ const BASE_URL: string = '/api/comment';
 class CommentService {
 
 	static fetchAllComments(url: string): Promise<Array<Comment>> {
-		console.log(url);
 		return RestClient.get(new URL(url).pathname)
 			.then(response => response._embedded.comments);
 	}
