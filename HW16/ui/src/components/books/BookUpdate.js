@@ -15,12 +15,19 @@ import { Alert } from '@material-ui/lab';
 import { default as BookForm } from './BookForm';
 
 import type { AxiosError } from 'axios';
-import type { Book, BookFormValues } from 'types';
+import type {
+	Author,
+	Book,
+	BookFormValues,
+	Genre,
+} from 'types';
 
 const MESSAGE_DELAY_TIME = 6000;
 
 function BookUpdate() {
-	const [initialValues, setInitialValues] = useState<?BookFormValues>(null);
+	const [book, setBook] = useState<Book | null>(null);
+	const [genre, setGenre] = useState<Genre | null>(null);
+	const [authors, setAuthors] = useState<Array<Author> | null>(null);
 	const [operationError, setOperationError] = useState<?string>(null);
 	const [successMsgOpen, setSuccessMsgOpen] = useState<boolean>(false);
 	const { state: { href } } = useLocation();
@@ -28,7 +35,6 @@ function BookUpdate() {
 	const handleSubmit = (values: BookFormValues) =>
 		BookService.updateBook(href, values)
 			.then(() => {
-				setInitialValues(values);
 				setSuccessMsgOpen(true);
 			})
 			.catch((error: AxiosError) => {
@@ -37,29 +43,35 @@ function BookUpdate() {
 
 	useEffect(() => {
 		BookService.fetchBook(href)
-			.then((book: Book) => {
-				setInitialValues({
-					title: book.title,
-					genre: book.genre.name,
-					authors: book.authors.map(author => author.name),
-				});
-			})
+			.then(setBook)
 			.catch((error: AxiosError) => {
 				setOperationError(error.message);
 			});
 	}, [href]);
 
-	const Form = (
-		<Grid container>
-			<Grid item xs={6}>
-				<Formik
-					component={BookForm}
-					initialValues={initialValues}
-					onSubmit={handleSubmit}
-				/>
-			</Grid>
-		</Grid>
-	);
+	useEffect(() => {
+		if (book) {
+			BookService.fetchGenre(book._links.genre.href)
+				.then(setGenre)
+				.catch((error: AxiosError) => {
+					setOperationError(error.message);
+				});
+		}
+	}, [book]);
+
+	useEffect(() => {
+		if (book) {
+			BookService.fetchAuthors(book._links.authors.href)
+				.then(setAuthors)
+				.catch((error: AxiosError) => {
+					setOperationError(error.message);
+				});
+		}
+	}, [book]);
+
+	if (!book || !genre || !authors) {
+		return (<LinearProgress />);
+	}
 
 	return (
 		<>
@@ -67,7 +79,19 @@ function BookUpdate() {
 				<Typography variant="h5">
 					Update book
 				</Typography>
-				{initialValues ? Form : <LinearProgress />}
+				<Grid container>
+					<Grid item xs={6}>
+						<Formik
+							component={BookForm}
+							initialValues={{
+								title: book.title,
+								genre: genre._links.self.href,
+								authors: authors.map(author => author._links.self.href),
+							}}
+							onSubmit={handleSubmit}
+						/>
+					</Grid>
+				</Grid>
 			</Box>
 			<Snackbar open={successMsgOpen} autoHideDuration={MESSAGE_DELAY_TIME}>
 				<Alert severity="success" onClose={() => setSuccessMsgOpen(false)}>
