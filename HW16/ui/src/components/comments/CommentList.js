@@ -15,22 +15,21 @@ import type {
 	Book,
 	Comment,
 	CommentFormValues,
-	Linkable,
 } from 'types';
 import type { FormikBag } from 'formik';
 
 type CommentListProps = {|
-	book: Linkable<Book>,
+	book: Book,
 |}
 
 function CommentList({ book }: CommentListProps) {
-	const [comments, setComments] = useState<Array<Linkable<Comment>> | null>(null);
+	const [comments, setComments] = useState<Array<Comment> | null>(null);
 
 	function fetchComments() {
-		CommentService.fetchAllComments(book.id).then(setComments);
+		CommentService.fetchAllComments(book._links.comments.href).then(setComments);
 	}
 
-	useEffect(fetchComments, [book.id]);
+	useEffect(fetchComments, [book]);
 
 	if (comments === null) {
 		return (<LinearProgress />);
@@ -44,7 +43,7 @@ function CommentList({ book }: CommentListProps) {
 
 	const handleSubmit = (values: CommentFormValues, { resetForm }: FormikBag) =>
 		CommentService.createComment(values)
-			.then((responce: Linkable<Comment>) => {
+			.then((responce: Comment) => {
 				resetForm();
 				setComments([responce, ...comments]);
 			});

@@ -1,21 +1,20 @@
 // @flow
 import RestClient from './RestClient';
 
-import type {
-	Comment,
-	CommentFormValues,
-	Linkable,
-} from 'types';
+import type { Comment, CommentFormValues } from 'types';
+
+const BASE_URL: string = '/api/comment';
 
 class CommentService {
 
-	static fetchAllComments(bookId: number): Promise<Array<Linkable<Comment>>> {
-		return RestClient.get(`/api/comment/search/books?bookid=${bookId}`)
+	static fetchAllComments(url: string): Promise<Array<Comment>> {
+		console.log(url);
+		return RestClient.get(new URL(url).pathname)
 			.then(response => response._embedded.comments);
 	}
 
-	static createComment(values: CommentFormValues): Promise<Linkable<Comment>> {
-		return RestClient.post('/api/comment', values);
+	static createComment(values: CommentFormValues): Promise<Comment> {
+		return RestClient.post(BASE_URL, values);
 	}
 
 	static deleteComment(url: string): Promise<void> {

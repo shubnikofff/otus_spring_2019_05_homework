@@ -18,12 +18,12 @@ import {
 	Edit as EditIcon,
 } from '@material-ui/icons';
 
-import type { Book, Author, Linkable } from 'types';
+import type { Book, Author } from 'types';
 
 type BookListProps = {||};
 
 type BookListState = {|
-	books: Array<Linkable<Book>> | null,
+	books: Array<Book> | null,
 |};
 
 class BookList extends React.PureComponent<BookListProps, BookListState> {
@@ -36,7 +36,7 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 
 	componentDidMount() {
 		BookService.fetchAllBooks()
-			.then((response: Array<Linkable<Book>>) => {
+			.then((response: Array<Book>) => {
 				this.setState({ books: response });
 			});
 	}
@@ -49,8 +49,8 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 		return (
 			<Box mt={4}>
 				<Grid container spacing={4}>
-					{this.state.books.map((book: Linkable<Book>) => (
-						<Grid item key={book.id} xs={12} sm={6} md={3}>
+					{this.state.books.map((book: Book) => (
+						<Grid item key={book._links.self.href} xs={12} sm={6} md={3}>
 							<Card>
 								<CardActionArea
 									component={Link}

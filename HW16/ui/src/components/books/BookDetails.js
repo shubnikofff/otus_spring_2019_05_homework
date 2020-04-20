@@ -16,14 +16,14 @@ import {
 } from '@material-ui/core';
 import { CommentList } from 'components';
 
-import type { Book, Linkable } from 'types';
+import type { Book } from 'types';
 
 function BookDetails() {
 	const { state: { href } } = useLocation();
-	const [book, setBook] = useState<Linkable<Book> | null>(null);
+	const [book, setBook] = useState<Book | null>(null);
 
 	useEffect(() => {
-		BookService.fetchBook(href).then(setBook);
+		BookService.fetchBook(href, true).then(setBook);
 	}, [href]);
 
 	if (!book) {

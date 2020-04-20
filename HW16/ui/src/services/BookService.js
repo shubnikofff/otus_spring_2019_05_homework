@@ -1,7 +1,9 @@
 // @flow
 import RestClient from './RestClient';
 
-import type { Book, BookFormValues, Linkable } from 'types';
+import type { Book, BookFormValues } from 'types';
+
+const BASE_URL: string = '/api/book';
 
 function withAllFieldsProjection(url: string): string {
 	return `${url}?projection=allFields`;
@@ -9,26 +11,29 @@ function withAllFieldsProjection(url: string): string {
 
 class BookService {
 
-	static fetchAllBooks(): Promise<Array<Linkable<Book>>> {
-		return RestClient.get(withAllFieldsProjection('/api/book'))
+	static fetchAllBooks(): Promise<Array<Book>> {
+		return RestClient.get(withAllFieldsProjection(BASE_URL))
 			.then(response => response._embedded.books);
 	}
 
-	static fetchBook(url: string): Promise<Linkable<Book>> {
+	static fetchBook(url: string, withProjection: boolean = false): Promise<Book> {
 		const parsedUrl = new URL(url);
-		return RestClient.get(withAllFieldsProjection(parsedUrl.pathname + parsedUrl.search));
+		return RestClient.get(withProjection
+			? withAllFieldsProjection(parsedUrl.pathname + parsedUrl.search)
+			: parsedUrl.pathname,
+		);
 	}
 
 	static createBook(values: BookFormValues): Promise<void> {
-		return RestClient.post('/book', values);
+		return RestClient.post(BASE_URL, values);
 	}
 
 	static updateBook(url: string, values: BookFormValues): Promise<void> {
 		return RestClient.put(new URL(url).pathname, values);
 	}
 
-	static deleteBook(id: string): Promise<void> {
-		return RestClient.del(`/book/${id}`);
+	static deleteBook(url: string): Promise<void> {
+		return RestClient.del(new URL(url).pathname);
 	}
 }
 

@@ -15,7 +15,7 @@ import { Alert } from '@material-ui/lab';
 import { default as BookForm } from './BookForm';
 
 import type { AxiosError } from 'axios';
-import type { Book, BookFormValues, Linkable } from 'types';
+import type { Book, BookFormValues } from 'types';
 
 const MESSAGE_DELAY_TIME = 6000;
 
@@ -37,7 +37,7 @@ function BookUpdate() {
 
 	useEffect(() => {
 		BookService.fetchBook(href)
-			.then((book: Linkable<Book>) => {
+			.then((book: Book) => {
 				setInitialValues({
 					title: book.title,
 					genre: book.genre.name,
