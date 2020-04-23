@@ -4,3 +4,6 @@ spring:
       uri: mongodb://db
       port: 27017
       database: library
+server:
+  servlet:
+    context-path: /api
