@@ -1,0 +1,29 @@
+spring:
+  jmx:
+    enabled: true
+  data:
+    rest:
+      base-path: /api
+  datasource:
+    url: jdbc:h2:mem:library
+  jpa:
+    hibernate:
+      ddl-auto: none
+  h2:
+    console:
+      enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics,health,logfile
+  endpoint:
+    health:
+      show-details: always
+    logfile:
+      enabled: true
+
+logging:
+  file:
+    name: library-app.log
