@@ -4,7 +4,7 @@ import axios from 'axios';
 import type { AxiosInstance, AxiosResponse } from 'axios';
 
 const axiosInstance: AxiosInstance = axios.create({
-	baseURL: 'http://localhost/api',
+	baseURL: `http://${process.env.REACT_APP_API_ADDRESS || 'localhost'}/api`,
 });
 
 class RestClient {

@@ -2,6 +2,8 @@ FROM node AS compiler
 
 WORKDIR /opt
 
+ENV REACT_APP_API_ADDRESS localhost
+
 COPY ./package* ./
 RUN npm ci
 
