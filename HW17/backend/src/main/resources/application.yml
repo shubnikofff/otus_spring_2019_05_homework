@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://db
+      port: 27017
+      database: library
+server:
+  servlet:
+    context-path: /api
