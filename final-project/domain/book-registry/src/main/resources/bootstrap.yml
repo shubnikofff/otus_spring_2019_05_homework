@@ -3,11 +3,9 @@ spring:
     name: book-registry
   cloud:
     config:
-      uri: http://localhost:5001
+      uri: http://localhost:8888
 
 eureka:
-  server:
-    eviction-interval-timer-in-ms: 15000
   instance:
     instance-id: "${spring.application.name}:${server.port}"
     prefer-ip-address: true

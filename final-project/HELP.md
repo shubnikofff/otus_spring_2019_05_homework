@@ -3,7 +3,7 @@
 ## Infrastructure services
 
 ### Configuration Server
-_localhost:5001_
+_localhost:8888_
 
 ### Discovery Server
 _localhost:8761_

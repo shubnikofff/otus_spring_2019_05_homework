@@ -9,4 +9,4 @@ spring:
           search-paths: "{application}"
 
 server:
-  port: 5001
+  port: 8888
