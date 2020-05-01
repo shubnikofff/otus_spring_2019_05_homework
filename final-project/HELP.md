@@ -6,6 +6,7 @@
 _localhost:5001_
 
 ### Discovery Server
+_localhost:8761_
 
 ## Domain services
 
