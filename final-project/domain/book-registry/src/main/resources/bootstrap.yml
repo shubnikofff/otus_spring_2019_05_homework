@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: book-registry
+  cloud:
+    config:
+      uri: http://localhost:5001
+
+eureka:
+  server:
+    eviction-interval-timer-in-ms: 15000
+  instance:
+    instance-id: "${spring.application.name}:${server.port}"
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+server:
+  port: 6001
