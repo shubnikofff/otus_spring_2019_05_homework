@@ -2,13 +2,16 @@
 
 ## Infrastructure services
 
-### Configuration Server
+#### Configuration Server
 _localhost:8888_
 
-### Discovery Server
+#### Discovery Server
 _localhost:8761_
+
+#### Gateway
+_localhost:8765_
 
 ## Domain services
 
-### Book Registry
+#### Book Registry
 _localhost:6001_
