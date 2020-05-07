@@ -1,6 +1,7 @@
 package ru.otus.bookregistry.model;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -8,8 +9,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Collection;
 
 @Document(collection = "books")
+@AllArgsConstructor
 @NoArgsConstructor
-@Getter
+@Data
 public class Book {
 
 	@Id

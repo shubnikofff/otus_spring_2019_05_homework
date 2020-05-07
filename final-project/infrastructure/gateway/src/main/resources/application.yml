@@ -17,6 +17,8 @@ management:
         include: "*"
 zuul:
   prefix: /api
+  routes:
+    book-registry: /book/**
 
 server:
   port: 8765

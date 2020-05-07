@@ -5,16 +5,8 @@ spring:
     config:
       uri: http://localhost:8888
 
-eureka:
-  instance:
-    instance-id: "${spring.application.name}:${server.port}"
-    prefer-ip-address: true
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
+encrypt:
+  key: book-exchange-secret
 
 server:
   port: 6001
