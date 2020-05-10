@@ -4,6 +4,7 @@ export {
 	Book,
 	Comment,
 	Genre,
+	Picture,
 } from './entity';
 
 export {

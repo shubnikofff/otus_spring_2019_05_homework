@@ -11,3 +11,4 @@ export {
 export { CommentList } from './comments';
 export { GenreList } from './genres';
 export { default as Header } from './Header';
+export { PictureList, PictureDetails } from './pictures';

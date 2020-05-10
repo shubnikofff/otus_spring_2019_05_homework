@@ -14,7 +14,7 @@ import {
 	ListItemText,
 	Typography,
 } from '@material-ui/core';
-import { CommentList } from 'components';
+import { CommentList, PictureList } from 'components';
 
 import type { Book } from 'types';
 
@@ -77,6 +77,12 @@ function BookDetails() {
 						</ListItem>
 					))}
 				</List>
+			</Box>
+			<Box mt={4}>
+				<Typography variant="h6">
+					Pictures
+				</Typography>
+				<PictureList bookId={id} />
 			</Box>
 			<Box mt={4}>
 				<Typography variant="h6">

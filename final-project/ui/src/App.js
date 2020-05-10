@@ -11,6 +11,7 @@ import {
 	BookUpdate,
 	GenreList,
 	Header,
+	PictureDetails,
 } from 'components';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
 					<Route exact path="/book/:id/edit" component={BookUpdate} />
 					<Route exact path="/create-book" component={BookCreate} />
 					<Route exact path="/genres" component={GenreList} />
+					<Route exact path="/picture" component={PictureDetails} />
 				</Container>
 			</div>
 		</BrowserRouter>

@@ -20,3 +20,9 @@ export type Comment = {|
 	text: string,
 	bookId: string,
 |}
+
+export type Picture = {|
+	id: string,
+	name: string,
+	uploadDate: string,
+|}
