@@ -19,6 +19,7 @@ zuul:
   prefix: /api
   routes:
     book-registry: /book/**
+    picture-service: /picture/**
 
 server:
   port: 8765
