@@ -19,6 +19,7 @@ zuul:
   prefix: /api
   routes:
     book-registry: /book/**
+    review-service: /comment/**
     picture-service: /picture/**
 
 server:
