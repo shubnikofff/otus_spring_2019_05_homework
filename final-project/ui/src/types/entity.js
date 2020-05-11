@@ -16,9 +16,8 @@ export type Book = {|
 
 export type Comment = {|
 	id: string,
-	user: string,
+	username: string,
 	text: string,
-	bookId: string,
 |}
 
 export type Picture = {|

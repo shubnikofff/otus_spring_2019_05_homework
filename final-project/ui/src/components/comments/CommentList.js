@@ -14,7 +14,6 @@ import CommentListItem from './CommentListItem';
 import type {
 	Comment,
 	CommentFormValues,
-	CreateCommentResponse,
 } from 'types';
 import type { FormikBag } from 'formik';
 
@@ -36,14 +35,13 @@ function CommentList({ bookId }: CommentListProps) {
 	}
 
 	const initialValues: CommentFormValues = {
-		bookId,
 		text: '',
-		user: '',
+		username: '',
 	};
 
 	const handleSubmit = (values: CommentFormValues, { resetForm }: FormikBag) =>
-		CommentService.createComment(values)
-			.then(({ id }: CreateCommentResponse) => {
+		CommentService.createComment(bookId, values)
+			.then((id: string) => {
 				resetForm();
 				setComments([{ id, ...values }, ...comments]);
 			});

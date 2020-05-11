@@ -48,7 +48,7 @@ function PictureList({ bookId }: PictureListProps) {
 				<GridList cols={3} style={{ flexWrap: 'nowrap' }}>
 					{pictures.map((picture: Picture) => (
 						<GridListTile key={picture.id}>
-							<img src={`/api/picture/${picture.id}`} alt="picture" />
+							<img src={`/api/picture/${picture.id}`} alt="Book" />
 							<GridListTileBar
 								title={picture.name}
 								subtitle={picture.uploadDate}

@@ -41,7 +41,7 @@ function CommentListItem({ comment, onDeleteButtonClick }: CommentListItemProps)
 					</Grid>
 				</Grid>
 				<Typography variant="caption">
-					{comment.user}
+					{comment.username}
 				</Typography>
 			</CardContent>
 		</Card>

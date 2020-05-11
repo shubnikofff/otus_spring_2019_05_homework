@@ -42,7 +42,7 @@ function PictureDetails() {
 				<Grid container justify="center">
 					<Grid item>
 						<img
-							alt="Cannot get image :-("
+							alt="Book"
 							src={`/api/picture/${picture.id}`}
 							style={{
 								maxWidth: "100%",
