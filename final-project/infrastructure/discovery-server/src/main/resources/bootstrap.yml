@@ -1,12 +1,9 @@
 spring:
   application:
-    name: composite-service
+    name: discovery-server
   cloud:
     config:
       uri: http://localhost:8888
 
-encrypt:
-  key: book-exchange-secret
-
 server:
-  port: 6004
+  port: 8761
