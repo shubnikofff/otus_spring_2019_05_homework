@@ -1,5 +1,6 @@
 package ru.otus.bookregistry.service;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.bookregistry.dto.BookDto;
@@ -10,6 +11,7 @@ import ru.otus.bookregistry.model.Genre;
 import ru.otus.bookregistry.repository.BookRepository;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import static java.util.stream.Collectors.toList;
 
@@ -19,21 +21,37 @@ public class BookServiceImpl implements BookService {
 
 	private final BookRepository bookRepository;
 
+	@HystrixCommand(commandKey = "getAllBooks", fallbackMethod = "getAllFallback")
 	@Override
 	public Collection<BookDto> getAll() {
 		return bookRepository.findAll().stream().map(BookServiceImpl::mapModelToDto).collect(toList());
 	}
 
+	private Collection<BookDto> getAllFallback() {
+		return Collections.emptyList();
+	}
+
+	@HystrixCommand(commandKey = "getOneBook", fallbackMethod = "getOneFallback")
 	@Override
 	public BookDto getOne(String id) {
 		return bookRepository.findById(id).map(BookServiceImpl::mapModelToDto).orElseThrow(BookNotFoundException::new);
 	}
 
+	private BookDto getOneFallback(String id) {
+		return new BookDto(id, "Title", "Genre", Collections.emptyList());
+	}
+
+	@HystrixCommand(commandKey = "createBook", fallbackMethod = "createBookFallback")
 	@Override
 	public String create(BookDto bookDto) {
 		return bookRepository.save(mapDtoToModel(bookDto)).getId();
 	}
 
+	private String createBookFallback() {
+		return null;
+	}
+
+	@HystrixCommand(commandKey = "updateBook", fallbackMethod = "emptyFallback")
 	@Override
 	public void update(String id, BookDto bookDto) {
 		final Book book = bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
@@ -43,10 +61,14 @@ public class BookServiceImpl implements BookService {
 		bookRepository.save(book);
 	}
 
+	@HystrixCommand(commandKey = "deleteBook", fallbackMethod = "emptyFallback")
 	@Override
 	public void delete(String id) {
 		final Book book = bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
 		bookRepository.delete(book);
+	}
+
+	private void emptyFallback() {
 	}
 
 	private static BookDto mapModelToDto(Book book) {
