@@ -36,6 +36,6 @@ public class GenreServiceImpl implements GenreService {
 		genreRepository.updateName(genre, genreDto.getName());
 	}
 
-	private void updateFallback() {
+	private void updateFallback(String id, GenreDto genreDto) {
 	}
 }

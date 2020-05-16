@@ -47,11 +47,11 @@ public class BookServiceImpl implements BookService {
 		return bookRepository.save(mapDtoToModel(bookDto)).getId();
 	}
 
-	private String createBookFallback() {
+	private String createBookFallback(BookDto bookDto) {
 		return null;
 	}
 
-	@HystrixCommand(commandKey = "updateBook", fallbackMethod = "emptyFallback")
+	@HystrixCommand(commandKey = "updateBook", fallbackMethod = "updateFallback")
 	@Override
 	public void update(String id, BookDto bookDto) {
 		final Book book = bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
@@ -61,14 +61,17 @@ public class BookServiceImpl implements BookService {
 		bookRepository.save(book);
 	}
 
-	@HystrixCommand(commandKey = "deleteBook", fallbackMethod = "emptyFallback")
+	private void updateFallback(String id, BookDto bookDto) {
+	}
+
+	@HystrixCommand(commandKey = "deleteBook", fallbackMethod = "deleteFallback")
 	@Override
 	public void delete(String id) {
 		final Book book = bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
 		bookRepository.delete(book);
 	}
 
-	private void emptyFallback() {
+	private void deleteFallback(String id) {
 	}
 
 	private static BookDto mapModelToDto(Book book) {

@@ -36,6 +36,6 @@ public class AuthorServiceImpl implements AuthorService {
 		authorRepository.updateName(author, authorDto.getName());
 	}
 
-	private void updateFallback() {
+	private void updateFallback(String id, AuthorDto authorDto) {
 	}
 }
