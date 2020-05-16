@@ -58,11 +58,11 @@ public class PictureServiceImpl implements PictureService {
 				.collect(Collectors.toList());
 	}
 
-	private Collection<PictureMetadataDto> getByBookIdFallback() {
+	private Collection<PictureMetadataDto> getByBookIdFallback(String bookId) {
 		return Collections.emptyList();
 	}
 
-	@HystrixCommand(commandKey = "savePicture", fallbackMethod = "emptyFallback")
+	@HystrixCommand(commandKey = "savePicture", fallbackMethod = "saveFallback")
 	@Override
 	public PictureMetadataDto save(MultipartFile multipartFile, String bookId) throws IOException {
 		final ObjectId id = pictureRepository.store(
@@ -75,12 +75,16 @@ public class PictureServiceImpl implements PictureService {
 		return new PictureMetadataDto(id.toString(), multipartFile.getOriginalFilename(), new Date().toString());
 	}
 
-	@HystrixCommand(commandKey = "deletePicture", fallbackMethod = "emptyFallback")
+	private PictureMetadataDto saveFallback(MultipartFile multipartFile, String bookId) {
+		return new PictureMetadataDto(null, multipartFile.getOriginalFilename(), new Date().toString());
+	}
+
+	@HystrixCommand(commandKey = "deletePicture", fallbackMethod = "deleteFallback")
 	@Override
 	public void delete(String id) {
 		pictureRepository.delete(id);
 	}
 
-	private void emptyFallback() {
+	private void deleteFallback(String id) {
 	}
 }
