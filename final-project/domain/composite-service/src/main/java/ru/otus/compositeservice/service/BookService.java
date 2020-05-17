@@ -6,4 +6,6 @@ public interface BookService {
 
 	BookCompleteDataDto getBookCompleteData(String bookId);
 
+	void deleteBook(String bookId);
+
 }
