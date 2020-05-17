@@ -11,6 +11,8 @@ public interface BookService {
 
 	BookDto getOne(String id);
 
+	boolean exists(String id);
+
 	String create(BookDto bookDto);
 
 	void update(String id, BookDto bookDto);

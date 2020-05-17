@@ -31,14 +31,24 @@ public class BookServiceImpl implements BookService {
 		return Collections.emptyList();
 	}
 
-	@HystrixCommand(commandKey = "getOneBook", fallbackMethod = "getOneFallback")
+	@HystrixCommand(commandKey = "getOneBook", fallbackMethod = "getOneFallback", ignoreExceptions = {BookNotFoundException.class})
 	@Override
 	public BookDto getOne(String id) {
 		return bookRepository.findById(id).map(BookServiceImpl::mapModelToDto).orElseThrow(BookNotFoundException::new);
 	}
 
 	private BookDto getOneFallback(String id) {
-		return new BookDto(id, "Title", "Genre", Collections.emptyList());
+		return new BookDto(id, "Not available", "Not available", Collections.emptyList());
+	}
+
+	@HystrixCommand(commandKey = "exists", fallbackMethod = "existsFallback")
+	@Override
+	public boolean exists(String id) {
+		return bookRepository.existsById(id);
+	}
+
+	boolean existsFallback(String id) {
+		return false;
 	}
 
 	@HystrixCommand(commandKey = "createBook", fallbackMethod = "createBookFallback")
@@ -51,7 +61,7 @@ public class BookServiceImpl implements BookService {
 		return null;
 	}
 
-	@HystrixCommand(commandKey = "updateBook", fallbackMethod = "updateFallback")
+	@HystrixCommand(commandKey = "updateBook", fallbackMethod = "updateFallback", ignoreExceptions = {BookNotFoundException.class})
 	@Override
 	public void update(String id, BookDto bookDto) {
 		final Book book = bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
@@ -64,7 +74,7 @@ public class BookServiceImpl implements BookService {
 	private void updateFallback(String id, BookDto bookDto) {
 	}
 
-	@HystrixCommand(commandKey = "deleteBook", fallbackMethod = "deleteFallback")
+	@HystrixCommand(commandKey = "deleteBook", fallbackMethod = "deleteFallback", ignoreExceptions = {BookNotFoundException.class})
 	@Override
 	public void delete(String id) {
 		final Book book = bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
