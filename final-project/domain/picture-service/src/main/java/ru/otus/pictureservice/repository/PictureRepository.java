@@ -19,4 +19,6 @@ public interface PictureRepository {
 	ObjectId store(InputStream inputStream, String fileName, String contentType, Document metadata) throws IOException;
 
 	void delete(String id);
+
+	void deleteByBookId(String bookId);
 }

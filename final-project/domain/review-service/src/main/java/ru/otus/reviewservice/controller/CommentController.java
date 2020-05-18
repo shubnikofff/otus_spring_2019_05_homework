@@ -36,4 +36,10 @@ public class CommentController {
 		commentService.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+
+	@DeleteMapping("/")
+	public ResponseEntity<HttpStatus> deleteCommentByBookId(@RequestParam String bookId) {
+		commentService.deleteByBookId(bookId);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 }

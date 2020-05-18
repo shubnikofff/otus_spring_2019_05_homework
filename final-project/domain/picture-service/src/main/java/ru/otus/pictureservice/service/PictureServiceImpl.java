@@ -85,6 +85,12 @@ public class PictureServiceImpl implements PictureService {
 		pictureRepository.delete(id);
 	}
 
+	@HystrixCommand(commandKey = "deletePictureByBookId", fallbackMethod = "deleteFallback")
+	@Override
+	public void deleteByBookId(String bookId) {
+		pictureRepository.deleteByBookId(bookId);
+	}
+
 	private void deleteFallback(String id) {
 	}
 }

@@ -56,8 +56,8 @@ public class BookServiceImpl implements BookService {
 		}
 
 		if (result.getStatusCode().is2xxSuccessful()) {
-			System.out.println("comments can be deleted");
+			reviewServiceProxy.deleteByBookId(bookId);
+			pictureServiceProxy.deleteByBookId(bookId);
 		}
-
 	}
 }

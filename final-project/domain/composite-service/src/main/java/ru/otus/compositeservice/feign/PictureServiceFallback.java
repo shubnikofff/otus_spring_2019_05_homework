@@ -15,4 +15,9 @@ public class PictureServiceFallback implements PictureServiceProxy {
 	public ResponseEntity<Collection<PictureMetadataDto>> getAllByBookId(String bookId) {
 		return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
 	}
+
+	@Override
+	public ResponseEntity<HttpStatus> deleteByBookId(String bookId) {
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 }

@@ -16,4 +16,6 @@ public interface PictureService {
 	PictureMetadataDto save(MultipartFile multipartFile, String bookId) throws IOException;
 
 	void delete(String id);
+
+	void deleteByBookId(String bookId);
 }

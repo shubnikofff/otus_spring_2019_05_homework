@@ -47,4 +47,9 @@ public class PictureRepositoryImpl implements PictureRepository {
 	public void delete(String id) {
 		gridFsOperations.delete(query(where("_id").is(id)));
 	}
+
+	@Override
+	public void deleteByBookId(String bookId) {
+		gridFsOperations.delete(query(where("bookId").is(bookId)));
+	}
 }

@@ -15,4 +15,9 @@ public class ReviewServiceFallback implements ReviewServiceProxy {
 	public ResponseEntity<Collection<CommentDto>> getByBookId(String bookId) {
 		return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
 	}
+
+	@Override
+	public ResponseEntity<HttpStatus> deleteByBookId(String bookId) {
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 }

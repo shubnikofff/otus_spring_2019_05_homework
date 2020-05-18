@@ -70,4 +70,10 @@ public class CommentServiceImpl implements CommentService {
 
 	private void deleteFallback(String id) {
 	}
+
+	@HystrixCommand(commandKey = "deleteCommentByBookId", fallbackMethod = "deleteFallback")
+	@Override
+	public void deleteByBookId(String bookId) {
+		commentRepository.deleteByBookId(bookId);
+	}
 }

@@ -44,8 +44,14 @@ public class PictureController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<HttpStatus> deleteFile(@PathVariable("id") String id) {
+	public ResponseEntity<HttpStatus> deletePicture(@PathVariable("id") String id) {
 		pictureService.delete(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@DeleteMapping("/")
+	public ResponseEntity<HttpStatus> deletePicturesByBookId(@RequestParam String bookId) {
+		pictureService.deleteByBookId(bookId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
