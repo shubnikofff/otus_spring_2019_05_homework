@@ -18,4 +18,6 @@ public class BookCompleteDataDto {
 	private final Collection<String> authors;
 
 	private final Collection<CommentDto> comments;
+
+	private final Collection<PictureMetadataDto> pictures;
 }

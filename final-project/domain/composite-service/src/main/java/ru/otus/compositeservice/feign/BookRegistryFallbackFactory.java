@@ -16,26 +16,18 @@ public class BookRegistryFallbackFactory implements FallbackFactory<BookRegistry
 
 	@Override
 	public BookRegistryProxy create(Throwable cause) {
-//		final FeignException feignException = (FeignException) cause;
 		return new BookRegistryProxy() {
 			@Override
-			public Optional<BookDto> getBook(String id) {
+			public ResponseEntity<BookDto> getBook(String id) {
 				if (cause instanceof FeignException.NotFound) {
-					return Optional.empty();
+					return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 				}
 
-				return Optional.of(new BookStubDto(id));
+				return new ResponseEntity<>(new BookStubDto(id), HttpStatus.OK);
 			}
 
 			@Override
 			public ResponseEntity<HttpStatus> deleteBook(String id) {
-
-//				System.out.println(cause);
-//
-//				return new ResponseEntity<>(HttpStatus.valueOf(feignException.status()));
-
-//
-//
 				if (cause instanceof FeignException.NotFound) {
 					return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 				}

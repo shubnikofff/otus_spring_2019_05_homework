@@ -4,14 +4,14 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.otus.compositeservice.dto.CommentDto;
+import ru.otus.compositeservice.dto.PictureMetadataDto;
 
 import java.util.Collection;
 
-@FeignClient(name = "review-service", fallback = ReviewServiceFallback.class)
-public interface ReviewServiceProxy {
+@FeignClient(name = "picture-service", fallback = PictureServiceFallback.class)
+public interface PictureServiceProxy {
 
 	@GetMapping("/")
-	ResponseEntity<Collection<CommentDto>> getByBookId(@RequestParam String bookId);
+	ResponseEntity<Collection<PictureMetadataDto>> getAllByBookId(@RequestParam String bookId);
 
 }

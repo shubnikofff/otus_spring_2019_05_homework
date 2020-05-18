@@ -6,13 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.otus.compositeservice.dto.BookCompleteDataDto;
 import ru.otus.compositeservice.dto.BookDto;
-import ru.otus.compositeservice.dto.CommentDto;
 import ru.otus.compositeservice.exception.BookNotFoundException;
 import ru.otus.compositeservice.exception.BookRegistryUnavailableException;
 import ru.otus.compositeservice.feign.BookRegistryProxy;
+import ru.otus.compositeservice.feign.PictureServiceProxy;
 import ru.otus.compositeservice.feign.ReviewServiceProxy;
-
-import java.util.Collection;
 
 @Service
 @RequiredArgsConstructor
@@ -22,26 +20,32 @@ public class BookServiceImpl implements BookService {
 
 	private final ReviewServiceProxy reviewServiceProxy;
 
+	private final PictureServiceProxy pictureServiceProxy;
+
 	@Override
 	public BookCompleteDataDto getBookCompleteData(String bookId) {
-		final BookDto book = bookRegistryProxy.getBook(bookId).orElseThrow(BookNotFoundException::new);
-		final Collection<CommentDto> comments = reviewServiceProxy.getByBookId(bookId);
+		// TODO use Spring Integration here or message broker
+		final ResponseEntity<BookDto> bookRegistryResponse = bookRegistryProxy.getBook(bookId);
+
+		if (bookRegistryResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
+			throw new BookNotFoundException();
+		}
+
+		final BookDto bookDto = bookRegistryResponse.getBody();
 
 		return new BookCompleteDataDto(
-				book.getId(),
-				book.getTitle(),
-				book.getGenre(),
-				book.getAuthors(),
-				comments
+				bookDto.getId(),
+				bookDto.getTitle(),
+				bookDto.getGenre(),
+				bookDto.getAuthors(),
+				reviewServiceProxy.getByBookId(bookId).getBody(),
+				pictureServiceProxy.getAllByBookId(bookId).getBody()
 		);
 	}
 
 	@Override
 	public void deleteBook(String bookId) {
 		final ResponseEntity<HttpStatus> result = bookRegistryProxy.deleteBook(bookId);
-		if (result.getStatusCode().is2xxSuccessful()) {
-			System.out.println("comments can be deleted");
-		}
 
 		if (result.getStatusCode() == HttpStatus.NOT_FOUND) {
 			throw new BookNotFoundException();
@@ -50,5 +54,10 @@ public class BookServiceImpl implements BookService {
 		if (result.getStatusCode() == HttpStatus.SERVICE_UNAVAILABLE) {
 			throw new BookRegistryUnavailableException();
 		}
+
+		if (result.getStatusCode().is2xxSuccessful()) {
+			System.out.println("comments can be deleted");
+		}
+
 	}
 }
