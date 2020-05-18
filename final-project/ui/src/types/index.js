@@ -2,6 +2,7 @@
 export {
 	Author,
 	Book,
+	BookCompleteData,
 	Comment,
 	Genre,
 	Picture,

@@ -16,14 +16,14 @@ import {
 } from '@material-ui/core';
 import { CommentList, PictureList } from 'components';
 
-import type { Book } from 'types';
+import type { BookCompleteData } from 'types';
 
 function BookDetails() {
 	const { id } = useParams();
-	const [book, setBook] = useState<?Book>(null);
+	const [book, setBook] = useState<BookCompleteData | null>(null);
 
 	useEffect(() => {
-		BookService.fetchBook(id).then(setBook);
+		BookService.fetchBookCompleteData(id).then(setBook);
 	}, [id]);
 
 	if (!book) {
@@ -82,13 +82,13 @@ function BookDetails() {
 				<Typography variant="h6">
 					Pictures
 				</Typography>
-				<PictureList bookId={id} />
+				{book ? <PictureList bookId={id} items={book.pictures} /> : <LinearProgress />}
 			</Box>
 			<Box mt={4}>
 				<Typography variant="h6">
 					Comments
 				</Typography>
-				<CommentList bookId={id} />
+				{book ? <CommentList bookId={id} items={book.comments} /> : <LinearProgress />}
 			</Box>
 		</>
 	);

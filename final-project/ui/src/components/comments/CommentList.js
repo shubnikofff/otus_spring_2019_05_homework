@@ -1,12 +1,11 @@
 // @flow
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { CommentService } from 'services';
 import { Formik } from 'formik';
 import {
 	Box,
 	Card,
 	CardContent,
-	LinearProgress,
 } from '@material-ui/core';
 import CommentForm from './CommentForm';
 import CommentListItem from './CommentListItem';
@@ -19,20 +18,11 @@ import type { FormikBag } from 'formik';
 
 type CommentListProps = {|
 	bookId: string,
+	items: Array<Comment>,
 |}
 
-function CommentList({ bookId }: CommentListProps) {
-	const [comments, setComments] = useState<Array<Comment> | null>(null);
-
-	function fetchComments() {
-		CommentService.fetchAllComments(bookId).then(setComments);
-	}
-
-	useEffect(fetchComments, [bookId]);
-
-	if (comments === null) {
-		return (<LinearProgress />);
-	}
+function CommentList({ bookId, items }: CommentListProps) {
+	const [comments, setComments] = useState<Array<Comment>>(items);
 
 	const initialValues: CommentFormValues = {
 		text: '',

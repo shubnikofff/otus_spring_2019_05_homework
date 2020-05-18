@@ -1,14 +1,12 @@
 // @flow
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PictureService } from 'services';
 
 import {
 	Box,
 	GridList,
 	GridListTile,
 	GridListTileBar,
-	LinearProgress,
 	IconButton,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
@@ -19,18 +17,11 @@ import PictureUploadForm from './PictureUploadForm';
 
 type PictureListProps = {|
 	bookId: string,
+	items: Array<Picture>,
 |}
 
-function PictureList({ bookId }: PictureListProps) {
-	const [pictures, setPictures] = useState<Array<Picture> | null>(null);
-
-	useEffect(() => {
-		PictureService.getPictureList(bookId).then(setPictures);
-	}, [bookId]);
-
-	if (!pictures) {
-		return (<LinearProgress />);
-	}
+function PictureList({ bookId, items }: PictureListProps) {
+	const [pictures, setPictures] = useState<Array<Picture>>(items);
 
 	function handleUpload(picture: Picture): void {
 		setPictures([picture, ...pictures]);

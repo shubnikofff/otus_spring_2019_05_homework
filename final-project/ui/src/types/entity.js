@@ -25,3 +25,12 @@ export type Picture = {|
 	name: string,
 	uploadDate: string,
 |}
+
+export type BookCompleteData = {|
+	id: string,
+	title: string,
+	genre: string,
+	authors: Array<string>,
+	comments: Array<Comment>,
+	pictures: Array<Picture>,
+|}
