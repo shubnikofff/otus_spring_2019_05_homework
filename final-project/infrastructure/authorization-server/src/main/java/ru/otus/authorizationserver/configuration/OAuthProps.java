@@ -1,4 +1,4 @@
-package configuration;
+package ru.otus.authorizationserver.configuration;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
