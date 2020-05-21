@@ -10,7 +10,6 @@ public class User extends org.springframework.security.core.userdetails.User {
 
 	private final Profile profile;
 
-
 	public User(
 			String username,
 			String password,

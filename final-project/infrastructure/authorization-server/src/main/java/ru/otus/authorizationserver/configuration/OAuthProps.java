@@ -14,4 +14,8 @@ public class OAuthProps {
 	private String clientSecret;
 
 	private String signingKey;
+
+	private int accessTokenValiditySeconds;
+
+	private int refreshTokenValiditySeconds;
 }
