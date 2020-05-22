@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ru.otus</groupId>
+    <artifactId>open-shelf</artifactId>
+    <version>1.0</version>
+    <name>Open Shelf</name>
+    <description>Open Shelf - book exchange system</description>
+
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>domain/book-registry</module>
+        <module>domain/composite-service</module>
+        <module>domain/picture-service</module>
+        <module>domain/review-service</module>
+        <module>domain/user-registry</module>
+
+        <module>infrastructure/authorization-server</module>
+        <module>infrastructure/configuration-server</module>
+        <module>infrastructure/discovery-server</module>
+        <module>infrastructure/gateway</module>
+        <module>infrastructure/hystrix-dashboard</module>
+        <module>infrastructure/utility-service</module>
+    </modules>
+
+</project>
