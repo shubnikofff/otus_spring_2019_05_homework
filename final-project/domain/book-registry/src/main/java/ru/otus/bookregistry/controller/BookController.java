@@ -21,7 +21,7 @@ public class BookController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<BookDto> getBook(@PathVariable("id") String id) {
+	public ResponseEntity<BookDto> getBook(@PathVariable("id") String id, @RequestHeader("username") String username) {
 		return new ResponseEntity<>(bookService.getOne(id), HttpStatus.OK);
 	}
 

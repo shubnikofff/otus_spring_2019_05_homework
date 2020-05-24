@@ -15,7 +15,7 @@ public class BookRegistryFallbackFactory implements FallbackFactory<BookRegistry
 	public BookRegistryProxy create(Throwable cause) {
 		return new BookRegistryProxy() {
 			@Override
-			public ResponseEntity<BookDto> getBook(String id) {
+			public ResponseEntity<BookDto> getBook(String id, String username) {
 				if (cause instanceof FeignException.NotFound) {
 					return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 				}

@@ -23,9 +23,9 @@ public class BookServiceImpl implements BookService {
 	private final PictureServiceProxy pictureServiceProxy;
 
 	@Override
-	public BookCompleteDataDto getBookCompleteData(String bookId) {
+	public BookCompleteDataDto getBookCompleteData(String bookId, String username) {
 		// TODO use Spring Integration here or message broker
-		final ResponseEntity<BookDto> bookRegistryResponse = bookRegistryProxy.getBook(bookId);
+		final ResponseEntity<BookDto> bookRegistryResponse = bookRegistryProxy.getBook(bookId, username);
 
 		if (bookRegistryResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
 			throw new BookNotFoundException();
