@@ -23,6 +23,7 @@ import type { Book } from 'types';
 type BookListProps = {||};
 
 type BookListState = {|
+	basePath: string,
 	books: Array<Book> | null,
 |};
 
@@ -46,13 +47,15 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 			return (<LinearProgress />);
 		}
 
+		const { basePath } = this.props;
+
 		return (
 			<Box mt={4}>
 				<Grid container spacing={4}>
 					{this.state.books.map((book: Book) => (
 						<Grid item key={book.id} xs={12} sm={6} md={3}>
 							<Card>
-								<CardActionArea component={Link} to={`/book/${book.id}`}>
+								<CardActionArea component={Link} to={`${basePath}/${book.id}`}>
 									<CardContent>
 										<Typography variant="h5" gutterBottom>
 											{book.title}
@@ -67,10 +70,10 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 								</CardActionArea>
 								<CardActions disableSpacing>
 									<Grid container justify="flex-end" alignItems="center">
-										<IconButton to={`/book/${book.id}/edit`} component={Link}>
+										<IconButton to={`${basePath}/${book.id}/update`} component={Link}>
 											<EditIcon fontSize="small" />
 										</IconButton>
-										<IconButton to={`/book/${book.id}/delete`} component={Link}>
+										<IconButton to={`${basePath}/${book.id}/delete`} component={Link}>
 											<DeleteIcon fontSize="small" />
 										</IconButton>
 									</Grid>

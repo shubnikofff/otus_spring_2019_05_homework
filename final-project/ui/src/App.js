@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import {
 	AuthorList,
@@ -14,23 +14,55 @@ import {
 	PictureDetails,
 } from 'components';
 
-function App() {
+type AppProps = {|
+	basePath: string;
+|}
+
+function App({ basePath }: AppProps) {
 	return (
-		<BrowserRouter>
-			<div>
-				<Header />
-				<Container>
-					<Route exact path="/" component={BookList} />
-					<Route exact path="/authors" component={AuthorList} />
-					<Route exact path="/book/:id" component={BookDetails} />
-					<Route exact path="/book/:id/delete" component={BookDelete} />
-					<Route exact path="/book/:id/edit" component={BookUpdate} />
-					<Route exact path="/create-book" component={BookCreate} />
-					<Route exact path="/genres" component={GenreList} />
-					<Route exact path="/picture" component={PictureDetails} />
-				</Container>
-			</div>
-		</BrowserRouter>
+		<>
+			<Header basePath={basePath} />
+
+			<Container>
+
+				<Switch>
+
+					<Route exact path={basePath}>
+						<BookList basePath={`${basePath}/book`} />
+					</Route>
+
+					<Route exact path={`${basePath}/book/create`}>
+						<BookCreate basePath={`${basePath}/book`} />
+					</Route>
+
+					<Route exact path={`${basePath}/book/:id`}>
+						<BookDetails basePath={`${basePath}/book`} />
+					</Route>
+
+					<Route exact path={`${basePath}/book/:id/delete`}>
+						<BookDelete basePath={`${basePath}/book`} />
+					</Route>
+
+					<Route exact path={`${basePath}/book/:id/update`}>
+						<BookUpdate basePath={`${basePath}/book`} />
+					</Route>
+
+					<Route exact path={`${basePath}/author`}>
+						<AuthorList basePath={`${basePath}/author`} />
+					</Route>
+
+					<Route exact path={`${basePath}/genre`}>
+						<GenreList basePath={`${basePath}/genre`} />
+					</Route>
+
+					<Route exact path={`${basePath}/picture`}>
+						<PictureDetails basePath={`${basePath}/picture`} />
+					</Route>
+
+				</Switch>
+
+			</Container>
+		</>
 	);
 }
 

@@ -46,7 +46,7 @@ function PictureList({ bookId, items }: PictureListProps) {
 								actionIcon={
 									<IconButton
 										to={{
-											pathname: '/picture',
+											pathname: '/app/picture',
 											state: { picture },
 										}}
 										component={Link}

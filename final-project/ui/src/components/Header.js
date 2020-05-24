@@ -1,5 +1,7 @@
 // @flow
 import React from 'react';
+import { AuthService } from 'services';
+
 import { Link } from 'react-router-dom';
 import {
 	AppBar,
@@ -9,30 +11,42 @@ import {
 	Typography,
 } from '@material-ui/core';
 
-function Header() {
+type HeaderProps = {|
+	basePath: string
+|}
+
+function Header({ basePath }: HeaderProps) {
 	return (
 		<AppBar position="relative">
 			<Grid container justify="space-between">
 				<Grid item>
 					<Toolbar>
 						<Typography variant="h6" color="inherit" noWrap>
-							Online library
+							Open Shelf
 						</Typography>
-						<Button to="/" color="inherit" component={Link}>
+						<Button to={basePath} color="inherit" component={Link}>
 							Home
 						</Button>
-						<Button to="/genres" color="inherit" component={Link}>
+						<Button to={`${basePath}/genre`} color="inherit" component={Link}>
 							Genres
 						</Button>
-						<Button to="/authors" color="inherit" component={Link}>
+						<Button to={`${basePath}/author`} color="inherit" component={Link}>
 							Authors
+						</Button>
+						<Button to={`${basePath}/book/create`} color="inherit" component={Link}>
+							Create book
 						</Button>
 					</Toolbar>
 				</Grid>
 				<Grid item>
 					<Toolbar>
-						<Button to="/create-book" color="inherit" component={Link}>
-							Create book
+						<Button
+							to="/login"
+							color="inherit"
+							component={Link}
+							onClick={AuthService.logout}
+						>
+							Logout
 						</Button>
 					</Toolbar>
 				</Grid>
