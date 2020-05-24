@@ -20,10 +20,11 @@ import {
 
 import type { Book } from 'types';
 
-type BookListProps = {||};
+type BookListProps = {|
+	basePath: string,
+|};
 
 type BookListState = {|
-	basePath: string,
 	books: Array<Book> | null,
 |};
 
