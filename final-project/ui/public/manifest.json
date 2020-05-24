@@ -1,6 +1,6 @@
 {
-  "short_name": "Library",
-  "name": "Online library",
+  "short_name": "Open Shelf",
+  "name": "Open Shelf - book exchange system",
   "icons": [
     {
       "src": "favicon.ico",

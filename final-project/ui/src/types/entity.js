@@ -34,3 +34,9 @@ export type BookCompleteData = {|
 	comments: Array<Comment>,
 	pictures: Array<Picture>,
 |}
+
+export type UserProfile = {|
+	firstName: string,
+	lastName: string,
+	email: string,
+|}

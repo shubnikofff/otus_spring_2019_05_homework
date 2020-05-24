@@ -6,6 +6,7 @@ export {
 	Comment,
 	Genre,
 	Picture,
+	UserProfile,
 } from './entity';
 
 export {
