@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.otus.pictureservice.dto.PictureMetadataDto;
 import ru.otus.pictureservice.exception.PictureNotFoundException;
+import ru.otus.pictureservice.model.Picture;
 import ru.otus.pictureservice.repository.PictureRepository;
 
 import java.io.IOException;
@@ -65,11 +66,13 @@ public class PictureServiceImpl implements PictureService {
 	@HystrixCommand(commandKey = "savePicture", fallbackMethod = "saveFallback")
 	@Override
 	public PictureMetadataDto save(MultipartFile multipartFile, String bookId) throws IOException {
-		final ObjectId id = pictureRepository.store(
-				multipartFile.getInputStream(),
-				multipartFile.getOriginalFilename(),
-				multipartFile.getContentType(),
-				new Document("bookId", bookId)
+		final ObjectId id = pictureRepository.save(
+				new Picture(
+						multipartFile.getInputStream(),
+						multipartFile.getOriginalFilename(),
+						multipartFile.getContentType(),
+						new Document("bookId", bookId)
+				)
 		);
 
 		return new PictureMetadataDto(id.toString(), multipartFile.getOriginalFilename(), new Date().toString());

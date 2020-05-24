@@ -24,7 +24,7 @@ public class BookServiceImpl implements BookService {
 	@HystrixCommand(commandKey = "getAllBooks", fallbackMethod = "getAllFallback")
 	@Override
 	public Collection<BookDto> getAll() {
-		return bookRepository.findAll().stream().map(BookServiceImpl::mapModelToDto).collect(toList());
+		return bookRepository.findAll().stream().map(BookTransformer::toBookDto).collect(toList());
 	}
 
 	private Collection<BookDto> getAllFallback() {
@@ -34,7 +34,7 @@ public class BookServiceImpl implements BookService {
 	@HystrixCommand(commandKey = "getOneBook", fallbackMethod = "getOneFallback", ignoreExceptions = {BookNotFoundException.class})
 	@Override
 	public BookDto getOne(String id) {
-		return bookRepository.findById(id).map(BookServiceImpl::mapModelToDto).orElseThrow(BookNotFoundException::new);
+		return bookRepository.findById(id).map(BookTransformer::toBookDto).orElseThrow(BookNotFoundException::new);
 	}
 
 	private BookDto getOneFallback(String id) {
@@ -54,7 +54,7 @@ public class BookServiceImpl implements BookService {
 	@HystrixCommand(commandKey = "createBook", fallbackMethod = "createBookFallback")
 	@Override
 	public String create(BookDto bookDto) {
-		return bookRepository.save(mapDtoToModel(bookDto)).getId();
+		return bookRepository.save(BookTransformer.toBook(bookDto)).getId();
 	}
 
 	private String createBookFallback(BookDto bookDto) {
@@ -82,23 +82,5 @@ public class BookServiceImpl implements BookService {
 	}
 
 	private void deleteFallback(String id) {
-	}
-
-	private static BookDto mapModelToDto(Book book) {
-		return new BookDto(
-				book.getId(),
-				book.getTitle(),
-				book.getGenre().getName(),
-				book.getAuthors().stream().map(Author::getName).collect(toList())
-		);
-	}
-
-	private static Book mapDtoToModel(BookDto bookDto) {
-		return new Book(
-				bookDto.getId(),
-				bookDto.getTitle(),
-				new Genre(bookDto.getGenre()),
-				bookDto.getAuthors().stream().map(Author::new).collect(toList())
-		);
 	}
 }

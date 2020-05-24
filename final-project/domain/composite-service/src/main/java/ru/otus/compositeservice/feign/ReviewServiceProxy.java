@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.compositeservice.dto.CommentDto;
 
@@ -16,6 +17,6 @@ public interface ReviewServiceProxy {
 	@GetMapping("/")
 	ResponseEntity<Collection<CommentDto>> getByBookId(@RequestParam String bookId);
 
-	@DeleteMapping("/")
-	ResponseEntity<HttpStatus> deleteByBookId(@RequestParam String bookId);
+	@DeleteMapping("/book/{bookId}")
+	ResponseEntity<HttpStatus> deleteByBookId(@PathVariable("bookId") String bookId);
 }

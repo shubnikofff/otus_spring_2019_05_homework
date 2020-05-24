@@ -48,6 +48,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 				.and()
 				.authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+				.antMatchers(HttpMethod.GET, "/api/picture/*").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());

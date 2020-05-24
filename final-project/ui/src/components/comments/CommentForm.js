@@ -12,7 +12,7 @@ import type { CommentFormValues } from 'types';
 
 import {
 	FIELD_TEXT,
-	FIELD_USER,
+	FIELD_USERNAME,
 } from 'constants/fields';
 
 function CommentForm({ isSubmitting }: FormikProps<CommentFormValues>) {
@@ -22,7 +22,7 @@ function CommentForm({ isSubmitting }: FormikProps<CommentFormValues>) {
 				<TextField
 					fullWidth
 					label="Name"
-					name={FIELD_USER}
+					name={FIELD_USERNAME}
 					required
 					variant="outlined"
 				/>

@@ -18,7 +18,11 @@ import { CommentList, PictureList } from 'components';
 
 import type { BookCompleteData } from 'types';
 
-function BookDetails() {
+type BookDetailsProps = {|
+	basePath: string
+|}
+
+function BookDetails({ basePath }: BookDetailsProps) {
 	const { id } = useParams();
 	const [book, setBook] = useState<BookCompleteData | null>(null);
 
@@ -44,7 +48,7 @@ function BookDetails() {
 							color="primary"
 							component={Link}
 							size="large"
-							to={`/book/${book.id}/edit`}
+							to={`${basePath}/${book.id}/update`}
 							variant="outlined"
 						>
 							Update
@@ -53,7 +57,7 @@ function BookDetails() {
 							color="secondary"
 							component={Link}
 							size="large"
-							to={`/book/${book.id}/delete`}
+							to={`${basePath}/${book.id}/delete`}
 						>
 							Delete
 						</Button>

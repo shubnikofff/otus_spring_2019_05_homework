@@ -3,13 +3,12 @@ package ru.otus.pictureservice.repository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import lombok.RequiredArgsConstructor;
-import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.stereotype.Repository;
+import ru.otus.pictureservice.model.Picture;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
@@ -39,8 +38,13 @@ public class PictureRepositoryImpl implements PictureRepository {
 	}
 
 	@Override
-	public ObjectId store(InputStream inputStream, String fileName, String contentType, Document metadata) {
-		return gridFsOperations.store(inputStream, fileName, contentType, metadata);
+	public ObjectId save(Picture picture) {
+		return gridFsOperations.store(
+				picture.getInputStream(),
+				picture.getFileName(),
+				picture.getContentType(),
+				picture.getMetaData()
+		);
 	}
 
 	@Override

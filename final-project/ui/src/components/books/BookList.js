@@ -80,7 +80,7 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 								</CardActions>
 							</Card>
 						</Grid>
-					))}
+					))}`
 				</Grid>
 			</Box>
 		);
