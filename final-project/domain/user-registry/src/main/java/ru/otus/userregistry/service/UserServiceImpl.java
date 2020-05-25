@@ -5,11 +5,10 @@ import org.springframework.stereotype.Service;
 import ru.otus.userregistry.dto.ProfileDto;
 import ru.otus.userregistry.dto.UserDto;
 import ru.otus.userregistry.exception.UserNotFoundException;
+import ru.otus.userregistry.model.Profile;
 import ru.otus.userregistry.model.Role;
 import ru.otus.userregistry.model.User;
 import ru.otus.userregistry.repository.UserRepository;
-
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -26,11 +25,14 @@ public class UserServiceImpl implements UserService {
 				user.getUsername(),
 				user.getPassword(),
 				user.getRoles().stream().map(Role::getName).collect(toList()),
-				new ProfileDto(
-						user.getProfile().getFirstName(),
-						user.getProfile().getLastName(),
-						user.getProfile().getEmail()
-				)
+				ProfileTransformer.toDto(user.getProfile())
 		);
+	}
+
+	@Override
+	public ProfileDto getProfile(String username) {
+		final Profile profile = userRepository.getByUsername(username).orElseThrow(UserNotFoundException::new).getProfile();
+
+		return ProfileTransformer.toDto(profile);
 	}
 }
