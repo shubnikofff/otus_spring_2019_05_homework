@@ -44,23 +44,37 @@ function BookDetails({ basePath }: BookDetailsProps) {
 						</Typography>
 					</div>
 					<div>
-						<Button
-							color="primary"
-							component={Link}
-							size="large"
-							to={`${basePath}/${book.id}/update`}
-							variant="outlined"
-						>
-							Update
-						</Button>
-						<Button
-							color="secondary"
-							component={Link}
-							size="large"
-							to={`${basePath}/${book.id}/delete`}
-						>
-							Delete
-						</Button>
+						{
+							book.owned
+								? <>
+									<Button
+										color="primary"
+										component={Link}
+										size="large"
+										to={`${basePath}/${book.id}/update`}
+										variant="outlined"
+									>
+										Update
+									</Button>
+									<Button
+										color="secondary"
+										component={Link}
+										size="large"
+										to={`${basePath}/${book.id}/delete`}
+									>
+										Delete
+									</Button>
+								</>
+								: <Button
+									color="primary"
+									component={Link}
+									size="large"
+									to={`${basePath}/${book.id}/exchange`}
+									variant="contained"
+								>
+									Offer exchange
+								</Button>
+						}
 					</div>
 				</Grid>
 				<Typography variant="body1" color="textPrimary">

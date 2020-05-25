@@ -16,6 +16,7 @@ import {
 import {
 	Delete as DeleteIcon,
 	Edit as EditIcon,
+	SwapHoriz as SwapIcon,
 } from '@material-ui/icons';
 
 import type { Book } from 'types';
@@ -71,17 +72,34 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 								</CardActionArea>
 								<CardActions disableSpacing>
 									<Grid container justify="flex-end" alignItems="center">
-										<IconButton to={`${basePath}/${book.id}/update`} component={Link}>
-											<EditIcon fontSize="small" />
-										</IconButton>
-										<IconButton to={`${basePath}/${book.id}/delete`} component={Link}>
-											<DeleteIcon fontSize="small" />
-										</IconButton>
+										{
+											book.owned
+												? <>
+													<IconButton
+														to={`${basePath}/${book.id}/update`}
+														component={Link}
+													>
+														<EditIcon fontSize="small" />
+													</IconButton>
+													<IconButton
+														to={`${basePath}/${book.id}/delete`}
+														component={Link}
+													>
+														<DeleteIcon fontSize="small" />
+													</IconButton>
+												</>
+												: <IconButton
+													to={`${basePath}/${book.id}/exchange`}
+													component={Link}
+												>
+													<SwapIcon />
+												</IconButton>
+										}
 									</Grid>
 								</CardActions>
 							</Card>
 						</Grid>
-					))}`
+					))}
 				</Grid>
 			</Box>
 		);
