@@ -22,4 +22,6 @@ public class Book {
 	private Genre genre;
 
 	private Collection<Author> authors;
+
+	private String owner;
 }

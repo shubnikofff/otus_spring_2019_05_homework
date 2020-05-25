@@ -26,8 +26,8 @@ public class BookController {
 	}
 
 	@PostMapping("/")
-	ResponseEntity<String> createBook(@RequestBody BookDto bookDto) {
-		return new ResponseEntity<>(bookService.create(bookDto), HttpStatus.CREATED);
+	ResponseEntity<String> createBook(@RequestBody BookDto bookDto, @RequestHeader("username") String username) {
+		return new ResponseEntity<>(bookService.create(bookDto, username), HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")

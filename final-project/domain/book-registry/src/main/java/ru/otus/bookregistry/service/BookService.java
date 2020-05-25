@@ -13,7 +13,7 @@ public interface BookService {
 
 	boolean exists(String id);
 
-	String create(BookDto bookDto);
+	String create(BookDto bookDto, String username);
 
 	void update(String id, BookDto bookDto);
 

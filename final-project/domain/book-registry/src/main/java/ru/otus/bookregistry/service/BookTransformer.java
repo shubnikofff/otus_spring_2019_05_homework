@@ -18,12 +18,13 @@ public class BookTransformer {
 		);
 	}
 
-	public static Book toBook(BookDto bookDto) {
+	public static Book toBook(BookDto bookDto, String owner) {
 		return new Book(
 				bookDto.getId(),
 				bookDto.getTitle(),
 				new Genre(bookDto.getGenre()),
-				bookDto.getAuthors().stream().map(Author::new).collect(toList())
+				bookDto.getAuthors().stream().map(Author::new).collect(toList()),
+				owner
 		);
 	}
 }

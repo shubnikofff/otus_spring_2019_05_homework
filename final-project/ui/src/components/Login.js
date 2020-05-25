@@ -24,7 +24,7 @@ function Login() {
 		},
 		onSubmit: ({ username, password }: FormValues) => {
 			return AuthService.login(username, password).then(() => {
-				history.goBack();
+				history.push('/app');
 			});
 		},
 	});

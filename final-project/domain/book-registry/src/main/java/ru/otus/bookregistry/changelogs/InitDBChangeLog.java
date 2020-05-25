@@ -20,11 +20,11 @@ public class InitDBChangeLog {
 
 	@ChangeSet(order = "001", id = "initBooks", author = "shubnikofff", runAlways = true)
 	public void initCollectionBooks(MongoOperations mongoOperations) {
-		mongoOperations.save(new Book("1", "Lord of the rings", new Genre("Fantasy"), singletonList(new Author("John Ronald Reuel Tolkien"))));
-		mongoOperations.save(new Book("2","Crime and Punishment", new Genre("Novel"), singletonList(new Author("Fyodor Mikhailovich Dostoevsky"))));
-		mongoOperations.save(new Book("3","War and Peace", new Genre("Novel"), singletonList(new Author("Leo Tolstoy"))));
-		mongoOperations.save(new Book("4","Anna Karenina", new Genre("Drama"), singletonList(new Author("Leo Tolstoy"))));
-		mongoOperations.save(new Book("5","Golden calf", new Genre("Adventure"), asList(new Author("Ilia Ilf"),  new Author("Eugene Petrov"))));
-		mongoOperations.save(new Book("6","Design Patterns", new Genre("Computer science"), asList(new Author("Erich Gamma"),  new Author("Richard Helm"), new Author("Ralph Johnson"),  new Author("John Vlissides"))));
+		mongoOperations.save(new Book("1", "Lord of the rings", new Genre("Fantasy"), singletonList(new Author("John Ronald Reuel Tolkien")), "fowler"));
+		mongoOperations.save(new Book("2","Crime and Punishment", new Genre("Novel"), singletonList(new Author("Fyodor Mikhailovich Dostoevsky")), "fowler"));
+		mongoOperations.save(new Book("3","War and Peace", new Genre("Novel"), singletonList(new Author("Leo Tolstoy")), "fowler"));
+		mongoOperations.save(new Book("4","Anna Karenina", new Genre("Drama"), singletonList(new Author("Leo Tolstoy")), "martin"));
+		mongoOperations.save(new Book("5","Golden calf", new Genre("Adventure"), asList(new Author("Ilia Ilf"),  new Author("Eugene Petrov")), "martin"));
+		mongoOperations.save(new Book("6","Design Patterns", new Genre("Computer science"), asList(new Author("Erich Gamma"),  new Author("Richard Helm"), new Author("Ralph Johnson"),  new Author("John Vlissides")), "martin"));
 	}
 }

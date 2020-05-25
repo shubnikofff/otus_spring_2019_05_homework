@@ -53,11 +53,11 @@ public class BookServiceImpl implements BookService {
 
 	@HystrixCommand(commandKey = "createBook", fallbackMethod = "createBookFallback")
 	@Override
-	public String create(BookDto bookDto) {
-		return bookRepository.save(BookTransformer.toBook(bookDto)).getId();
+	public String create(BookDto bookDto, String username) {
+		return bookRepository.save(BookTransformer.toBook(bookDto, username)).getId();
 	}
 
-	private String createBookFallback(BookDto bookDto) {
+	private String createBookFallback(BookDto bookDto, String username) {
 		return null;
 	}
 
