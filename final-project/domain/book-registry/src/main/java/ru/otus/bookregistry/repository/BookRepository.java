@@ -3,9 +3,9 @@ package ru.otus.bookregistry.repository;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.otus.bookregistry.model.Book;
 
-import java.util.Optional;
+import java.util.Collection;
 
 public interface BookRepository extends MongoRepository<Book, String> {
 
-	Optional<Book> findByOwner(String owner);
+	Collection<Book> findByOwner(String owner);
 }

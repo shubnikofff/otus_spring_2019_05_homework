@@ -11,6 +11,8 @@ public interface BookService {
 
 	BookDto getOne(String id, String username);
 
+	Collection<BookDto> getOwnBooks(String owner);
+
 	boolean exists(String id);
 
 	String create(BookDto bookDto, String username);

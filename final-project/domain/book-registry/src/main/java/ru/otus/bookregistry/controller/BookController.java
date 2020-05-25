@@ -25,6 +25,11 @@ public class BookController {
 		return new ResponseEntity<>(bookService.getOne(id, username), HttpStatus.OK);
 	}
 
+	@GetMapping("/own")
+	public ResponseEntity<Collection<BookDto>> getOwnBooks(@RequestHeader("username") String username) {
+		return new ResponseEntity<>(bookService.getOwnBooks(username), HttpStatus.OK);
+	}
+
 	@PostMapping("/")
 	ResponseEntity<String> createBook(@RequestBody BookDto bookDto, @RequestHeader("username") String username) {
 		return new ResponseEntity<>(bookService.create(bookDto, username), HttpStatus.CREATED);

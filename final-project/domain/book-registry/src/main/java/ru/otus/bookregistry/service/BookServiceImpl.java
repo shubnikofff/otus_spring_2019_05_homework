@@ -41,6 +41,18 @@ public class BookServiceImpl implements BookService {
 				.orElseThrow(BookNotFoundException::new);
 	}
 
+	@HystrixCommand(commandKey = "getOwnBooks", fallbackMethod = "getOwnFallback")
+	@Override
+	public Collection<BookDto> getOwnBooks(String owner) {
+		return bookRepository.findByOwner(owner).stream()
+				.map(book -> BookTransformer.toBookDto(book, owner))
+				.collect(toList());
+	}
+
+	private Collection<BookDto> getOwnFallback(String username) {
+		return Collections.emptyList();
+	}
+
 	private BookDto getOneFallback(String id, String username) {
 		return new BookDto(id, "Not available", "Not available", Collections.emptyList(), false);
 	}
