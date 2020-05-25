@@ -12,9 +12,9 @@ import {
 import { Alert } from '@material-ui/lab';
 import { default as BookForm } from './BookForm';
 
-import type { FormikBag } from 'formik';
 import type { BookFormValues } from 'types';
 import type { AxiosError } from 'axios';
+import { useHistory } from 'react-router';
 
 const MESSAGE_DELAY_TIME = 6000;
 const INITIAL_VALUES: BookFormValues = {
@@ -23,15 +23,18 @@ const INITIAL_VALUES: BookFormValues = {
 	authors: [''],
 };
 
-function BookCreate() {
-	const [successMsgOpen, setSuccessMsgOpen] = useState<boolean>(false);
-	const [operationError, setOperationError] = useState<?string>(null);
+type BookCreateProps = {|
+	basePath: string
+|}
 
-	const handleSubmit = (values: BookFormValues, { resetForm }: FormikBag) =>
+function BookCreate({ basePath }: BookCreateProps) {
+	const [operationError, setOperationError] = useState<?string>(null);
+	const history = useHistory();
+
+	const handleSubmit = (values: BookFormValues) =>
 		BookService.createBook(values)
-			.then(() => {
-				resetForm();
-				setSuccessMsgOpen(true);
+			.then((bookId: string) => {
+				history.push(`${basePath}/${bookId}`)
 			})
 			.catch((error: AxiosError) => {
 				setOperationError(error.message);
@@ -53,11 +56,6 @@ function BookCreate() {
 					</Grid>
 				</Grid>
 			</Box>
-			<Snackbar open={successMsgOpen} autoHideDuration={MESSAGE_DELAY_TIME}>
-				<Alert severity="success" onClose={() => setSuccessMsgOpen(false)}>
-					Book saved successfully
-				</Alert>
-			</Snackbar>
 			<Snackbar open={operationError} autoHideDuration={MESSAGE_DELAY_TIME}>
 				<Alert severity="error" onClose={() => {
 					setOperationError(null);
