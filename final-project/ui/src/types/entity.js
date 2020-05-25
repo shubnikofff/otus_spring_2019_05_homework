@@ -11,7 +11,8 @@ export type Book = {|
 	id: string,
 	title: string,
 	genre: string,
-	authors: Array<string>
+	authors: Array<string>,
+	owned: boolean,
 |}
 
 export type Comment = {|
@@ -33,6 +34,7 @@ export type BookCompleteData = {|
 	authors: Array<string>,
 	comments: Array<Comment>,
 	pictures: Array<Picture>,
+	owned: boolean,
 |}
 
 export type UserProfile = {|

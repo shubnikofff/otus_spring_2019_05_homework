@@ -38,6 +38,7 @@ public class BookServiceImpl implements BookService {
 				bookDto.getTitle(),
 				bookDto.getGenre(),
 				bookDto.getAuthors(),
+				bookDto.isOwned(),
 				reviewServiceProxy.getByBookId(bookId).getBody(),
 				pictureServiceProxy.getAllByBookId(bookId).getBody()
 		);

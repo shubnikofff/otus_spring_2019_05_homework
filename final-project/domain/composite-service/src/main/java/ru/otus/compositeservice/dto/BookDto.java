@@ -16,4 +16,6 @@ public class BookDto {
 	private final String genre;
 
 	private final Collection<String> authors;
+
+	private final boolean owned;
 }

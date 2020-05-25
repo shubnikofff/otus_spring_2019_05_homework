@@ -7,9 +7,9 @@ import java.util.Collection;
 
 public interface BookService {
 
-	Collection<BookDto> getAll();
+	Collection<BookDto> getAll(String username);
 
-	BookDto getOne(String id);
+	BookDto getOne(String id, String username);
 
 	boolean exists(String id);
 

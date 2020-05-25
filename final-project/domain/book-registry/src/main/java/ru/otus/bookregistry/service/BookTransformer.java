@@ -9,12 +9,13 @@ import static java.util.stream.Collectors.toList;
 
 public class BookTransformer {
 
-	public static BookDto toBookDto(Book book) {
+	public static BookDto toBookDto(Book book, String username) {
 		return new BookDto(
 				book.getId(),
 				book.getTitle(),
 				book.getGenre().getName(),
-				book.getAuthors().stream().map(Author::getName).collect(toList())
+				book.getAuthors().stream().map(Author::getName).collect(toList()),
+				book.getOwner().equals(username)
 		);
 	}
 

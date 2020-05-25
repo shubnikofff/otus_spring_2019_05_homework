@@ -23,22 +23,26 @@ public class BookServiceImpl implements BookService {
 
 	@HystrixCommand(commandKey = "getAllBooks", fallbackMethod = "getAllFallback")
 	@Override
-	public Collection<BookDto> getAll() {
-		return bookRepository.findAll().stream().map(BookTransformer::toBookDto).collect(toList());
+	public Collection<BookDto> getAll(String username) {
+		return bookRepository.findAll().stream()
+				.map(book -> BookTransformer.toBookDto(book, username))
+				.collect(toList());
 	}
 
-	private Collection<BookDto> getAllFallback() {
+	private Collection<BookDto> getAllFallback(String username) {
 		return Collections.emptyList();
 	}
 
 	@HystrixCommand(commandKey = "getOneBook", fallbackMethod = "getOneFallback", ignoreExceptions = {BookNotFoundException.class})
 	@Override
-	public BookDto getOne(String id) {
-		return bookRepository.findById(id).map(BookTransformer::toBookDto).orElseThrow(BookNotFoundException::new);
+	public BookDto getOne(String id, String username) {
+		return bookRepository.findById(id)
+				.map(book -> BookTransformer.toBookDto(book, username))
+				.orElseThrow(BookNotFoundException::new);
 	}
 
-	private BookDto getOneFallback(String id) {
-		return new BookDto(id, "Not available", "Not available", Collections.emptyList());
+	private BookDto getOneFallback(String id, String username) {
+		return new BookDto(id, "Not available", "Not available", Collections.emptyList(), false);
 	}
 
 	@HystrixCommand(commandKey = "exists", fallbackMethod = "existsFallback")
