@@ -9,6 +9,7 @@ import {
 	BookDetails,
 	BookList,
 	BookUpdate,
+	ExchangeForm,
 	GenreList,
 	Header,
 	PictureDetails,
@@ -45,6 +46,10 @@ function App({ basePath }: AppProps) {
 
 					<Route exact path={`${basePath}/book/:id/update`}>
 						<BookUpdate basePath={`${basePath}/book`} />
+					</Route>
+
+					<Route exact path={`${basePath}/book/:id/exchange`}>
+						<ExchangeForm basePath={`${basePath}/book`} />
 					</Route>
 
 					<Route exact path={`${basePath}/author`}>

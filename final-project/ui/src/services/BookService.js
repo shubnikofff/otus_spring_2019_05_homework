@@ -11,6 +11,10 @@ class BookService {
 		return RestClient.get('/cs/book');
 	}
 
+	static fetchOwnBooks(): Promise<Array<Book>> {
+		return RestClient.get(`${BASE_PATH}/own`);
+	}
+
 	static fetchBook(id: string): Promise<Book> {
 		return RestClient.get(`${BASE_PATH}/${id}`);
 	}
@@ -19,7 +23,7 @@ class BookService {
 		return RestClient.get(`/cs/book/${id}`);
 	}
 
-	static createBook(values: BookFormValues): Promise<void> {
+	static createBook(values: BookFormValues): Promise<string> {
 		return RestClient.post(BASE_PATH, values);
 	}
 

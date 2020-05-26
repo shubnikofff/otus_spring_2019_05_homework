@@ -9,6 +9,7 @@ export {
 	BookUpdate,
 } from './books';
 export { CommentList } from './comments';
+export { ExchangeForm } from './exchange';
 export { default as Header } from './Header';
 export { default as Login } from './Login';
 export { GenreList } from './genres';
