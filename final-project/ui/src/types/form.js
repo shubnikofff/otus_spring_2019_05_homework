@@ -17,3 +17,9 @@ export type CommentFormValues = {|
 	text: string,
 	username: string,
 |}
+
+export type RequestFormValues = {|
+	additionalInfo: string,
+	offeredBookIds: Array<string>,
+	requestedBookId: string,
+|}

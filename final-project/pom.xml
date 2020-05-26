@@ -17,6 +17,7 @@
         <module>domain/picture-service</module>
         <module>domain/review-service</module>
         <module>domain/user-registry</module>
+        <module>domain/exchange-service</module>
 
         <module>infrastructure/authorization-server</module>
         <module>infrastructure/configuration-server</module>

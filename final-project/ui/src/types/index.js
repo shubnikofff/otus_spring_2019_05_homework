@@ -13,5 +13,6 @@ export {
 	AuthorFormValues,
 	BookFormValues,
 	CommentFormValues,
+	RequestFormValues,
 	GenreFormValues,
 } from './form';

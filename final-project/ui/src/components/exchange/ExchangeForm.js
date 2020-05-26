@@ -1,7 +1,7 @@
 // @flow
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import { BookService } from 'services';
+import { useHistory, useParams } from 'react-router';
+import { BookService, ExchangeService } from 'services';
 import { useFormik } from 'formik';
 
 import {
@@ -18,7 +18,7 @@ import {
 	FormHelperText,
 } from '@material-ui/core';
 
-import type { Book } from 'types';
+import type { Book, RequestFormValues } from 'types';
 
 import {
 	FIELD_ADDITIONAL_INFO,
@@ -32,14 +32,15 @@ type ExchangeFormProps = {|
 
 function ExchangeForm({ basePath }: ExchangeFormProps) {
 	const { id: bookId } = useParams();
+	const history = useHistory();
 	const formik = useFormik({
 		initialValues: {
 			[FIELD_REQUESTED_BOOK_ID]: bookId,
 			[FIELD_OFFERED_BOOK_IDS]: [],
 			[FIELD_ADDITIONAL_INFO]: '',
 		},
-		onSubmit: values => {
-			console.log(values);
+		onSubmit: (values: RequestFormValues) => {
+			ExchangeService.createRequest(values).then(history.push('/app'));
 		},
 		validate: (values) => {
 			const errors = {};
@@ -138,5 +139,5 @@ function ExchangeForm({ basePath }: ExchangeFormProps) {
 	);
 }
 
-export default React.memo(ExchangeForm);
+export default React.memo<ExchangeFormProps>(ExchangeForm);
 
