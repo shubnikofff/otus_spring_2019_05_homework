@@ -1,14 +1,13 @@
-package ru.otus.bookregistry.dto;
+package ru.otus.compositeservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Collection;
 
 @AllArgsConstructor
 @Getter
-public class BookDto {
+public class AllBooksItemDto {
 
 	private final String id;
 
@@ -18,6 +17,7 @@ public class BookDto {
 
 	private final Collection<String> authors;
 
-	@Setter
-	private String owner;
+	private final String coverId;
+
+	private final boolean owned;
 }

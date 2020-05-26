@@ -8,7 +8,7 @@ const BASE_PATH: string = '/book';
 class BookService {
 
 	static fetchAllBooks(): Promise<Array<Book>> {
-		return RestClient.get(BASE_PATH);
+		return RestClient.get('/cs/book');
 	}
 
 	static fetchBook(id: string): Promise<Book> {

@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 import ru.otus.compositeservice.dto.BookDto;
 import ru.otus.compositeservice.dto.BookStubDto;
 
+import java.util.Collection;
+import java.util.Collections;
+
 @Component
 public class BookRegistryFallbackFactory implements FallbackFactory<BookRegistryProxy> {
 
@@ -15,7 +18,12 @@ public class BookRegistryFallbackFactory implements FallbackFactory<BookRegistry
 	public BookRegistryProxy create(Throwable cause) {
 		return new BookRegistryProxy() {
 			@Override
-			public ResponseEntity<BookDto> getBook(String id, String username) {
+			public ResponseEntity<Collection<BookDto>> getAllBooks() {
+				return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
+			}
+
+			@Override
+			public ResponseEntity<BookDto> getBook(String id) {
 				if (cause instanceof FeignException.NotFound) {
 					return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 				}

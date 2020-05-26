@@ -9,9 +9,6 @@ import {
 	Button,
 	Grid,
 	LinearProgress,
-	List,
-	ListItem,
-	ListItemText,
 	Typography,
 } from '@material-ui/core';
 import { CommentList, PictureList } from 'components';
@@ -82,25 +79,29 @@ function BookDetails({ basePath }: BookDetailsProps) {
 				</Typography>
 			</Box>
 			<Box mt={4}>
-				<Typography variant="h6">
+				<Typography variant="h6" gutterBottom>
 					Authors
 				</Typography>
-				<List>
-					{book.authors.map(author => (
-						<ListItem key={author}>
-							<ListItemText
-								primary={author}
-								color="textPrimary"
-							/>
-						</ListItem>
-					))}
-				</List>
+				<Typography variant="body1">
+					{book.authors.join(', ')}
+				</Typography>
 			</Box>
 			<Box mt={4}>
 				<Typography variant="h6">
 					Pictures
 				</Typography>
 				{book ? <PictureList bookId={id} items={book.pictures} /> : <LinearProgress />}
+			</Box>
+			<Box mt={4}>
+				<Typography variant="h6" gutterBottom>
+					Owner
+				</Typography>
+				<Typography variant="body1" gutterBottom>
+					{`${book.owner.firstName} ${book.owner.lastName}`}
+				</Typography>
+				<Typography variant="body2" >
+					{book.owner.email}
+				</Typography>
 			</Box>
 			<Box mt={4}>
 				<Typography variant="h6">

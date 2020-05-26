@@ -17,9 +17,11 @@ public class BookCompleteDataDto {
 
 	private final Collection<String> authors;
 
-	private final boolean owned;
-
 	private final Collection<CommentDto> comments;
 
 	private final Collection<PictureMetadataDto> pictures;
+
+	private final UserProfileDto owner;
+
+	private final boolean owned;
 }

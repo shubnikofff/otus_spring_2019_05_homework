@@ -16,13 +16,13 @@ public class BookController {
 	private final BookService bookService;
 
 	@GetMapping("/")
-	public ResponseEntity<Collection<BookDto>> getAllBooks(@RequestHeader("username") String username) {
-		return new ResponseEntity<>(bookService.getAll(username), HttpStatus.OK);
+	public ResponseEntity<Collection<BookDto>> getAllBooks() {
+		return new ResponseEntity<>(bookService.getAll(), HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<BookDto> getBook(@PathVariable("id") String id, @RequestHeader("username") String username) {
-		return new ResponseEntity<>(bookService.getOne(id, username), HttpStatus.OK);
+	public ResponseEntity<BookDto> getBook(@PathVariable("id") String id) {
+		return new ResponseEntity<>(bookService.getOne(id), HttpStatus.OK);
 	}
 
 	@GetMapping("/own")

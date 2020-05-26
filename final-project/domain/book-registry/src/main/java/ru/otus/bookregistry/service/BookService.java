@@ -7,9 +7,9 @@ import java.util.Collection;
 
 public interface BookService {
 
-	Collection<BookDto> getAll(String username);
+	Collection<BookDto> getAll();
 
-	BookDto getOne(String id, String username);
+	BookDto getOne(String id);
 
 	Collection<BookDto> getOwnBooks(String owner);
 

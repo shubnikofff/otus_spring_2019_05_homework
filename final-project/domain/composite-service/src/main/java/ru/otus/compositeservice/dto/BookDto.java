@@ -17,5 +17,5 @@ public class BookDto {
 
 	private final Collection<String> authors;
 
-	private final boolean owned;
+	private final String owner;
 }
