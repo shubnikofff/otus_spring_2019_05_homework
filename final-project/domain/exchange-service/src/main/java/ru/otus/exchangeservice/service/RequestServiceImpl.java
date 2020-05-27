@@ -4,17 +4,38 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.exchangeservice.dto.NewRequestDto;
+import ru.otus.exchangeservice.dto.RequestDto;
 import ru.otus.exchangeservice.exception.RequestNotFoundException;
 import ru.otus.exchangeservice.model.Request;
 import ru.otus.exchangeservice.repository.RequestRepository;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
 public class RequestServiceImpl implements RequestService {
 
 	private final RequestRepository requestRepository;
+
+	@HystrixCommand(commandKey = "getByUser", defaultFallback = "emptyListFallback")
+	@Override
+	public Collection<RequestDto> getByUser(String username) {
+		return requestRepository.findByUser(username).stream().map(RequestTransformer::toDto).collect(toList());
+	}
+
+	@HystrixCommand(commandKey = "getByRequestedBookIds", defaultFallback = "emptyListFallback")
+	@Override
+	public Collection<RequestDto> getByRequestedBookIds(Collection<String> bookIds) {
+		return requestRepository.findByRequestedBookIdIn(bookIds).stream().map(RequestTransformer::toDto).collect(toList());
+	}
+
+	private Collection<RequestDto> emptyListFallback() {
+		return Collections.emptyList();
+	}
 
 	@HystrixCommand(commandKey = "creteRequest", fallbackMethod = "createFallback")
 	@Override
