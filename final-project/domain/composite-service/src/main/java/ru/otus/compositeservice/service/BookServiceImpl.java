@@ -3,18 +3,19 @@ package ru.otus.compositeservice.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import ru.otus.compositeservice.dto.AllBooksItemDto;
-import ru.otus.compositeservice.dto.BookCompleteDataDto;
-import ru.otus.compositeservice.dto.BookDto;
+import ru.otus.compositeservice.dto.*;
 import ru.otus.compositeservice.exception.BookNotFoundException;
 import ru.otus.compositeservice.exception.BookRegistryUnavailableException;
+import ru.otus.compositeservice.exception.ServiceException;
 import ru.otus.compositeservice.feign.BookRegistryProxy;
 import ru.otus.compositeservice.feign.PictureServiceProxy;
 import ru.otus.compositeservice.feign.ReviewServiceProxy;
 import ru.otus.compositeservice.feign.UserRegistryProxy;
 
 import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,25 +46,55 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public BookCompleteDataDto getBookCompleteData(String bookId, String username) {
-		// TODO use Spring Integration here or message broker
-		final ResponseEntity<BookDto> bookRegistryResponse = bookRegistryProxy.getBook(bookId);
+		try {
+			final CompletableFuture<BookDto> book = getBook(bookId);
+			final CompletableFuture<Collection<CommentDto>> comments = getCommentsByBook(bookId);
+			final CompletableFuture<Collection<PictureMetadataDto>> pictures = getPicturesByBook(bookId);
+			final CompletableFuture<UserProfileDto> userProfile = getUserProfile(username);
 
-		if (bookRegistryResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
+			CompletableFuture.allOf(book, comments, pictures, userProfile).join();
+
+			final BookDto bookDto = book.get();
+
+			return new BookCompleteDataDto(
+					bookDto.getId(),
+					bookDto.getTitle(),
+					bookDto.getGenre(),
+					bookDto.getAuthors(),
+					comments.get(),
+					pictures.get(),
+					userProfile.get(),
+					bookDto.getOwner().equals(username)
+			);
+		} catch (Exception e) {
+			throw new ServiceException(e.getMessage());
+		}
+	}
+
+	@Async("taskExecutor")
+	CompletableFuture<BookDto> getBook(String id) {
+		final ResponseEntity<BookDto> response = bookRegistryProxy.getBook(id);
+
+		if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
 			throw new BookNotFoundException();
 		}
 
-		final BookDto bookDto = bookRegistryResponse.getBody();
+		return CompletableFuture.completedFuture(response.getBody());
+	}
 
-		return new BookCompleteDataDto(
-				bookDto.getId(),
-				bookDto.getTitle(),
-				bookDto.getGenre(),
-				bookDto.getAuthors(),
-				reviewServiceProxy.getByBookId(bookId).getBody(),
-				pictureServiceProxy.getAllByBookId(bookId).getBody(),
-				userRegistryProxy.getProfile(bookDto.getOwner()).getBody(),
-				bookDto.getOwner().equals(username)
-		);
+	@Async("taskExecutor")
+	public CompletableFuture<Collection<CommentDto>> getCommentsByBook(String bookId) {
+		return CompletableFuture.completedFuture(reviewServiceProxy.getCommentsByBookId(bookId).getBody());
+	}
+
+	@Async("taskExecutor")
+	public CompletableFuture<Collection<PictureMetadataDto>> getPicturesByBook(String bookId) {
+		return CompletableFuture.completedFuture(pictureServiceProxy.getPicturesByBookId(bookId).getBody());
+	}
+
+	@Async("taskExecutor")
+	public CompletableFuture<UserProfileDto> getUserProfile(String username) {
+		return CompletableFuture.completedFuture(userRegistryProxy.getProfile(username).getBody());
 	}
 
 	@Override

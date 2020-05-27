@@ -12,7 +12,7 @@ import java.util.Collections;
 public class ReviewServiceFallback implements ReviewServiceProxy {
 
 	@Override
-	public ResponseEntity<Collection<CommentDto>> getByBookId(String bookId) {
+	public ResponseEntity<Collection<CommentDto>> getCommentsByBookId(String bookId) {
 		return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
 	}
 

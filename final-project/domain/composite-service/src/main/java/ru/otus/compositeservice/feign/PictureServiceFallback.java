@@ -12,7 +12,7 @@ import java.util.Collections;
 public class PictureServiceFallback implements PictureServiceProxy {
 
 	@Override
-	public ResponseEntity<Collection<PictureMetadataDto>> getAllByBookId(String bookId) {
+	public ResponseEntity<Collection<PictureMetadataDto>> getPicturesByBookId(String bookId) {
 		return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
 	}
 

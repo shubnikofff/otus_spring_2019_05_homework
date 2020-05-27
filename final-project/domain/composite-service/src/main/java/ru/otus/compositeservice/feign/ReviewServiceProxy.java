@@ -15,7 +15,7 @@ import java.util.Collection;
 public interface ReviewServiceProxy {
 
 	@GetMapping("/")
-	ResponseEntity<Collection<CommentDto>> getByBookId(@RequestParam String bookId);
+	ResponseEntity<Collection<CommentDto>> getCommentsByBookId(@RequestParam String bookId);
 
 	@DeleteMapping("/book/{bookId}")
 	ResponseEntity<HttpStatus> deleteByBookId(@PathVariable("bookId") String bookId);

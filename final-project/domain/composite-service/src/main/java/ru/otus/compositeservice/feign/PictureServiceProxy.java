@@ -14,7 +14,7 @@ import java.util.Collection;
 public interface PictureServiceProxy {
 
 	@GetMapping("/")
-	ResponseEntity<Collection<PictureMetadataDto>> getAllByBookId(@RequestParam String bookId);
+	ResponseEntity<Collection<PictureMetadataDto>> getPicturesByBookId(@RequestParam String bookId);
 
 	@DeleteMapping("/")
 	ResponseEntity<HttpStatus> deleteByBookId(@RequestParam String bookId);
