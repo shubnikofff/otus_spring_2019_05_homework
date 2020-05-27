@@ -1,14 +1,13 @@
-package ru.otus.exchangeservice.dto;
+package ru.otus.compositeservice.dto.exchange;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Collection;
-import java.util.Date;
 
 @AllArgsConstructor
 @Getter
-public class RequestDto {
+public class ExchangeRequestDto {
 
 	private final String id;
 

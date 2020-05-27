@@ -10,6 +10,7 @@ import ru.otus.compositeservice.dto.BookStubDto;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
 @Component
 public class BookRegistryFallbackFactory implements FallbackFactory<BookRegistryProxy> {
@@ -29,6 +30,16 @@ public class BookRegistryFallbackFactory implements FallbackFactory<BookRegistry
 				}
 
 				return new ResponseEntity<>(new BookStubDto(id), HttpStatus.OK);
+			}
+
+			@Override
+			public ResponseEntity<Map<String, BookDto>> getBooks(Collection<String> ids) {
+				return new ResponseEntity<>(Collections.emptyMap(), HttpStatus.OK);
+			}
+
+			@Override
+			public ResponseEntity<Collection<BookDto>> getOwnBooks(String username) {
+				return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
 			}
 
 			@Override

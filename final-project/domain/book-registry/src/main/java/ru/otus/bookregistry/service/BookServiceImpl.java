@@ -12,8 +12,13 @@ import ru.otus.bookregistry.repository.BookRepository;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 @Service
 @RequiredArgsConstructor
@@ -21,13 +26,13 @@ public class BookServiceImpl implements BookService {
 
 	private final BookRepository bookRepository;
 
-	@HystrixCommand(commandKey = "getAllBooks", fallbackMethod = "getAllFallback")
+	@HystrixCommand(commandKey = "getAllBooks", defaultFallback = "emptyListFallback")
 	@Override
 	public Collection<BookDto> getAll() {
 		return bookRepository.findAll().stream().map(BookTransformer::toBookDto).collect(toList());
 	}
 
-	private Collection<BookDto> getAllFallback() {
+	private Collection<BookDto> emptyListFallback() {
 		return Collections.emptyList();
 	}
 
@@ -35,6 +40,18 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public BookDto getOne(String id) {
 		return bookRepository.findById(id).map(BookTransformer::toBookDto).orElseThrow(BookNotFoundException::new);
+	}
+
+	@HystrixCommand(commandKey = "getByMultipleId", defaultFallback = "emptyMapFallback")
+	@Override
+	public Map<String, BookDto> getByMultipleId(Collection<String> ids) {
+		return StreamSupport.stream(bookRepository.findAllById(ids).spliterator(), true)
+				.map(BookTransformer::toBookDto)
+				.collect(toMap(BookDto::getId, Function.identity()));
+	}
+
+	private Map<String, BookDto> emptyMapFallback() {
+		return Collections.emptyMap();
 	}
 
 	private BookDto getOneFallback(String id) {

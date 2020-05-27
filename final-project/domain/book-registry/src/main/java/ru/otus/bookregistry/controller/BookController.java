@@ -8,6 +8,7 @@ import ru.otus.bookregistry.dto.BookDto;
 import ru.otus.bookregistry.service.BookService;
 
 import java.util.Collection;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +19,11 @@ public class BookController {
 	@GetMapping("/")
 	public ResponseEntity<Collection<BookDto>> getAllBooks() {
 		return new ResponseEntity<>(bookService.getAll(), HttpStatus.OK);
+	}
+
+	@GetMapping("/multiple/{ids}")
+	public ResponseEntity<Map<String, BookDto>> getBooks(@PathVariable("ids") Collection<String> ids) {
+		return new ResponseEntity<>(bookService.getByMultipleId(ids), HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")

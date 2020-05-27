@@ -10,6 +10,7 @@ public class RequestTransformer {
 				model.getId(),
 				model.getRequestedBookId(),
 				model.getOfferedBookIds(),
+				model.getAdditionalInfo(),
 				model.getUser(),
 				model.getRequestDate().toString()
 		);

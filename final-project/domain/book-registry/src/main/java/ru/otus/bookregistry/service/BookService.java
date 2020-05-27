@@ -4,12 +4,15 @@ package ru.otus.bookregistry.service;
 import ru.otus.bookregistry.dto.BookDto;
 
 import java.util.Collection;
+import java.util.Map;
 
 public interface BookService {
 
 	Collection<BookDto> getAll();
 
 	BookDto getOne(String id);
+
+	Map<String, BookDto> getByMultipleId(Collection<String> ids);
 
 	Collection<BookDto> getOwnBooks(String owner);
 
