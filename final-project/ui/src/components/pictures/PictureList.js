@@ -18,9 +18,10 @@ import PictureUploadForm from './PictureUploadForm';
 type PictureListProps = {|
 	bookId: string,
 	items: Array<Picture>,
+	canUpload: boolean,
 |}
 
-function PictureList({ bookId, items }: PictureListProps) {
+function PictureList({ bookId, items, canUpload }: PictureListProps) {
 	const [pictures, setPictures] = useState<Array<Picture>>(items);
 
 	function handleUpload(picture: Picture): void {
@@ -29,12 +30,15 @@ function PictureList({ bookId, items }: PictureListProps) {
 
 	return (
 		<>
-			<Box mt={2}>
-				<PictureUploadForm
-					bookId={bookId}
-					onUpload={handleUpload}
-				/>
-			</Box>
+			{canUpload
+				? <Box mt={2}>
+					<PictureUploadForm
+						bookId={bookId}
+						onUpload={handleUpload}
+					/>
+				</Box>
+				: null
+			}
 			<Box mt={2}>
 				<GridList cols={3} style={{ flexWrap: 'nowrap' }}>
 					{pictures.map((picture: Picture) => (

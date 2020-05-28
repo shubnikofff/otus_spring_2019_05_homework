@@ -90,7 +90,7 @@ function BookDetails({ basePath }: BookDetailsProps) {
 				<Typography variant="h6">
 					Pictures
 				</Typography>
-				{book ? <PictureList bookId={id} items={book.pictures} /> : <LinearProgress />}
+				{book ? <PictureList bookId={id} items={book.pictures} canUpload={book.owned} /> : <LinearProgress />}
 			</Box>
 			<Box mt={4}>
 				<Typography variant="h6" gutterBottom>
