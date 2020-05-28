@@ -13,7 +13,7 @@ type FormValues = {|
 	password: string,
 |}
 
-function Login() {
+function LoginPage() {
 
 	const history = useHistory();
 
@@ -77,4 +77,4 @@ function Login() {
 	);
 }
 
-export default Login;
+export default LoginPage;

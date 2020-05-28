@@ -4,6 +4,7 @@ export {
 	Book,
 	BookCompleteData,
 	Comment,
+	ExchangeRequest,
 	Genre,
 	Picture,
 	UserProfile,

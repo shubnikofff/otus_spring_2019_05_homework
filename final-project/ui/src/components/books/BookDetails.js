@@ -113,4 +113,4 @@ function BookDetails({ basePath }: BookDetailsProps) {
 	);
 }
 
-export default React.memo(BookDetails);
+export default React.memo<BookDetailsProps>(BookDetails);

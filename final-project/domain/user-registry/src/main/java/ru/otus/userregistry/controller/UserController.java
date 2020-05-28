@@ -10,6 +10,9 @@ import ru.otus.userregistry.dto.ProfileDto;
 import ru.otus.userregistry.dto.UserDto;
 import ru.otus.userregistry.service.UserService;
 
+import java.util.Collection;
+import java.util.Map;
+
 @RestController
 @AllArgsConstructor
 public class UserController {
@@ -24,5 +27,10 @@ public class UserController {
 	@GetMapping("/profile/{username}")
 	ResponseEntity<ProfileDto> getProfile(@PathVariable("username") String username) {
 		return new ResponseEntity<>(userService.getProfile(username), HttpStatus.OK);
+	}
+
+	@GetMapping("/profiles/{usernames}")
+	ResponseEntity<Map<String, ProfileDto>> getProfiles(@PathVariable("usernames") Collection<String> usernames) {
+		return new ResponseEntity<>(userService.getProfiles(usernames), HttpStatus.OK);
 	}
 }

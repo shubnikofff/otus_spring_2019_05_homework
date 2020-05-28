@@ -3,7 +3,7 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Route, Redirect, Switch } from 'react-router';
 
-import { Login } from 'components';
+import { LoginPage } from 'components';
 
 import { AuthService } from 'services';
 
@@ -29,7 +29,7 @@ function Root() {
 				<Route
 					exact
 					path="/login"
-					component={Login}
+					component={LoginPage}
 				/>
 
 			</Switch>

@@ -18,7 +18,7 @@ const SECRET: string = 'secret';
 class AuthService {
 
 	static login(username: string, password: string): Promise<void> {
-		return RestClient.post(`/auth/oauth/token`, {}, {
+		return RestClient.post(`/auth/oauth/token`, null, {
 			auth: {
 				username: CLIENT_ID,
 				password: SECRET,
@@ -48,7 +48,7 @@ class AuthService {
 		return window.localStorage.getItem(KEY_JWT_TOKEN);
 	}
 
-	static getProfile(): UserProfile {
+	static getUserProfile(): UserProfile {
 		return JSON.parse(window.localStorage.getItem(KEY_USER_PROFILE));
 	}
 

@@ -44,3 +44,18 @@ export type UserProfile = {|
 	lastName: string,
 	email: string,
 |}
+
+export type ExchangeRequest = {|
+	id: string,
+	requestedBook: {|
+		id: string,
+		title: string,
+		genre: string,
+		authors: Array<string>,
+		owner: UserProfile,
+	|},
+	offeredBooks: Array<Book>,
+	additionalInfo: string,
+	user: UserProfile,
+	requestedDate: string,
+|}

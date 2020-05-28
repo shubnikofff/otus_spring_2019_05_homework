@@ -3,10 +3,13 @@ package ru.otus.compositeservice.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.compositeservice.dto.BookDto;
+import ru.otus.compositeservice.dto.BookWithUserProfileDto;
+import ru.otus.compositeservice.dto.UserProfileDto;
 import ru.otus.compositeservice.dto.exchange.ExchangeRequestDto;
 import ru.otus.compositeservice.dto.exchange.ExchangeRequestMappedToBookDto;
 import ru.otus.compositeservice.feign.BookRegistryProxy;
 import ru.otus.compositeservice.feign.ExchangeServiceProxy;
+import ru.otus.compositeservice.feign.UserRegistryProxy;
 
 import java.util.*;
 
@@ -20,6 +23,8 @@ public class ExchangeRequestServiceImpl implements ExchangeRequestService {
 	private final BookRegistryProxy bookRegistryProxy;
 
 	private final ExchangeServiceProxy exchangeServiceProxy;
+
+	private final UserRegistryProxy userRegistryProxy;
 
 	@Override
 	public Collection<ExchangeRequestMappedToBookDto> getOutgoingRequests(String username) {
@@ -40,6 +45,33 @@ public class ExchangeRequestServiceImpl implements ExchangeRequestService {
 	}
 
 	private Collection<ExchangeRequestMappedToBookDto> mapBooksToRequests(Collection<ExchangeRequestDto> requests) {
+
+		final Map<String, BookDto> books = getBooks(requests);
+		final Map<String, UserProfileDto> userProfiles = getUserProfiles(requests, books);
+
+		return requests.stream().map(request -> {
+
+			final BookDto requestedBook = books.get(request.getRequestedBookId());
+			final BookWithUserProfileDto requestedBookDto = new BookWithUserProfileDto(
+					requestedBook.getId(),
+					requestedBook.getTitle(),
+					requestedBook.getGenre(),
+					requestedBook.getAuthors(),
+					userProfiles.get(requestedBook.getOwner())
+			);
+
+			return new ExchangeRequestMappedToBookDto(
+					request.getId(),
+					requestedBookDto,
+					request.getOfferedBookIds().stream().map(books::get).collect(toList()),
+					request.getAdditionalInfo(),
+					request.getRequestDate(),
+					userProfiles.get(request.getUser())
+			);
+		}).collect(toList());
+	}
+
+	private Map<String, BookDto> getBooks(Collection<ExchangeRequestDto> requests) {
 		final Set<String> bookIds = new HashSet<>();
 
 		requests.forEach(request -> {
@@ -47,14 +79,19 @@ public class ExchangeRequestServiceImpl implements ExchangeRequestService {
 			bookIds.addAll(request.getOfferedBookIds());
 		});
 
-		final Map<String, BookDto> books = bookRegistryProxy.getBooks(bookIds).getBody();
-
-		return requests.stream().map(request -> new ExchangeRequestMappedToBookDto(
-				request.getId(),
-				Objects.requireNonNull(books).get(request.getRequestedBookId()),
-				request.getOfferedBookIds().stream().map(books::get).collect(toList()),
-				request.getAdditionalInfo(),
-				request.getRequestDate()
-		)).collect(toList());
+		return bookRegistryProxy.getBooks(bookIds).getBody();
 	}
+
+	private Map<String, UserProfileDto> getUserProfiles(Collection<ExchangeRequestDto> requests, Map<String, BookDto> books) {
+		final Set<String> usernames = new HashSet<>();
+
+		requests.forEach(request -> {
+			usernames.add(request.getUser());
+			usernames.add(books.get(request.getRequestedBookId()).getOwner());
+		});
+
+		return userRegistryProxy.getProfiles(usernames).getBody();
+	}
+
+
 }
