@@ -22,5 +22,7 @@ public interface BookService {
 
 	void update(String id, BookDto bookDto);
 
+	void setOwner(Map<String, String> bookIdUsernameMap);
+
 	void delete(String id);
 }

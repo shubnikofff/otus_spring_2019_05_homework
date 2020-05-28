@@ -17,14 +17,13 @@ public class AuthorController {
 	private final AuthorService authorService;
 
 	@GetMapping("/author")
-	ResponseEntity<Collection<AuthorDto>> getAllAuthors() {
-		final Collection<AuthorDto> authors = authorService.getAll();
-		return new ResponseEntity<>(authors, HttpStatus.OK);
+	ResponseEntity<?> getAllAuthors() {
+		return ResponseEntity.ok(authorService.getAll());
 	}
 
 	@PutMapping(value = "/author/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<HttpStatus> updateAuthor(@PathVariable("id") String id, @RequestBody AuthorDto authorDto) {
+	ResponseEntity<?> updateAuthor(@PathVariable("id") String id, @RequestBody AuthorDto authorDto) {
 		authorService.update(id, authorDto);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return ResponseEntity.noContent().build();
 	}
 }

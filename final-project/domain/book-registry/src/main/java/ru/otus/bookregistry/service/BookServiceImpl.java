@@ -89,7 +89,7 @@ public class BookServiceImpl implements BookService {
 		return null;
 	}
 
-	@HystrixCommand(commandKey = "updateBook", fallbackMethod = "updateFallback", ignoreExceptions = {BookNotFoundException.class})
+	@HystrixCommand(commandKey = "updateBook", defaultFallback = "doNothingFallback", ignoreExceptions = {BookNotFoundException.class})
 	@Override
 	public void update(String id, BookDto bookDto) {
 		final Book book = bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
@@ -99,16 +99,21 @@ public class BookServiceImpl implements BookService {
 		bookRepository.save(book);
 	}
 
-	private void updateFallback(String id, BookDto bookDto) {
+	@HystrixCommand(commandKey = "setOwner", defaultFallback = "doNothingFallback", ignoreExceptions = {BookNotFoundException.class})
+	@Override
+	public void setOwner(Map<String, String> bookIdUsernameMap) {
+		final Iterable<Book> books = bookRepository.findAllById(bookIdUsernameMap.keySet());
+		books.forEach(book -> book.setOwner(bookIdUsernameMap.get(book.getId())));
+		bookRepository.saveAll(books);
 	}
 
-	@HystrixCommand(commandKey = "deleteBook", fallbackMethod = "deleteFallback", ignoreExceptions = {BookNotFoundException.class})
+	@HystrixCommand(commandKey = "deleteBook", defaultFallback = "doNothingFallback", ignoreExceptions = {BookNotFoundException.class})
 	@Override
 	public void delete(String id) {
 		final Book book = bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
 		bookRepository.delete(book);
 	}
 
-	private void deleteFallback(String id) {
+	private void doNothingFallback() {
 	}
 }

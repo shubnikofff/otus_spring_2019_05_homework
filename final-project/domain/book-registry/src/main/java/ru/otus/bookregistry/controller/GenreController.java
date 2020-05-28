@@ -1,7 +1,6 @@
 package ru.otus.bookregistry.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +17,12 @@ public class GenreController {
 
 	@GetMapping("/genre")
 	ResponseEntity<Collection<GenreDto>> getAllAuthors() {
-		final Collection<GenreDto> genres = genreService.getAll();
-		return new ResponseEntity<>(genres, HttpStatus.OK);
+		return ResponseEntity.ok(genreService.getAll());
 	}
 
 	@PutMapping(value = "/genre/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<HttpStatus> updateAuthor(@PathVariable("id") String id, @RequestBody GenreDto genreDto) {
+	ResponseEntity<?> updateAuthor(@PathVariable("id") String id, @RequestBody GenreDto genreDto) {
 		genreService.update(id, genreDto);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return ResponseEntity.noContent().build();
 	}
 }
