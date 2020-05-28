@@ -21,6 +21,12 @@ public class RequestServiceImpl implements RequestService {
 
 	private final RequestRepository requestRepository;
 
+	@Override
+	public RequestDto getById(String id) {
+		final Request request = requestRepository.findById(id).orElseThrow(RequestNotFoundException::new);
+		return RequestTransformer.toDto(request);
+	}
+
 	@HystrixCommand(commandKey = "getByUser", defaultFallback = "emptyListFallback")
 	@Override
 	public Collection<RequestDto> getByUser(String username) {

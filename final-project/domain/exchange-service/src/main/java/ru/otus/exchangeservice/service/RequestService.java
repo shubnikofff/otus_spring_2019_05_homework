@@ -7,6 +7,8 @@ import java.util.Collection;
 
 public interface RequestService {
 
+	RequestDto getById(String id);
+
 	Collection<RequestDto> getByUser(String username);
 
 	Collection<RequestDto> getByRequestedBookIds(Collection<String> bookIds);

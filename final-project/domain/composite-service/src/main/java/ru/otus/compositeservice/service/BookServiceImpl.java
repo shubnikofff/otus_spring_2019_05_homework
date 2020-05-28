@@ -15,6 +15,8 @@ import ru.otus.compositeservice.feign.ReviewServiceProxy;
 import ru.otus.compositeservice.feign.UserRegistryProxy;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -32,7 +34,8 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public Collection<AllBooksItemDto> getAllBooks(String username) {
-		final Collection<BookDto> books = bookRegistryProxy.getAllBooks().getBody();
+		final Collection<BookDto> books = Optional.ofNullable(bookRegistryProxy.getAllBooks().getBody())
+				.orElse(Collections.emptyList());
 
 		return books.stream().map(book -> new AllBooksItemDto(
 				book.getId(),
@@ -50,11 +53,11 @@ public class BookServiceImpl implements BookService {
 			final CompletableFuture<BookDto> book = getBook(bookId);
 			final CompletableFuture<Collection<CommentDto>> comments = getCommentsByBook(bookId);
 			final CompletableFuture<Collection<PictureMetadataDto>> pictures = getPicturesByBook(bookId);
-			final CompletableFuture<UserProfileDto> userProfile = getUserProfile(username);
 
-			CompletableFuture.allOf(book, comments, pictures, userProfile).join();
+			CompletableFuture.allOf(book, comments, pictures).join();
 
 			final BookDto bookDto = book.get();
+			final UserProfileDto userProfile = userRegistryProxy.getProfile(bookDto.getOwner()).getBody();
 
 			return new BookCompleteDataDto(
 					bookDto.getId(),
@@ -63,7 +66,7 @@ public class BookServiceImpl implements BookService {
 					bookDto.getAuthors(),
 					comments.get(),
 					pictures.get(),
-					userProfile.get(),
+					userProfile,
 					bookDto.getOwner().equals(username)
 			);
 		} catch (Exception e) {
@@ -90,11 +93,6 @@ public class BookServiceImpl implements BookService {
 	@Async("taskExecutor")
 	public CompletableFuture<Collection<PictureMetadataDto>> getPicturesByBook(String bookId) {
 		return CompletableFuture.completedFuture(pictureServiceProxy.getPicturesByBookId(bookId).getBody());
-	}
-
-	@Async("taskExecutor")
-	public CompletableFuture<UserProfileDto> getUserProfile(String username) {
-		return CompletableFuture.completedFuture(userRegistryProxy.getProfile(username).getBody());
 	}
 
 	@Override

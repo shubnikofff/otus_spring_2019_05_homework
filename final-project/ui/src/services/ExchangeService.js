@@ -16,6 +16,14 @@ class ExchangeService {
 	static getOutgoingRequests(): Promise<Array<ExchangeRequest>> {
 		return RestClient.get('/cs/request/outgoing');
 	}
+
+	static acceptRequest(id: string): Promise<void> {
+		return RestClient.put(`/cs/request/${id}`);
+	}
+
+	static deleteRequest(id: string): Promise<void> {
+		return RestClient.del(`/exchange/request/${id}`);
+	}
 }
 
 export default ExchangeService;

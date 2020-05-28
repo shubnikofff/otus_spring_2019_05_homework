@@ -43,12 +43,17 @@ public class BookRegistryFallbackFactory implements FallbackFactory<BookRegistry
 			}
 
 			@Override
+			public ResponseEntity<?> setOwner(Map<String, String> bookIdUsernameMap) {
+				return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+			}
+
+			@Override
 			public ResponseEntity<HttpStatus> deleteBook(String id) {
 				if (cause instanceof FeignException.NotFound) {
 					return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 				}
 
-				return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+				return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 			}
 		};
 	}

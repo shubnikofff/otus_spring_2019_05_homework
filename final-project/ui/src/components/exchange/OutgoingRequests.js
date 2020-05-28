@@ -105,6 +105,10 @@ function OutgoingRequests({ basePath }: OutgoingRequestsProps) {
 							<Grid container justify="flex-end">
 								<Button
 									color="secondary"
+									onClick={() => {
+										ExchangeService.deleteRequest(request.id)
+											.then(setRequests(requests.filter(r => r.id !== request.id)));
+									}}
 								>
 									Cancel
 								</Button>

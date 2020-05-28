@@ -7,6 +7,7 @@ import ru.otus.compositeservice.dto.BookWithUserProfileDto;
 import ru.otus.compositeservice.dto.UserProfileDto;
 import ru.otus.compositeservice.dto.exchange.ExchangeRequestDto;
 import ru.otus.compositeservice.dto.exchange.ExchangeRequestMappedToBookDto;
+import ru.otus.compositeservice.exception.ExchangeRequestNotFoundException;
 import ru.otus.compositeservice.feign.BookRegistryProxy;
 import ru.otus.compositeservice.feign.ExchangeServiceProxy;
 import ru.otus.compositeservice.feign.UserRegistryProxy;
@@ -42,6 +43,19 @@ public class ExchangeRequestServiceImpl implements ExchangeRequestService {
 		final Collection<ExchangeRequestDto> requests = exchangeServiceProxy.getRequestsByBookIds(bookIds).getBody();
 
 		return Optional.ofNullable(requests).map(this::mapBooksToRequests).orElse(emptyList());
+	}
+
+	@Override
+	public void acceptRequest(String id, String accepter) {
+		final ExchangeRequestDto request = Optional.ofNullable(exchangeServiceProxy.getRequestById(id).getBody())
+				.orElseThrow(ExchangeRequestNotFoundException::new);
+
+		final Map<String, String> bookIdUsernameMap = new HashMap<>();
+		bookIdUsernameMap.put(request.getRequestedBookId(), request.getUser());
+		request.getOfferedBookIds().forEach(offeredBookId -> bookIdUsernameMap.put(offeredBookId, accepter));
+
+		exchangeServiceProxy.deleteRequest(id);
+		bookRegistryProxy.setOwner(bookIdUsernameMap);
 	}
 
 	private Collection<ExchangeRequestMappedToBookDto> mapBooksToRequests(Collection<ExchangeRequestDto> requests) {

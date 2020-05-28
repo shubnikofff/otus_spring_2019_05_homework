@@ -9,4 +9,6 @@ public interface ExchangeRequestService {
 	Collection<ExchangeRequestMappedToBookDto> getOutgoingRequests(String username);
 
 	Collection<ExchangeRequestMappedToBookDto> getIncomingRequests(String username);
+
+	void acceptRequest(String id, String accepter);
 }

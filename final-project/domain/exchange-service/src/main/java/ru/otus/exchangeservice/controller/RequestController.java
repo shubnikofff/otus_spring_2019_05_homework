@@ -16,14 +16,19 @@ public class RequestController {
 
 	private final RequestService requestService;
 
+	@GetMapping("/request/{id}")
+	public ResponseEntity<RequestDto> getRequestById(@PathVariable("id") String id) {
+		return ResponseEntity.ok(requestService.getById(id));
+	}
+
 	@GetMapping("/request/username/{username}")
 	public ResponseEntity<Collection<RequestDto>> getRequestsByUsername(@PathVariable("username") String username) {
-		return new ResponseEntity<>(requestService.getByUser(username), HttpStatus.OK);
+		return ResponseEntity.ok(requestService.getByUser(username));
 	}
 
 	@GetMapping("/request/book/{ids}")
 	public ResponseEntity<Collection<RequestDto>> getRequestsByBookIds(@PathVariable("ids") Collection<String> ids) {
-		return new ResponseEntity<>(requestService.getByRequestedBookIds(ids), HttpStatus.OK);
+		return ResponseEntity.ok(requestService.getByRequestedBookIds(ids));
 	}
 
 	@PostMapping("/request")
@@ -31,4 +36,9 @@ public class RequestController {
 		return new ResponseEntity<>(requestService.create(dto, username), HttpStatus.CREATED);
 	}
 
+	@DeleteMapping("/request/{id}")
+	public ResponseEntity<?> deleteRequest(@PathVariable("id") String id) {
+		requestService.delete(id);
+		return ResponseEntity.noContent().build();
+	}
 }

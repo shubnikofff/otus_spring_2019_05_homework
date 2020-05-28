@@ -93,11 +93,19 @@ function IncomingRequests({ basePath }: IncomingRequestsProps) {
 							<Grid container justify="flex-end">
 								<Button
 									color="primary"
+									onClick={() => {
+										ExchangeService.acceptRequest(request.id)
+											.then(setRequests(requests.filter(r => r.id !== request.id)));
+									}}
 								>
 									Accept
 								</Button>
 								<Button
 									color="secondary"
+									onClick={() => {
+										ExchangeService.deleteRequest(request.id)
+											.then(setRequests(requests.filter(r => r.id !== request.id)));
+									}}
 								>
 									Refuse
 								</Button>
