@@ -5,26 +5,28 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.gridfs.GridFsOperations;
+import ru.otus.pictureservice.service.DbService;
+
+import java.io.IOException;
 
 @SpringBootApplication
 @EnableEurekaClient
 @EnableCircuitBreaker
 public class PictureServiceApplication implements CommandLineRunner {
 
-	private final GridFsOperations gridFsOperations;
+	private final DbService dbService;
 
-	public PictureServiceApplication(GridFsOperations gridFsOperations) {
-		this.gridFsOperations = gridFsOperations;
+	public PictureServiceApplication(DbService dbService) {
+		this.dbService = dbService;
 	}
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(PictureServiceApplication.class, args);
 	}
 
 	@Override
-	public void run(String... args) {
-		gridFsOperations.delete(new Query());
+	public void run(String... args) throws IOException {
+		dbService.initDb();
 	}
 }
