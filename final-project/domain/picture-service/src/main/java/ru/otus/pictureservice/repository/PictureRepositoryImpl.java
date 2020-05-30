@@ -38,6 +38,15 @@ public class PictureRepositoryImpl implements PictureRepository {
 	}
 
 	@Override
+	public Collection<GridFSFile> findLastUploadedByBookIds(Collection<String> bookIds) {
+		final Collection<GridFSFile> result = new ArrayList<>();
+		gridFsOperations.find(query(where("metadata.bookId").in(bookIds)))
+				.into(result);
+
+		return result;
+	}
+
+	@Override
 	public ObjectId save(Picture picture) {
 		return gridFsOperations.store(
 				picture.getInputStream(),

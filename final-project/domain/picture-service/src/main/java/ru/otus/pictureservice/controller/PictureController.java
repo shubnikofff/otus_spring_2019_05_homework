@@ -14,6 +14,7 @@ import ru.otus.pictureservice.service.PictureService;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,6 +33,11 @@ public class PictureController {
 	@GetMapping("/")
 	public ResponseEntity<Collection<PictureMetadataDto>> getAllPicturesByBook(@RequestParam String bookId) {
 		return new ResponseEntity<>(pictureService.getByBookId(bookId), HttpStatus.OK);
+	}
+
+	@GetMapping("/last/{ids}")
+	public ResponseEntity<Map<String, Collection<PictureMetadataDto>>> getLastPictures(@PathVariable("ids") Collection<String> ids) {
+		return ResponseEntity.ok(pictureService.getAllLastUploadedByBookIds(ids));
 	}
 
 	@PostMapping("/")

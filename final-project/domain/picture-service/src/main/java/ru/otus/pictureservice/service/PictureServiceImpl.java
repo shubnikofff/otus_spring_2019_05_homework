@@ -16,9 +16,7 @@ import ru.otus.pictureservice.model.Picture;
 import ru.otus.pictureservice.repository.PictureRepository;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,12 +49,26 @@ public class PictureServiceImpl implements PictureService {
 	@Override
 	public Collection<PictureMetadataDto> getByBookId(String bookId) {
 		return pictureRepository.findByBookId(bookId).stream()
-				.map(picture -> new PictureMetadataDto(
-						picture.getId().asObjectId().getValue().toHexString(),
-						picture.getFilename(),
-						picture.getUploadDate().toString()
-				))
+				.map(PictureTransformer::toPictureMetadataDto)
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public Map<String, Collection<PictureMetadataDto>> getAllLastUploadedByBookIds(Collection<String> bookIds) {
+		final HashMap<String, Collection<PictureMetadataDto>> result = new HashMap<>(bookIds.size());
+
+		pictureRepository.findLastUploadedByBookIds(bookIds)
+				.forEach(gridFSFile -> {
+					if (gridFSFile.getMetadata() != null && gridFSFile.getMetadata().containsKey("bookId")) {
+						final String bookId = gridFSFile.getMetadata().get("bookId").toString();
+						if (!result.containsKey(bookId)) {
+							result.put(bookId, new ArrayList<>());
+						}
+						result.get(bookId).add(PictureTransformer.toPictureMetadataDto(gridFSFile));
+					}
+				});
+
+		return result;
 	}
 
 	private Collection<PictureMetadataDto> getByBookIdFallback(String bookId) {

@@ -17,7 +17,7 @@ public class AllBooksItemDto {
 
 	private final Collection<String> authors;
 
-	private final String coverId;
+	private final Collection<PictureMetadataDto> pictures;
 
 	private final boolean owned;
 }

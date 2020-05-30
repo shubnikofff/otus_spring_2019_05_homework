@@ -16,9 +16,12 @@ import ru.otus.compositeservice.feign.UserRegistryProxy;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -37,14 +40,17 @@ public class BookServiceImpl implements BookService {
 		final Collection<BookDto> books = Optional.ofNullable(bookRegistryProxy.getAllBooks().getBody())
 				.orElse(Collections.emptyList());
 
+		final Map<String, Collection<PictureMetadataDto>> bookIdPictureMap =
+				pictureServiceProxy.getLastPictures(books.stream().map(BookDto::getId).collect(toList())).getBody();
+
 		return books.stream().map(book -> new AllBooksItemDto(
 				book.getId(),
 				book.getTitle(),
 				book.getGenre(),
 				book.getAuthors(),
-				null,
+				bookIdPictureMap.get(book.getId()),
 				book.getOwner().equals(username)
-		)).collect(Collectors.toList());
+		)).collect(toList());
 	}
 
 	@Override

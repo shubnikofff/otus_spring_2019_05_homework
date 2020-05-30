@@ -7,6 +7,7 @@ import ru.otus.compositeservice.dto.PictureMetadataDto;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
 @Component
 public class PictureServiceFallback implements PictureServiceProxy {
@@ -19,5 +20,10 @@ public class PictureServiceFallback implements PictureServiceProxy {
 	@Override
 	public ResponseEntity<HttpStatus> deleteByBookId(String bookId) {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@Override
+	public ResponseEntity<Map<String, Collection<PictureMetadataDto>>> getLastPictures(Collection<String> ids) {
+		return ResponseEntity.ok(Collections.emptyMap());
 	}
 }

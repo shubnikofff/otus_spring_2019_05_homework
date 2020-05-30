@@ -15,6 +15,8 @@ public interface PictureRepository {
 
 	Collection<GridFSFile> findByBookId(String bookId);
 
+	Collection<GridFSFile> findLastUploadedByBookIds(Collection<String> ids);
+
 	ObjectId save(Picture picture) throws IOException;
 
 	void delete(String id);

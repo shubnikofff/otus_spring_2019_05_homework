@@ -5,6 +5,7 @@ import { BookService } from 'services';
 import {
 	Box,
 	Card,
+	CardMedia,
 	CardActionArea,
 	CardActions,
 	CardContent,
@@ -58,6 +59,16 @@ class BookList extends React.PureComponent<BookListProps, BookListState> {
 						<Grid item key={book.id} xs={12} sm={6} md={3}>
 							<Card>
 								<CardActionArea component={Link} to={`${basePath}/${book.id}`}>
+									{
+										Array.isArray(book.pictures)
+											? <CardMedia
+												component="img"
+												alt="Cover"
+												height="140"
+												image={`/api/picture/${book.pictures[book.pictures.length - 1].id}`}
+											/>
+											: null
+									}
 									<CardContent>
 										<Typography variant="h5" gutterBottom>
 											{book.title}

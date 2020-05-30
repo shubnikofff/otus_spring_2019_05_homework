@@ -12,7 +12,7 @@ export type Book = {|
 	title: string,
 	genre: string,
 	authors: Array<string>,
-	coverId: ?string,
+	pictures: Array<Picture>,
 	owned: boolean,
 |}
 
