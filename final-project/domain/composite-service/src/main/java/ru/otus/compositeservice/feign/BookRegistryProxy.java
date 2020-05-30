@@ -12,21 +12,21 @@ import java.util.Map;
 @FeignClient(name = "book-registry", fallbackFactory = BookRegistryFallbackFactory.class)
 public interface BookRegistryProxy {
 
-	@GetMapping("/")
+	@GetMapping("/book")
 	ResponseEntity<Collection<BookDto>> getAllBooks();
 
-	@GetMapping("/{id}")
+	@GetMapping("/book/{id}")
 	ResponseEntity<BookDto> getBook(@PathVariable("id") String id);
 
-	@GetMapping("/multiple/{ids}")
+	@GetMapping("/book/multiple/{ids}")
 	ResponseEntity<Map<String, BookDto>> getBooks(@PathVariable("ids") Collection<String> ids);
 
-	@GetMapping("/own")
+	@GetMapping("/book/own")
 	ResponseEntity<Collection<BookDto>> getOwnBooks(@RequestHeader("username") String username);
 
-	@PutMapping("/owner")
+	@PutMapping("/book/owner")
 	ResponseEntity<?> setOwner(@RequestBody Map<String, String> bookIdUsernameMap);
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/book/{id}")
 	ResponseEntity<HttpStatus> deleteBook(@PathVariable("id") String id);
 }

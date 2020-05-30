@@ -3,7 +3,7 @@ import RestClient from './RestClient';
 
 import type { Book, BookFormValues, BookCompleteData } from 'types';
 
-const BASE_PATH: string = '/book';
+const BASE_PATH: string = '/library/book';
 
 class BookService {
 

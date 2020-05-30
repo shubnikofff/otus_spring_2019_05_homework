@@ -16,44 +16,44 @@ public class BookController {
 
 	private final BookService bookService;
 
-	@GetMapping("/")
+	@GetMapping("/book")
 	public ResponseEntity<Collection<BookDto>> getAllBooks() {
 		return ResponseEntity.ok(bookService.getAll());
 	}
 
-	@GetMapping("/multiple/{ids}")
+	@GetMapping("/book/multiple/{ids}")
 	public ResponseEntity<Map<String, BookDto>> getBooks(@PathVariable("ids") Collection<String> ids) {
 		return ResponseEntity.ok(bookService.getByMultipleId(ids));
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/book/{id}")
 	public ResponseEntity<BookDto> getBook(@PathVariable("id") String id) {
 		return ResponseEntity.ok(bookService.getOne(id));
 	}
 
-	@GetMapping("/own")
+	@GetMapping("/book/own")
 	public ResponseEntity<Collection<BookDto>> getOwnBooks(@RequestHeader("username") String username) {
 		return ResponseEntity.ok(bookService.getOwnBooks(username));
 	}
 
-	@PostMapping("/")
+	@PostMapping("/book/")
 	ResponseEntity<String> createBook(@RequestBody BookDto bookDto, @RequestHeader("username") String username) {
 		return new ResponseEntity<>(bookService.create(bookDto, username), HttpStatus.CREATED);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/book/{id}")
 	public ResponseEntity<?> updateBook(@PathVariable("id") String id, @RequestBody BookDto bookDto) {
 		bookService.update(id, bookDto);
 		return ResponseEntity.noContent().build();
 	}
 
-	@PutMapping("/owner")
+	@PutMapping("/book/owner")
 	public ResponseEntity<?> setOwner(@RequestBody Map<String, String> bookIdUsernameMap) {
 		bookService.setOwner(bookIdUsernameMap);
 		return ResponseEntity.noContent().build();
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/book/{id}")
 	ResponseEntity<?> deleteBook(@PathVariable("id") String id) {
 		bookService.delete(id);
 		return ResponseEntity.noContent().build();
