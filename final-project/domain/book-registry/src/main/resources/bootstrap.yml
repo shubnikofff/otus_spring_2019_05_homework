@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: book-registry
+  cloud:
+    config:
+      uri: http://localhost:8888
+
+encrypt:
+  key: book-exchange-secret
+
+server:
+  port: 6001
